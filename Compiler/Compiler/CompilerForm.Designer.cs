@@ -65,21 +65,9 @@
             copyTSB = new ToolStripButton();
             cutTSB = new ToolStripButton();
             selectAllTSB = new ToolStripButton();
-            tabControl1 = new TabControl();
-            tabPage1 = new TabPage();
-            splitContainer1 = new SplitContainer();
-            tableLayoutPanel1 = new TableLayoutPanel();
-            richTextBox1 = new RichTextBox();
-            richTextBox3 = new RichTextBox();
-            tabPage2 = new TabPage();
+            mainPanel = new Panel();
             menuStrip.SuspendLayout();
             toolStrip1.SuspendLayout();
-            tabControl1.SuspendLayout();
-            tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
-            splitContainer1.Panel1.SuspendLayout();
-            splitContainer1.SuspendLayout();
-            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
@@ -106,6 +94,7 @@
             createMI.Name = "createMI";
             createMI.Size = new Size(153, 22);
             createMI.Text = "Создать";
+            createMI.Click += createFile_Click;
             // 
             // openMI
             // 
@@ -297,6 +286,7 @@
             createTSB.Name = "createTSB";
             createTSB.Size = new Size(42, 42);
             createTSB.Text = "Создать файл";
+            createTSB.Click += createFile_Click;
             // 
             // saveTSB
             // 
@@ -344,96 +334,20 @@
             selectAllTSB.Size = new Size(42, 42);
             selectAllTSB.Text = "toolStripButton8";
             // 
-            // tabControl1
+            // mainPanel
             // 
-            tabControl1.Controls.Add(tabPage1);
-            tabControl1.Controls.Add(tabPage2);
-            tabControl1.Dock = DockStyle.Fill;
-            tabControl1.Location = new Point(0, 68);
-            tabControl1.Name = "tabControl1";
-            tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(968, 381);
-            tabControl1.TabIndex = 3;
-            // 
-            // tabPage1
-            // 
-            tabPage1.Controls.Add(splitContainer1);
-            tabPage1.Location = new Point(4, 24);
-            tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(960, 353);
-            tabPage1.TabIndex = 0;
-            tabPage1.Text = "tabPage1";
-            tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // splitContainer1
-            // 
-            splitContainer1.Dock = DockStyle.Fill;
-            splitContainer1.Location = new Point(3, 3);
-            splitContainer1.Name = "splitContainer1";
-            splitContainer1.Orientation = Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            splitContainer1.Panel1.Controls.Add(tableLayoutPanel1);
-            splitContainer1.Size = new Size(954, 347);
-            splitContainer1.SplitterDistance = 189;
-            splitContainer1.TabIndex = 0;
-            // 
-            // tableLayoutPanel1
-            // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 5F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 95F));
-            tableLayoutPanel1.Controls.Add(richTextBox1, 0, 0);
-            tableLayoutPanel1.Controls.Add(richTextBox3, 1, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(954, 189);
-            tableLayoutPanel1.TabIndex = 0;
-            // 
-            // richTextBox1
-            // 
-            richTextBox1.BorderStyle = BorderStyle.None;
-            richTextBox1.DetectUrls = false;
-            richTextBox1.Dock = DockStyle.Fill;
-            richTextBox1.Location = new Point(0, 0);
-            richTextBox1.Margin = new Padding(0);
-            richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(47, 189);
-            richTextBox1.TabIndex = 0;
-            richTextBox1.Text = "";
-            // 
-            // richTextBox3
-            // 
-            richTextBox3.BorderStyle = BorderStyle.None;
-            richTextBox3.Dock = DockStyle.Fill;
-            richTextBox3.Location = new Point(47, 0);
-            richTextBox3.Margin = new Padding(0);
-            richTextBox3.Name = "richTextBox3";
-            richTextBox3.Size = new Size(907, 189);
-            richTextBox3.TabIndex = 1;
-            richTextBox3.Text = "";
-            // 
-            // tabPage2
-            // 
-            tabPage2.Location = new Point(4, 24);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(960, 353);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "tabPage2";
-            tabPage2.UseVisualStyleBackColor = true;
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Location = new Point(0, 68);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Size = new Size(968, 381);
+            mainPanel.TabIndex = 3;
             // 
             // CompilerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(968, 471);
-            Controls.Add(tabControl1);
+            Controls.Add(mainPanel);
             Controls.Add(toolStrip1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip);
@@ -445,12 +359,6 @@
             menuStrip.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
-            tabControl1.ResumeLayout(false);
-            tabPage1.ResumeLayout(false);
-            splitContainer1.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
-            splitContainer1.ResumeLayout(false);
-            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -493,12 +401,6 @@
         private ToolStripButton copyTSB;
         private ToolStripButton cutTSB;
         private ToolStripButton selectAllTSB;
-        private TabControl tabControl1;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
-        private SplitContainer splitContainer1;
-        private TableLayoutPanel tableLayoutPanel1;
-        private RichTextBox richTextBox1;
-        private RichTextBox richTextBox3;
+        private Panel mainPanel;
     }
 }
