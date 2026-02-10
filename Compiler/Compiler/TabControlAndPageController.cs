@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CompilerGUI
 {
@@ -25,6 +27,170 @@ namespace CompilerGUI
         private void SelectedPageChangedHandler(object sender, EventArgs e)
         {
             TabPageChanged?.Invoke(tabControl.SelectedTab);
+        }
+
+        public void UpdatePageInfo() 
+        {
+            TabPage page = tabControl.SelectedTab;
+            FileClass fileInfo = (FileClass)page.Tag;
+
+            if (fileInfo.IsSaved == false) return;
+            
+            fileInfo.IsSaved = false;
+            page.Text = $"{fileInfo.FileName}*";
+
+        }
+
+        public void OpenFile(Control parentPanel) 
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            FileClass fileInfo = new FileClass("", "", true);
+            
+            openFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
+            openFileDialog.Title = $"Открыть файл";
+            openFileDialog.DefaultExt = $"{fileInfo.Ext}";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string text = File.ReadAllText(openFileDialog.FileName);
+                    if (text == null) throw new Exception("Ошибка чтения");
+
+                    fileInfo.FilePath = openFileDialog.FileName;
+                    fileInfo.FileName = Path.GetFileName(openFileDialog.FileName);
+                    fileInfo.IsSaved = true;
+
+                    CreateFileBtnClick(parentPanel);
+
+                    TabPage page = tabControl.SelectedTab;
+                    RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+
+                    page.Tag = fileInfo;
+                    textBox.Text = text;
+                    fileInfo.IsSaved = true;
+                    page.Text = fileInfo.FileName;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public void SaveFile() 
+        {
+            TabPage page = tabControl.SelectedTab;
+            
+            if (page == null) 
+            {
+                MessageBox.Show(
+                    "Выберите файл, чтобы сохранить",
+                    "Предупреждение",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button1
+                );
+                return;
+            }
+
+            FileClass fileInfo = (FileClass)page.Tag;
+            RichTextBox textBox = (RichTextBox) page.Controls.Find("richTextBoxText", true)[0];
+
+            if (fileInfo.FilePath == "" && fileInfo.IsSaved == false) 
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+                saveFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
+                saveFileDialog.FilterIndex = 1;
+                saveFileDialog.RestoreDirectory = true;
+                saveFileDialog.Title = $"Сохранить файл";
+                saveFileDialog.DefaultExt = $"{fileInfo.Ext}";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, textBox.Text);
+
+                        fileInfo.FileName = Path.GetFileName(saveFileDialog.FileName);
+                        fileInfo.IsSaved = true;
+                        fileInfo.FilePath = saveFileDialog.FileName;
+                        page.Text = fileInfo.FileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else if (fileInfo.IsSaved == false)
+            {
+                try
+                {
+                    File.WriteAllText(fileInfo.FilePath, textBox.Text);
+                    page.Text = fileInfo.FileName;
+                    fileInfo.IsSaved = true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+        }
+
+        public void SaveUsFile() 
+        {
+            TabPage page = tabControl.SelectedTab;
+
+            if (page == null)
+            {
+                MessageBox.Show(
+                    "Выберите файл, чтобы сохранить",
+                    "Предупреждение",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button1
+                );
+                return;
+            }
+
+            FileClass fileInfo = (FileClass)page.Tag;
+            RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.Title = $"Сохранить файл";
+            saveFileDialog.DefaultExt = $"{fileInfo.Ext}";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    File.WriteAllText(saveFileDialog.FileName, textBox.Text);
+                    if (fileInfo.FilePath == "")
+                    {
+                        fileInfo.FileName = Path.GetFileName(saveFileDialog.FileName);
+                        fileInfo.IsSaved = true;
+                        fileInfo.FilePath = saveFileDialog.FileName;
+                        page.Text = fileInfo.FileName;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         public void CreateFileBtnClick(Control parentPanel) 
@@ -126,8 +292,12 @@ namespace CompilerGUI
             tabPage.Padding = new Padding(3);
             tabPage.Size = new Size(960, 353);
             tabPage.TabIndex = indexTabPage;
-            tabPage.Text = $"New File ({indexTabPage})";
+            tabPage.Text = $"New File ({indexTabPage})*";
             tabPage.UseVisualStyleBackColor = true;
+
+            FileClass fileInfo = new FileClass(tabPage.Name, "", false);
+
+            tabPage.Tag = fileInfo;
 
             return tabPage;
         }

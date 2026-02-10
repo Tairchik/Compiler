@@ -15,6 +15,9 @@ namespace CompilerGUI
         private TableLayoutPanel tableLayoutPanel;
         private float minSizeColumnNumbers = 0;
         private int lastLineCount;
+
+        public event Action TextIsChange;    
+
         public void init(TabPage tabPape) 
         {
             tableLayoutPanel = (TableLayoutPanel) tabPape.Controls.Find("tableLayoutPanel", true)[0];
@@ -52,9 +55,8 @@ namespace CompilerGUI
         {
             UpdateLineNumbers();
             HighlightCurrentLine();
-
+            TextIsChange?.Invoke();
         }
-
 
         private void RichTextBoxTextCode_VScroll(object sender, EventArgs e)
         {
@@ -141,7 +143,7 @@ namespace CompilerGUI
             }
             catch
             {
-
+                
             }
         }
 

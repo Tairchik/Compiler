@@ -101,18 +101,21 @@
             openMI.Name = "openMI";
             openMI.Size = new Size(153, 22);
             openMI.Text = "Открыть";
+            openMI.Click += openFile_Click;
             // 
             // SaveMI
             // 
             SaveMI.Name = "SaveMI";
             SaveMI.Size = new Size(153, 22);
             SaveMI.Text = "Сохранить";
+            SaveMI.Click += saveFile_Click;
             // 
             // saveUsMI
             // 
             saveUsMI.Name = "saveUsMI";
             saveUsMI.Size = new Size(153, 22);
             saveUsMI.Text = "Сохранить как";
+            saveUsMI.Click += saveUsFile_Click;
             // 
             // exitMI
             // 
@@ -296,6 +299,7 @@
             saveTSB.Name = "saveTSB";
             saveTSB.Size = new Size(42, 42);
             saveTSB.Text = "Сохранить";
+            saveTSB.Click += saveFile_Click;
             // 
             // saveUsTSB
             // 
@@ -306,6 +310,7 @@
             saveUsTSB.Size = new Size(42, 42);
             saveUsTSB.Text = "toolStripButton5";
             saveUsTSB.ToolTipText = "Сохранить как";
+            saveUsTSB.Click += saveUsFile_Click;
             // 
             // copyTSB
             // 
@@ -361,6 +366,11 @@
             toolStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void SaveMI_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
