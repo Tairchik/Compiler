@@ -122,6 +122,7 @@
             exitMI.Name = "exitMI";
             exitMI.Size = new Size(153, 22);
             exitMI.Text = "Выход";
+            exitMI.Click += exit_Click;
             // 
             // Edit
             // 

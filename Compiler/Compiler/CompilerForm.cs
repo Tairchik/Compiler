@@ -12,6 +12,7 @@ namespace CompilerGUI
             controllerTCP.TabPageCreate += controllerRichTB.init;
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
+            this.FormClosing += exit_Process;
         }
 
         private void createFile_Click(object sender, EventArgs e)
@@ -32,6 +33,19 @@ namespace CompilerGUI
         private void openFile_Click(object sender, EventArgs e)
         {
             controllerTCP.OpenFile(mainPanel);
+        }
+
+        private void exit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void exit_Process(object sender, FormClosingEventArgs e)
+        {
+            if (controllerTCP.Exit(this) == false) 
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

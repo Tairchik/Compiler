@@ -24,6 +24,35 @@ namespace CompilerGUI
             tabControl.SelectedIndexChanged += SelectedPageChangedHandler;
         }
 
+        public bool Exit(Form view) 
+        {
+            FileClass info;
+
+            foreach (TabPage tabPage in tabControl.TabPages) 
+            {
+                info = (FileClass) tabPage.Tag;
+                if (info.IsSaved == false) 
+                {
+                    DialogResult result = MessageBox.Show(
+                           $"Сохранить изменния в файле?\n{info.FileName}",
+                           "Уведомление",
+                           MessageBoxButtons.YesNoCancel,
+                           MessageBoxIcon.Question,
+                           MessageBoxDefaultButton.Button1
+                    );
+                    if (result == DialogResult.Cancel)
+                    {
+                        return false;
+                    }
+                    else if (result == DialogResult.Yes)
+                    {
+                        SaveFile(tabPage);
+                    }
+                }
+            }
+            return true;
+        }
+
         private void SelectedPageChangedHandler(object sender, EventArgs e)
         {
             TabPageChanged?.Invoke(tabControl.SelectedTab);
@@ -72,6 +101,57 @@ namespace CompilerGUI
                     textBox.Text = text;
                     fileInfo.IsSaved = true;
                     page.Text = fileInfo.FileName;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        public void SaveFile(TabPage tabPage) 
+        {
+            TabPage page = tabPage;
+
+            FileClass fileInfo = (FileClass)page.Tag;
+            RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+
+            if (fileInfo.FilePath == "" && fileInfo.IsSaved == false)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+                saveFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
+                saveFileDialog.FilterIndex = 1;
+                saveFileDialog.RestoreDirectory = true;
+                saveFileDialog.Title = $"Сохранить файл";
+                saveFileDialog.DefaultExt = $"{fileInfo.Ext}";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, textBox.Text);
+
+                        fileInfo.FileName = Path.GetFileName(saveFileDialog.FileName);
+                        fileInfo.IsSaved = true;
+                        fileInfo.FilePath = saveFileDialog.FileName;
+                        page.Text = fileInfo.FileName;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else if (fileInfo.IsSaved == false)
+            {
+                try
+                {
+                    File.WriteAllText(fileInfo.FilePath, textBox.Text);
+                    page.Text = fileInfo.FileName;
+                    fileInfo.IsSaved = true;
                 }
                 catch (Exception ex)
                 {
@@ -294,14 +374,12 @@ namespace CompilerGUI
             tabPage.TabIndex = indexTabPage;
             tabPage.Text = $"New File ({indexTabPage})*";
             tabPage.UseVisualStyleBackColor = true;
-
-            FileClass fileInfo = new FileClass(tabPage.Name, "", false);
+            
+            FileClass fileInfo = new FileClass(tabPage.Text, "", false);
 
             tabPage.Tag = fileInfo;
 
             return tabPage;
         }
-
-
     }
 }

@@ -204,5 +204,6 @@ namespace CompilerGUI
                 Marshal.FreeHGlobal(ptr);
             }
         }
+
     }
 }
