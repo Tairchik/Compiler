@@ -37,8 +37,8 @@
             saveUsMI = new ToolStripMenuItem();
             exitMI = new ToolStripMenuItem();
             Edit = new ToolStripMenuItem();
-            cancleMI = new ToolStripMenuItem();
-            backMI = new ToolStripMenuItem();
+            undoMI = new ToolStripMenuItem();
+            redoMI = new ToolStripMenuItem();
             cutMI = new ToolStripMenuItem();
             copyMI = new ToolStripMenuItem();
             insertMI = new ToolStripMenuItem();
@@ -57,8 +57,8 @@
             SettingsMI = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             toolStrip1 = new ToolStrip();
-            cancleTSB = new ToolStripButton();
-            backTSB = new ToolStripButton();
+            undoTSB = new ToolStripButton();
+            redoTSB = new ToolStripButton();
             createTSB = new ToolStripButton();
             saveTSB = new ToolStripButton();
             saveUsTSB = new ToolStripButton();
@@ -126,52 +126,59 @@
             // 
             // Edit
             // 
-            Edit.DropDownItems.AddRange(new ToolStripItem[] { cancleMI, backMI, cutMI, copyMI, insertMI, deleteMI, selectAllMI });
+            Edit.DropDownItems.AddRange(new ToolStripItem[] { undoMI, redoMI, cutMI, copyMI, insertMI, deleteMI, selectAllMI });
             Edit.Name = "Edit";
             Edit.Size = new Size(59, 19);
             Edit.Text = "Правка";
             // 
-            // cancleMI
+            // undoMI
             // 
-            cancleMI.Name = "cancleMI";
-            cancleMI.Size = new Size(148, 22);
-            cancleMI.Text = "Отменить";
+            undoMI.Name = "undoMI";
+            undoMI.Size = new Size(148, 22);
+            undoMI.Text = "Отменить";
+            undoMI.Click += undo_Click;
             // 
-            // backMI
+            // redoMI
             // 
-            backMI.Name = "backMI";
-            backMI.Size = new Size(148, 22);
-            backMI.Text = "Вернуть";
+            redoMI.Name = "redoMI";
+            redoMI.Size = new Size(148, 22);
+            redoMI.Text = "Вернуть";
+            redoMI.Click += redo_Click;
             // 
             // cutMI
             // 
             cutMI.Name = "cutMI";
             cutMI.Size = new Size(148, 22);
             cutMI.Text = "Вырезать";
+            cutMI.Click += cut_Click;
             // 
             // copyMI
             // 
             copyMI.Name = "copyMI";
             copyMI.Size = new Size(148, 22);
             copyMI.Text = "Копировать";
+            copyMI.Click += copy_Click;
             // 
             // insertMI
             // 
             insertMI.Name = "insertMI";
             insertMI.Size = new Size(148, 22);
             insertMI.Text = "Вставить";
+            insertMI.Click += insert_Click;
             // 
             // deleteMI
             // 
             deleteMI.Name = "deleteMI";
             deleteMI.Size = new Size(148, 22);
             deleteMI.Text = "Удалить";
+            deleteMI.Click += deleteText_Click;
             // 
             // selectAllMI
             // 
             selectAllMI.Name = "selectAllMI";
             selectAllMI.Size = new Size(148, 22);
             selectAllMI.Text = "Выделить все";
+            selectAllMI.Click += selectAll_Click;
             // 
             // textMI
             // 
@@ -229,18 +236,21 @@
             Run.Name = "Run";
             Run.Size = new Size(46, 19);
             Run.Text = "Пуск";
+            Run.Click += Run_Click;
             // 
             // aboutMI
             // 
             aboutMI.Name = "aboutMI";
             aboutMI.Size = new Size(65, 19);
             aboutMI.Text = "Справка";
+            aboutMI.Click += aboutMI_Click;
             // 
             // SettingsMI
             // 
             SettingsMI.Name = "SettingsMI";
             SettingsMI.Size = new Size(79, 19);
             SettingsMI.Text = "Настройки";
+            SettingsMI.Click += SettingsMI_Click;
             // 
             // statusStrip1
             // 
@@ -256,7 +266,7 @@
             // 
             toolStrip1.CanOverflow = false;
             toolStrip1.ImageScalingSize = new Size(38, 38);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { cancleTSB, backTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB });
             toolStrip1.LayoutStyle = ToolStripLayoutStyle.Flow;
             toolStrip1.Location = new Point(0, 23);
             toolStrip1.Name = "toolStrip1";
@@ -264,23 +274,25 @@
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip";
             // 
-            // cancleTSB
+            // undoTSB
             // 
-            cancleTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            cancleTSB.Image = (Image)resources.GetObject("cancleTSB.Image");
-            cancleTSB.ImageTransparentColor = Color.Magenta;
-            cancleTSB.Name = "cancleTSB";
-            cancleTSB.Size = new Size(42, 42);
-            cancleTSB.Text = "Отменить";
+            undoTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            undoTSB.Image = (Image)resources.GetObject("undoTSB.Image");
+            undoTSB.ImageTransparentColor = Color.Magenta;
+            undoTSB.Name = "undoTSB";
+            undoTSB.Size = new Size(42, 42);
+            undoTSB.Text = "Отменить";
+            undoTSB.Click += undo_Click;
             // 
-            // backTSB
+            // redoTSB
             // 
-            backTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            backTSB.Image = (Image)resources.GetObject("backTSB.Image");
-            backTSB.ImageTransparentColor = Color.Magenta;
-            backTSB.Name = "backTSB";
-            backTSB.Size = new Size(42, 42);
-            backTSB.Text = "Вернуть";
+            redoTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            redoTSB.Image = (Image)resources.GetObject("redoTSB.Image");
+            redoTSB.ImageTransparentColor = Color.Magenta;
+            redoTSB.Name = "redoTSB";
+            redoTSB.Size = new Size(42, 42);
+            redoTSB.Text = "Вернуть";
+            redoTSB.Click += redo_Click;
             // 
             // createTSB
             // 
@@ -309,7 +321,7 @@
             saveUsTSB.ImageTransparentColor = Color.Magenta;
             saveUsTSB.Name = "saveUsTSB";
             saveUsTSB.Size = new Size(42, 42);
-            saveUsTSB.Text = "toolStripButton5";
+            saveUsTSB.Text = "Сохранить как";
             saveUsTSB.ToolTipText = "Сохранить как";
             saveUsTSB.Click += saveUsFile_Click;
             // 
@@ -320,7 +332,8 @@
             copyTSB.ImageTransparentColor = Color.Magenta;
             copyTSB.Name = "copyTSB";
             copyTSB.Size = new Size(42, 42);
-            copyTSB.Text = "toolStripButton6";
+            copyTSB.Text = "Копировать";
+            copyTSB.Click += copy_Click;
             // 
             // cutTSB
             // 
@@ -329,7 +342,8 @@
             cutTSB.ImageTransparentColor = Color.Magenta;
             cutTSB.Name = "cutTSB";
             cutTSB.Size = new Size(42, 42);
-            cutTSB.Text = "toolStripButton7";
+            cutTSB.Text = "Вырезать";
+            cutTSB.Click += cut_Click;
             // 
             // selectAllTSB
             // 
@@ -338,7 +352,8 @@
             selectAllTSB.ImageTransparentColor = Color.Magenta;
             selectAllTSB.Name = "selectAllTSB";
             selectAllTSB.Size = new Size(42, 42);
-            selectAllTSB.Text = "toolStripButton8";
+            selectAllTSB.Text = "Выделить все";
+            selectAllTSB.Click += selectAll_Click;
             // 
             // mainPanel
             // 
@@ -352,6 +367,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoSize = true;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(968, 471);
             Controls.Add(mainPanel);
             Controls.Add(toolStrip1);
@@ -359,6 +376,7 @@
             Controls.Add(menuStrip);
             MainMenuStrip = menuStrip;
             Margin = new Padding(3, 2, 3, 2);
+            MinimumSize = new Size(984, 510);
             Name = "CompilerForm";
             Text = "Компилятор";
             menuStrip.ResumeLayout(false);
@@ -384,8 +402,8 @@
         private ToolStripMenuItem saveUsMI;
         private ToolStripMenuItem exitMI;
         private ToolStripMenuItem Edit;
-        private ToolStripMenuItem cancleMI;
-        private ToolStripMenuItem backMI;
+        private ToolStripMenuItem undoMI;
+        private ToolStripMenuItem redoMI;
         private ToolStripMenuItem cutMI;
         private ToolStripMenuItem copyMI;
         private ToolStripMenuItem insertMI;
@@ -404,8 +422,8 @@
         private ToolStripMenuItem SettingsMI;
         private StatusStrip statusStrip1;
         private ToolStrip toolStrip1;
-        private ToolStripButton cancleTSB;
-        private ToolStripButton backTSB;
+        private ToolStripButton undoTSB;
+        private ToolStripButton redoTSB;
         private ToolStripButton createTSB;
         private ToolStripButton saveTSB;
         private ToolStripButton saveUsTSB;

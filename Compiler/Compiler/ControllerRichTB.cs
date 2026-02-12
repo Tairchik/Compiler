@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace CompilerGUI
 {
@@ -15,8 +16,8 @@ namespace CompilerGUI
         private TableLayoutPanel tableLayoutPanel;
         private float minSizeColumnNumbers = 0;
         private int lastLineCount;
-
         public event Action TextIsChange;    
+
 
         public void init(TabPage tabPape) 
         {
@@ -27,7 +28,6 @@ namespace CompilerGUI
             tableLayoutPanel.ColumnStyles[0].Width = minSizeColumnNumbers;
             lastLineCount = 0;
             SetupLineNumbers();
-            HighlightCurrentLine();
         }
 
         public void pageChached(TabPage tabPape) 
@@ -38,6 +38,75 @@ namespace CompilerGUI
             minSizeColumnNumbers = richTextBoxNumbers.Font.Size * 5;
             lastLineCount = GetLineCount(richTextBoxText);
             HighlightCurrentLine();
+        }
+
+        public bool UndoText() 
+        {
+            if (richTextBoxText == null) return false;
+
+            richTextBoxText.Undo();
+            return true;
+        }
+        public bool RedoText()
+        {
+            if (richTextBoxText == null) return false;
+
+            richTextBoxText.Redo();
+            return true;
+        }
+        public string GetSelectedText() 
+        {
+            if (richTextBoxText != null)
+            {
+                return richTextBoxText.SelectedText;
+            }
+            else 
+            {
+                return string.Empty;
+            }
+        }
+
+        public bool InsertText() 
+        {
+            if (richTextBoxText == null) return false;
+            richTextBoxText.Paste();
+
+            return true;
+        }
+
+        public bool SelectAllText() 
+        {
+            if (richTextBoxText != null)
+            {
+                richTextBoxText.SelectAll();
+                return true;
+            }
+            return false;
+        }
+
+        public string GetSelectedTextAndCut()
+        {
+            if (richTextBoxText != null)
+            {
+                string res = richTextBoxText.SelectedText;
+                richTextBoxText.SelectedText = string.Empty;
+                return res;
+            }
+            else
+            {
+                return string.Empty;
+            }            
+        }
+
+        public bool DeleteSelectedText()
+        {
+            if (richTextBoxText != null)
+            {
+                if (string.IsNullOrEmpty(richTextBoxText.SelectedText)) return false;
+                richTextBoxText.SelectedText = string.Empty;
+                return true;
+            }
+            return false;
         }
 
         private void SetupLineNumbers()
@@ -54,7 +123,6 @@ namespace CompilerGUI
         private void RichTextBoxTextCode_TextChanged(object sender, EventArgs e)
         {
             UpdateLineNumbers();
-            HighlightCurrentLine();
             TextIsChange?.Invoke();
         }
 
@@ -96,6 +164,7 @@ namespace CompilerGUI
 
                 richTextBoxNumbers.Text = sb.ToString();
                 tableLayoutPanel.ColumnStyles[0].Width = minSizeColumnNumbers + (maxDigits - 1) * richTextBoxNumbers.Font.Size / 2;
+                HighlightCurrentLine();
             }
             catch (Exception ex)
             {
@@ -205,5 +274,6 @@ namespace CompilerGUI
             }
         }
 
+        
     }
 }
