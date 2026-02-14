@@ -10,6 +10,7 @@ namespace CompilerGUI
         public CompilerForm()
         {
             InitializeComponent();
+            this.AllowDrop = true;
             controllerTCP = new TabControlAndPageController();
             controllerRichTB = new ControllerRichTB();
             controllerTCP.TabPageCreate += controllerRichTB.init;
@@ -18,6 +19,30 @@ namespace CompilerGUI
             this.FormClosing += exit_Process;
             controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
             this.KeyDown += keyPressedMainForm;
+            this.DragEnter += CompilerForm_DragEnter;
+            this.DragDrop += CompilerForm_DragDrop;
+        }
+
+        private void CompilerForm_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void CompilerForm_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string filePath in files)
+            {
+                controllerTCP.OpenFileByDrop(filePath, mainPanel);
+            }
         }
 
         private void keyPressedMainForm(object sender, KeyEventArgs e)

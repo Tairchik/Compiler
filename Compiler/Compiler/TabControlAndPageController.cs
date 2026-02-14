@@ -25,6 +25,30 @@ namespace CompilerGUI
             tabControl = new TabControl();
             tabControl.SelectedIndexChanged += SelectedPageChangedHandler;
             tabControl.KeyDown += KeyDownTabPanel;
+            tabControl.DragEnter += DragEnter;
+            tabControl.DragDrop += DragDrop;
+        }
+
+        private void DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string filePath in files)
+            {
+                OpenFileByDrop(filePath, null);
+            }
         }
 
         public bool Exit(Form view) 
@@ -302,6 +326,35 @@ namespace CompilerGUI
             }
         }
 
+        public void OpenFileByDrop(string filePath, Control parentPanel) 
+        {
+            FileClass fileInfo = new FileClass("", "", true);
+            try
+            {
+                string text = File.ReadAllText(filePath);
+                if (text == null) throw new Exception("Ошибка чтения");
+
+                fileInfo.FilePath = filePath;
+                fileInfo.FileName = Path.GetFileName(filePath);
+                fileInfo.IsSaved = true;
+
+                CreateFileBtnClick(parentPanel);
+
+                TabPage page = tabControl.SelectedTab;
+                RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+
+                page.Tag = fileInfo;
+                textBox.Text = text;
+                fileInfo.IsSaved = true;
+                page.Text = fileInfo.FileName;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+       
         private void KeyDownTabPanel(object sender, KeyEventArgs e)
         {
             if (Control.ModifierKeys.HasFlag(Keys.Control) && Control.ModifierKeys.HasFlag(Keys.Shift))
@@ -463,6 +516,7 @@ namespace CompilerGUI
             richTextBoxNumbers.TabStop = false;
             richTextBoxNumbers.Text = "";
             richTextBoxNumbers.WordWrap = false;
+           
 
             richTextBoxText.BorderStyle = BorderStyle.None;
             richTextBoxText.KeyDown += RichTextBoxText_KeyDown;
@@ -477,6 +531,10 @@ namespace CompilerGUI
             richTextBoxText.TabIndex = 1;
             richTextBoxText.Text = "";
             richTextBoxText.WordWrap = false;
+            richTextBoxText.DragDrop += DragDrop;
+            richTextBoxText.DragEnter += DragEnter;
+            richTextBoxText.AllowDrop = true;
+
 
             tableLayoutPanel.ColumnCount = 3;
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 50F));
