@@ -66,6 +66,7 @@
             cutTSB = new ToolStripButton();
             selectAllTSB = new ToolStripButton();
             mainPanel = new Panel();
+            deleteTabTSB = new ToolStripButton();
             menuStrip.SuspendLayout();
             toolStrip1.SuspendLayout();
             SuspendLayout();
@@ -92,35 +93,40 @@
             // createMI
             // 
             createMI.Name = "createMI";
-            createMI.Size = new Size(153, 22);
+            createMI.ShortcutKeyDisplayString = "Ctrl+N";
+            createMI.Size = new Size(225, 22);
             createMI.Text = "Создать";
             createMI.Click += createFile_Click;
             // 
             // openMI
             // 
             openMI.Name = "openMI";
-            openMI.Size = new Size(153, 22);
+            openMI.ShortcutKeyDisplayString = "Ctrl+O";
+            openMI.Size = new Size(225, 22);
             openMI.Text = "Открыть";
             openMI.Click += openFile_Click;
             // 
             // SaveMI
             // 
             SaveMI.Name = "SaveMI";
-            SaveMI.Size = new Size(153, 22);
+            SaveMI.ShortcutKeyDisplayString = "Ctrl+S";
+            SaveMI.Size = new Size(225, 22);
             SaveMI.Text = "Сохранить";
             SaveMI.Click += saveFile_Click;
             // 
             // saveUsMI
             // 
             saveUsMI.Name = "saveUsMI";
-            saveUsMI.Size = new Size(153, 22);
+            saveUsMI.ShortcutKeyDisplayString = "Ctrl+Shift+S";
+            saveUsMI.Size = new Size(225, 22);
             saveUsMI.Text = "Сохранить как";
             saveUsMI.Click += saveUsFile_Click;
             // 
             // exitMI
             // 
             exitMI.Name = "exitMI";
-            exitMI.Size = new Size(153, 22);
+            exitMI.ShortcutKeyDisplayString = "Alt+F4";
+            exitMI.Size = new Size(225, 22);
             exitMI.Text = "Выход";
             exitMI.Click += exit_Click;
             // 
@@ -134,49 +140,56 @@
             // undoMI
             // 
             undoMI.Name = "undoMI";
-            undoMI.Size = new Size(148, 22);
+            undoMI.ShortcutKeyDisplayString = "Ctrl+Z";
+            undoMI.Size = new Size(190, 22);
             undoMI.Text = "Отменить";
             undoMI.Click += undo_Click;
             // 
             // redoMI
             // 
             redoMI.Name = "redoMI";
-            redoMI.Size = new Size(148, 22);
+            redoMI.ShortcutKeyDisplayString = "Ctrl+Y";
+            redoMI.Size = new Size(190, 22);
             redoMI.Text = "Вернуть";
             redoMI.Click += redo_Click;
             // 
             // cutMI
             // 
             cutMI.Name = "cutMI";
-            cutMI.Size = new Size(148, 22);
+            cutMI.ShortcutKeyDisplayString = "Ctrl+X";
+            cutMI.Size = new Size(190, 22);
             cutMI.Text = "Вырезать";
             cutMI.Click += cut_Click;
             // 
             // copyMI
             // 
             copyMI.Name = "copyMI";
-            copyMI.Size = new Size(148, 22);
+            copyMI.ShortcutKeyDisplayString = "Ctrl+C";
+            copyMI.Size = new Size(190, 22);
             copyMI.Text = "Копировать";
             copyMI.Click += copy_Click;
             // 
             // insertMI
             // 
             insertMI.Name = "insertMI";
-            insertMI.Size = new Size(148, 22);
+            insertMI.ShortcutKeyDisplayString = "Ctrl+V";
+            insertMI.Size = new Size(190, 22);
             insertMI.Text = "Вставить";
             insertMI.Click += insert_Click;
             // 
             // deleteMI
             // 
             deleteMI.Name = "deleteMI";
-            deleteMI.Size = new Size(148, 22);
+            deleteMI.ShortcutKeyDisplayString = "Del";
+            deleteMI.Size = new Size(190, 22);
             deleteMI.Text = "Удалить";
             deleteMI.Click += deleteText_Click;
             // 
             // selectAllMI
             // 
             selectAllMI.Name = "selectAllMI";
-            selectAllMI.Size = new Size(148, 22);
+            selectAllMI.ShortcutKeyDisplayString = "Ctrl+A";
+            selectAllMI.Size = new Size(190, 22);
             selectAllMI.Text = "Выделить все";
             selectAllMI.Click += selectAll_Click;
             // 
@@ -266,7 +279,7 @@
             // 
             toolStrip1.CanOverflow = false;
             toolStrip1.ImageScalingSize = new Size(38, 38);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, deleteTabTSB });
             toolStrip1.LayoutStyle = ToolStripLayoutStyle.Flow;
             toolStrip1.Location = new Point(0, 23);
             toolStrip1.Name = "toolStrip1";
@@ -363,6 +376,16 @@
             mainPanel.Size = new Size(968, 381);
             mainPanel.TabIndex = 3;
             // 
+            // deleteTabTSB
+            // 
+            deleteTabTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            deleteTabTSB.Image = (Image)resources.GetObject("deleteTabTSB.Image");
+            deleteTabTSB.ImageTransparentColor = Color.Magenta;
+            deleteTabTSB.Name = "deleteTabTSB";
+            deleteTabTSB.Size = new Size(42, 42);
+            deleteTabTSB.Text = "Удалить вкладку";
+            deleteTabTSB.Click += deleteTabTSB_Click;
+            // 
             // CompilerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -431,5 +454,6 @@
         private ToolStripButton cutTSB;
         private ToolStripButton selectAllTSB;
         private Panel mainPanel;
+        private ToolStripButton deleteTabTSB;
     }
 }

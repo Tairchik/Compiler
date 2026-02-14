@@ -17,11 +17,14 @@ namespace CompilerGUI
         public delegate void TabPageInited(TabPage tabPage);
         public event TabPageInited TabPageCreate;
         public event TabPageInited TabPageChanged;
+        public event Action ZoomChanged;
+
 
         public TabControlAndPageController() 
         {
             tabControl = new TabControl();
             tabControl.SelectedIndexChanged += SelectedPageChangedHandler;
+            tabControl.KeyDown += KeyDownTabPanel;
         }
 
         public bool Exit(Form view) 
@@ -297,7 +300,137 @@ namespace CompilerGUI
                 tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
                 TabPageCreate?.Invoke(tabControl.SelectedTab);
             }
-        } 
+        }
+
+        private void KeyDownTabPanel(object sender, KeyEventArgs e)
+        {
+            if (Control.ModifierKeys.HasFlag(Keys.Control) && Control.ModifierKeys.HasFlag(Keys.Shift))
+            {
+                if (e.KeyCode == Keys.S)
+                {
+                    SaveUsFile();
+                }
+            }
+            else if (Control.ModifierKeys.HasFlag(Keys.Control))
+            {
+                if (e.KeyCode == Keys.O)
+                {
+                    OpenFile(null);
+                }
+                else if (e.KeyCode == Keys.N)
+                {
+                    CreateFileBtnClick(null);
+                }
+                else if (e.KeyCode == Keys.S)
+                {
+                    SaveFile();
+                }
+            }
+        }
+
+        public bool CloseTabe()
+        {
+            if (tabControl == null) return false;
+
+            TabPage page = tabControl.SelectedTab;
+            if (page == null) return false;
+
+            FileClass info = (FileClass) page.Tag;
+
+
+            if (info.IsSaved == false)
+            {
+                DialogResult result = MessageBox.Show(
+                       $"Сохранить изменния в файле?\n{info.FileName}",
+                       "Уведомление",
+                       MessageBoxButtons.YesNoCancel,
+                       MessageBoxIcon.Question,
+                       MessageBoxDefaultButton.Button1
+                );
+                if (result == DialogResult.Cancel)
+                {
+                    return false;
+                }
+                else if (result == DialogResult.Yes)
+                {
+                    SaveFile(page);
+                }
+            }
+       
+            page.Controls.Clear();
+            tabControl.TabPages.Remove(page);
+            if (tabControl.TabPages.Count == 0) 
+            {
+                tableIsInit = false;
+                tabControl.Parent.Controls.Remove(tabControl);
+            }
+            return true;
+        }
+
+        private bool ChangeZoomText(float size)
+        {
+            TabPage page = tabControl.SelectedTab;
+
+            RichTextBox richTextBoxText = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+            RichTextBox richTextBoxNumbers = (RichTextBox)page.Controls.Find("richTextBoxNumbers", true)[0];
+
+
+            if (richTextBoxText == null) return false;
+
+            richTextBoxText.ZoomFactor += size;
+            richTextBoxNumbers.ZoomFactor += size;
+            return true;
+        }
+
+        private void RichTextBoxText_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (Control.ModifierKeys.HasFlag(Keys.Control))
+            {
+                TabPage page = tabControl.SelectedTab;
+
+                RichTextBox richTextBoxText = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+                RichTextBox richTextBoxNumbers = (RichTextBox)page.Controls.Find("richTextBoxNumbers", true)[0];
+
+                if (richTextBoxText != null)
+                {
+                    float newZoom = richTextBoxText.ZoomFactor;
+                    if (e.Delta > 0)
+                        newZoom += 0.1f;
+                    else
+                        newZoom -= 0.1f;
+
+                    newZoom = Math.Max(0.1f, Math.Min(5f, newZoom));
+                    richTextBoxNumbers.ZoomFactor = newZoom;
+                }
+            }
+        }
+
+        private void RichTextBoxText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (Control.ModifierKeys.HasFlag(Keys.Control))
+            {
+                if (e.Control)
+                {
+                    switch (e.KeyCode)
+                    {
+                        case Keys.Add:
+                        case Keys.Oemplus:
+                            ChangeZoomText(+0.1f);
+                            e.SuppressKeyPress = true;
+                            e.Handled = true;
+                            break;
+
+                        case Keys.Subtract:
+                        case Keys.OemMinus:
+                            ChangeZoomText(-0.1f);
+                            e.SuppressKeyPress = true;
+                            e.Handled = true;
+                            break;
+                    }
+                    ZoomChanged?.Invoke();
+                }
+            }
+        }
 
         private TabPage createTabPage() 
         {
@@ -319,7 +452,7 @@ namespace CompilerGUI
             richTextBoxNumbers.BorderStyle = BorderStyle.None;
             richTextBoxNumbers.Dock = DockStyle.Fill;
             richTextBoxNumbers.Enabled = false;
-            richTextBoxNumbers.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204);
+            richTextBoxNumbers.Font = new Font("Segoe UI", 14F);
             richTextBoxNumbers.Location = new Point(0, 0);
             richTextBoxNumbers.Margin = new Padding(0);
             richTextBoxNumbers.Name = "richTextBoxNumbers";
@@ -332,9 +465,12 @@ namespace CompilerGUI
             richTextBoxNumbers.WordWrap = false;
 
             richTextBoxText.BorderStyle = BorderStyle.None;
+            richTextBoxText.KeyDown += RichTextBoxText_KeyDown;
+            richTextBoxText.MouseWheel += RichTextBoxText_MouseWheel;
             richTextBoxText.Dock = DockStyle.Fill;
             richTextBoxText.Location = new Point(60, 0);
             richTextBoxText.Margin = new Padding(0);
+            richTextBoxText.Font = new Font("Segoe UI", 14F);
             richTextBoxText.Name = "richTextBoxText";
             richTextBoxText.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
             richTextBoxText.Size = new Size(716, 426);
@@ -378,7 +514,7 @@ namespace CompilerGUI
             FileClass fileInfo = new FileClass(tabPage.Text, "", false);
 
             tabPage.Tag = fileInfo;
-
+            
             return tabPage;
         }
     }

@@ -1,4 +1,5 @@
 using System.Media;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace CompilerGUI
 {
@@ -15,7 +16,23 @@ namespace CompilerGUI
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
             this.FormClosing += exit_Process;
+            controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
+            this.KeyDown += keyPressedMainForm;
+        }
 
+        private void keyPressedMainForm(object sender, KeyEventArgs e)
+        {
+            if (Control.ModifierKeys.HasFlag(Keys.Control))
+            {
+                if (e.KeyCode == Keys.O)
+                {
+                    controllerTCP.OpenFile(mainPanel);
+                }
+                else if (e.KeyCode == Keys.N)
+                {
+                    controllerTCP.CreateFileBtnClick(mainPanel);
+                }
+            }
 
         }
 
@@ -131,6 +148,11 @@ namespace CompilerGUI
         private void SettingsMI_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void deleteTabTSB_Click(object sender, EventArgs e)
+        {
+            controllerTCP.CloseTabe();
         }
     }
 }

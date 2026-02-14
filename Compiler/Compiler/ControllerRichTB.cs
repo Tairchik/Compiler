@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,29 +15,36 @@ namespace CompilerGUI
         private RichTextBox richTextBoxText;
         private RichTextBox richTextBoxNumbers;
         private TableLayoutPanel tableLayoutPanel;
-        private float minSizeColumnNumbers = 0;
+        public event Action TextIsChange;
         private int lastLineCount;
-        public event Action TextIsChange;    
-
-
+        
         public void init(TabPage tabPape) 
         {
             tableLayoutPanel = (TableLayoutPanel) tabPape.Controls.Find("tableLayoutPanel", true)[0];
             richTextBoxNumbers = (RichTextBox)tableLayoutPanel.Controls["richTextBoxNumbers"];
             richTextBoxText = (RichTextBox)tableLayoutPanel.Controls["richTextBoxText"];
-            minSizeColumnNumbers = richTextBoxNumbers.Font.Size * 5;
-            tableLayoutPanel.ColumnStyles[0].Width = minSizeColumnNumbers;
             lastLineCount = 0;
+            UpdateColumnWidth();
             SetupLineNumbers();
         }
 
         public void pageChached(TabPage tabPape) 
         {
+            if (tabPape == null) return;
             tableLayoutPanel = (TableLayoutPanel)tabPape.Controls.Find("tableLayoutPanel", true)[0];
             richTextBoxNumbers = (RichTextBox)tableLayoutPanel.Controls["richTextBoxNumbers"];
             richTextBoxText = (RichTextBox)tableLayoutPanel.Controls["richTextBoxText"];
-            minSizeColumnNumbers = richTextBoxNumbers.Font.Size * 5;
             lastLineCount = GetLineCount(richTextBoxText);
+            HighlightCurrentLine();
+        }
+
+        private void SetupLineNumbers()
+        {
+            richTextBoxText.TextChanged += RichTextBoxTextCode_TextChanged;
+            richTextBoxText.VScroll += RichTextBoxTextCode_VScroll;
+            richTextBoxText.SelectionChanged += RichTextBoxTextCode_SelectionChanged;
+            richTextBoxNumbers.VScroll += RichTextBoxNumbers_VScroll;
+            UpdateLineNumbers();
             HighlightCurrentLine();
         }
 
@@ -109,16 +117,7 @@ namespace CompilerGUI
             return false;
         }
 
-        private void SetupLineNumbers()
-        {
-            richTextBoxText.TextChanged += RichTextBoxTextCode_TextChanged;
-            richTextBoxText.VScroll += RichTextBoxTextCode_VScroll;
-            richTextBoxText.SelectionChanged += RichTextBoxTextCode_SelectionChanged;
-            richTextBoxNumbers.VScroll += RichTextBoxNumbers_VScroll;
 
-            UpdateLineNumbers();
-            HighlightCurrentLine();
-        }
 
         private void RichTextBoxTextCode_TextChanged(object sender, EventArgs e)
         {
@@ -163,7 +162,8 @@ namespace CompilerGUI
                 }
 
                 richTextBoxNumbers.Text = sb.ToString();
-                tableLayoutPanel.ColumnStyles[0].Width = minSizeColumnNumbers + (maxDigits - 1) * richTextBoxNumbers.Font.Size / 2;
+
+                UpdateColumnWidth();
                 HighlightCurrentLine();
             }
             catch (Exception ex)
@@ -203,7 +203,10 @@ namespace CompilerGUI
                         {
                             richTextBoxNumbers.Select(start, length);
                             richTextBoxNumbers.SelectionColor = Color.DarkCyan;
-                            richTextBoxNumbers.SelectionFont = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 204);
+                            richTextBoxNumbers.SelectionFont = new Font(
+                                richTextBoxNumbers.Font,
+                                FontStyle.Bold
+                            );
                         }
                     }
                 }
@@ -214,6 +217,19 @@ namespace CompilerGUI
             {
                 
             }
+        }
+
+        public void UpdateColumnWidth()
+        {
+            if (tableLayoutPanel == null || richTextBoxNumbers == null || richTextBoxText == null)
+                return;
+
+            int lineCount = GetLineCount(richTextBoxText);
+            int maxDigits = lineCount.ToString().Length;
+
+            float charWidth = richTextBoxNumbers.ZoomFactor * 10;
+            float columnWidth = charWidth * (5 + maxDigits);
+            tableLayoutPanel.ColumnStyles[0].Width = columnWidth;
         }
 
         // Импорты WinAPI для синхронизации прокрутки
