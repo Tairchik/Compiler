@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerForm));
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -65,10 +66,19 @@
             copyTSB = new ToolStripButton();
             cutTSB = new ToolStripButton();
             selectAllTSB = new ToolStripButton();
-            mainPanel = new Panel();
             deleteTabTSB = new ToolStripButton();
+            mainPanel = new SplitContainer();
+            dataGridView = new DataGridView();
+            NumberColumn = new DataGridViewTextBoxColumn();
+            FilePathColumn = new DataGridViewTextBoxColumn();
+            LineColumn = new DataGridViewTextBoxColumn();
+            Message = new DataGridViewTextBoxColumn();
             menuStrip.SuspendLayout();
             toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)mainPanel).BeginInit();
+            mainPanel.Panel2.SuspendLayout();
+            mainPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
             // 
             // menuStrip
@@ -368,14 +378,6 @@
             selectAllTSB.Text = "Выделить все";
             selectAllTSB.Click += selectAll_Click;
             // 
-            // mainPanel
-            // 
-            mainPanel.Dock = DockStyle.Fill;
-            mainPanel.Location = new Point(0, 68);
-            mainPanel.Name = "mainPanel";
-            mainPanel.Size = new Size(968, 381);
-            mainPanel.TabIndex = 3;
-            // 
             // deleteTabTSB
             // 
             deleteTabTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -385,6 +387,79 @@
             deleteTabTSB.Size = new Size(42, 42);
             deleteTabTSB.Text = "Удалить вкладку";
             deleteTabTSB.Click += deleteTabTSB_Click;
+            // 
+            // mainPanel
+            // 
+            mainPanel.Dock = DockStyle.Fill;
+            mainPanel.Location = new Point(0, 68);
+            mainPanel.Name = "mainPanel";
+            mainPanel.Orientation = Orientation.Horizontal;
+            // 
+            // mainPanel.Panel2
+            // 
+            mainPanel.Panel2.Controls.Add(dataGridView);
+            mainPanel.Size = new Size(968, 381);
+            mainPanel.SplitterDistance = 183;
+            mainPanel.TabIndex = 3;
+            // 
+            // dataGridView
+            // 
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.BackgroundColor = Color.White;
+            dataGridView.BorderStyle = BorderStyle.None;
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, Message });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = Color.LightSteelBlue;
+            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dataGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView.Dock = DockStyle.Fill;
+            dataGridView.GridColor = Color.Gray;
+            dataGridView.Location = new Point(0, 0);
+            dataGridView.Margin = new Padding(0);
+            dataGridView.Name = "dataGridView";
+            dataGridView.ReadOnly = true;
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.Size = new Size(968, 194);
+            dataGridView.TabIndex = 0;
+            // 
+            // NumberColumn
+            // 
+            NumberColumn.HeaderText = "";
+            NumberColumn.DataPropertyName = "Number";
+            NumberColumn.Name = "NumberColumn";
+            NumberColumn.ReadOnly = true;
+            NumberColumn.Frozen = true;
+            NumberColumn.Width = 40;
+            // 
+            // FilePathColumn
+            // 
+            FilePathColumn.HeaderText = "Путь файла";
+            FilePathColumn.DataPropertyName = "FilePath";
+            FilePathColumn.Name = "FilePathColumn";
+            FilePathColumn.ReadOnly = true;
+            // 
+            // LineColumn
+            // 
+            LineColumn.HeaderText = "Строка";
+            LineColumn.Name = "LineColumn";
+            LineColumn.DataPropertyName = "Line";
+            LineColumn.ReadOnly = true;
+            // 
+            // Message
+            // 
+            Message.HeaderText = "Сообщение";
+            Message.Name = "Message";
+            Message.DataPropertyName = "ExceptionMessage";
+            Message.ReadOnly = true;
             // 
             // CompilerForm
             // 
@@ -406,6 +481,10 @@
             menuStrip.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            mainPanel.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)mainPanel).EndInit();
+            mainPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -453,7 +532,12 @@
         private ToolStripButton copyTSB;
         private ToolStripButton cutTSB;
         private ToolStripButton selectAllTSB;
-        private Panel mainPanel;
         private ToolStripButton deleteTabTSB;
+        private SplitContainer mainPanel;
+        private DataGridView dataGridView;
+        private DataGridViewTextBoxColumn NumberColumn;
+        private DataGridViewTextBoxColumn FilePathColumn;
+        private DataGridViewTextBoxColumn LineColumn;
+        private DataGridViewTextBoxColumn Message;
     }
 }

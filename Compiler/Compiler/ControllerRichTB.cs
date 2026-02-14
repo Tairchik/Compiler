@@ -16,6 +16,7 @@ namespace CompilerGUI
         private RichTextBox richTextBoxNumbers;
         private TableLayoutPanel tableLayoutPanel;
         public event Action TextIsChange;
+
         private int lastLineCount;
         
         public void init(TabPage tabPape) 

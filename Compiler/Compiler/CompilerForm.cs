@@ -5,22 +5,30 @@ namespace CompilerGUI
 {
     public partial class CompilerForm : Form
     {
-        private TabControlAndPageController controllerTCP;
+        private ControllerTabControlAndPage controllerTCP;
         private ControllerRichTB controllerRichTB;
+        private ControllerExceptionsCode controllerExceptionsCode;
         public CompilerForm()
         {
             InitializeComponent();
             this.AllowDrop = true;
-            controllerTCP = new TabControlAndPageController();
+            mainPanel.AllowDrop = true;
+            controllerTCP = new ControllerTabControlAndPage();
+            controllerExceptionsCode = new ControllerExceptionsCode(this.dataGridView);
             controllerRichTB = new ControllerRichTB();
+            mainPanel.KeyDown += keyPressedMainForm;
+            this.KeyDown += keyPressedMainForm;
+            this.FormClosing += exit_Process;
+            this.DragEnter += CompilerForm_DragEnter;
+            this.DragDrop += CompilerForm_DragDrop;
+            mainPanel.DragDrop += CompilerForm_DragDrop;
+            mainPanel.DragEnter += CompilerForm_DragEnter;
             controllerTCP.TabPageCreate += controllerRichTB.init;
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
-            this.FormClosing += exit_Process;
             controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
-            this.KeyDown += keyPressedMainForm;
-            this.DragEnter += CompilerForm_DragEnter;
-            this.DragDrop += CompilerForm_DragDrop;
+            controllerTCP.TextCodeChanged += controllerExceptionsCode.TextCodeChanged;
+            controllerTCP.TabPageChangedE += controllerExceptionsCode.PageCodeChanged;
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -41,29 +49,28 @@ namespace CompilerGUI
 
             foreach (string filePath in files)
             {
-                controllerTCP.OpenFileByDrop(filePath, mainPanel);
+                controllerTCP.OpenFileByDrop(filePath, mainPanel.Panel1);
             }
         }
 
         private void keyPressedMainForm(object sender, KeyEventArgs e)
         {
-            if (Control.ModifierKeys.HasFlag(Keys.Control))
+            if (ModifierKeys.HasFlag(Keys.Control))
             {
                 if (e.KeyCode == Keys.O)
                 {
-                    controllerTCP.OpenFile(mainPanel);
+                    controllerTCP.OpenFile(mainPanel.Panel1);
                 }
                 else if (e.KeyCode == Keys.N)
                 {
-                    controllerTCP.CreateFileBtnClick(mainPanel);
+                    controllerTCP.CreateFileBtnClick(mainPanel.Panel1);
                 }
             }
-
         }
 
         private void createFile_Click(object sender, EventArgs e)
         {
-            controllerTCP.CreateFileBtnClick(mainPanel);
+            controllerTCP.CreateFileBtnClick(mainPanel.Panel1);
         }
 
         private void saveFile_Click(object sender, EventArgs e)
@@ -78,7 +85,7 @@ namespace CompilerGUI
 
         private void openFile_Click(object sender, EventArgs e)
         {
-            controllerTCP.OpenFile(mainPanel);
+            controllerTCP.OpenFile(mainPanel.Panel1);
         }
 
         private void exit_Click(object sender, EventArgs e)

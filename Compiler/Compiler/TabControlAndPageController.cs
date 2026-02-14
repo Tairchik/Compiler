@@ -9,7 +9,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace CompilerGUI
 {
-    public class TabControlAndPageController
+    public class ControllerTabControlAndPage
     {
         private bool tableIsInit = false;
         private int indexTabPage = 0;
@@ -18,9 +18,11 @@ namespace CompilerGUI
         public event TabPageInited TabPageCreate;
         public event TabPageInited TabPageChanged;
         public event Action ZoomChanged;
+        public event Action<string, FileClass> TextCodeChanged;
+        public event Action<string, FileClass> TabPageChangedE;
 
 
-        public TabControlAndPageController() 
+        public ControllerTabControlAndPage() 
         {
             tabControl = new TabControl();
             tabControl.SelectedIndexChanged += SelectedPageChangedHandler;
@@ -83,6 +85,14 @@ namespace CompilerGUI
         private void SelectedPageChangedHandler(object sender, EventArgs e)
         {
             TabPageChanged?.Invoke(tabControl.SelectedTab);
+
+            TabPage page = tabControl.SelectedTab;
+            RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+
+            string code = textBox.Text;
+            FileClass fileInfo = (FileClass)page.Tag;
+
+            TabPageChangedE?.Invoke(code, fileInfo);
         }
 
         public void UpdatePageInfo() 
@@ -90,11 +100,15 @@ namespace CompilerGUI
             TabPage page = tabControl.SelectedTab;
             FileClass fileInfo = (FileClass)page.Tag;
 
+            RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+            string code = textBox.Text;
+
+            TextCodeChanged?.Invoke(code, fileInfo);
+
             if (fileInfo.IsSaved == false) return;
             
             fileInfo.IsSaved = false;
             page.Text = $"{fileInfo.FileName}*";
-
         }
 
         public void OpenFile(Control parentPanel) 
@@ -119,12 +133,29 @@ namespace CompilerGUI
                     fileInfo.FileName = Path.GetFileName(openFileDialog.FileName);
                     fileInfo.IsSaved = true;
 
-                    CreateFileBtnClick(parentPanel);
+                    TabPage page = createTabPage(fileInfo);
 
-                    TabPage page = tabControl.SelectedTab;
+                    if (tableIsInit == false)
+                    {
+                        indexTabPage = 1;
+                        tabControl.Dock = DockStyle.Fill;
+                        tabControl.Name = "tabControl";
+                        tableIsInit = true;
+                        parentPanel.Controls.Add(tabControl);
+                        tabControl.Controls.Add(page);
+                        tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
+                        TabPageCreate?.Invoke(tabControl.SelectedTab);
+                    }
+                    else
+                    {
+                        indexTabPage++;
+                        tabControl.Controls.Add(page);
+                        tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
+                        TabPageCreate?.Invoke(tabControl.SelectedTab);
+                    }
+
                     RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
 
-                    page.Tag = fileInfo;
                     textBox.Text = text;
                     fileInfo.IsSaved = true;
                     page.Text = fileInfo.FileName;
@@ -305,15 +336,13 @@ namespace CompilerGUI
             if (tableIsInit == false) 
             {
                 indexTabPage = 1;
-               
-                TabPage tabPage = createTabPage();
-
+                parentPanel.Controls.Add(tabControl);
                 tabControl.Dock = DockStyle.Fill;
                 tabControl.Name = "tabControl";
+                TabPage tabPage = createTabPage();
+                tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
                 tabControl.Controls.Add(tabPage);
                 tableIsInit = true;
-                parentPanel.Controls.Add(tabControl);
-                tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
                 TabPageCreate?.Invoke(tabControl.SelectedTab);
             }
             else
@@ -322,6 +351,34 @@ namespace CompilerGUI
                 TabPage tabPage = createTabPage();
                 tabControl.Controls.Add(tabPage);
                 tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
+                TabPageCreate?.Invoke(tabControl.SelectedTab);
+            }
+        }
+
+        public void CreateFileBtnClick(Control parentPanel, FileClass fileInfo)
+        {
+            if (tableIsInit == false)
+            {
+                indexTabPage = 1;
+                parentPanel.Controls.Add(tabControl);
+                TabPage tabPage = createTabPage();
+                tabControl.Dock = DockStyle.Fill;
+                tabControl.Name = "tabControl";
+                tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
+                tabPage.Tag = fileInfo;
+                tabPage.Text = fileInfo.FileName;
+                tableIsInit = true;
+                tabControl.Controls.Add(tabPage);
+                TabPageCreate?.Invoke(tabControl.SelectedTab);
+            }
+            else
+            {
+                indexTabPage++;
+                TabPage tabPage = createTabPage();
+                tabPage.Tag = fileInfo;
+                tabPage.Text = fileInfo.FileName;
+                tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
+                tabControl.Controls.Add(tabPage);
                 TabPageCreate?.Invoke(tabControl.SelectedTab);
             }
         }
@@ -485,7 +542,7 @@ namespace CompilerGUI
             }
         }
 
-        private TabPage createTabPage() 
+        private TabPage createTabPage(FileClass? fileInfo = null) 
         {
             TabPage tabPage = new TabPage();
             SplitContainer splitContainer = new SplitContainer();
@@ -517,7 +574,6 @@ namespace CompilerGUI
             richTextBoxNumbers.Text = "";
             richTextBoxNumbers.WordWrap = false;
            
-
             richTextBoxText.BorderStyle = BorderStyle.None;
             richTextBoxText.KeyDown += RichTextBoxText_KeyDown;
             richTextBoxText.MouseWheel += RichTextBoxText_MouseWheel;
@@ -535,7 +591,6 @@ namespace CompilerGUI
             richTextBoxText.DragEnter += DragEnter;
             richTextBoxText.AllowDrop = true;
 
-
             tableLayoutPanel.ColumnCount = 3;
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 50F));
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 10F));
@@ -551,16 +606,7 @@ namespace CompilerGUI
             tableLayoutPanel.Size = new Size(776, 426);
             tableLayoutPanel.TabIndex = 0;
 
-            splitContainer.Dock = DockStyle.Fill;
-            splitContainer.Location = new Point(3, 3);
-            splitContainer.Name = $"splitContainer";
-            splitContainer.Orientation = Orientation.Horizontal;
-
-            splitContainer.Panel1.Controls.Add(tableLayoutPanel);
-            splitContainer.Size = new Size(954, 347);
-            splitContainer.SplitterDistance = 189;
-
-            tabPage.Controls.Add(splitContainer);
+            tabPage.Controls.Add(tableLayoutPanel);
             tabPage.Location = new Point(4, 24);
             tabPage.Name = $"tabPage{indexTabPage}";
             tabPage.Padding = new Padding(3);
@@ -569,7 +615,10 @@ namespace CompilerGUI
             tabPage.Text = $"New File ({indexTabPage})*";
             tabPage.UseVisualStyleBackColor = true;
             
-            FileClass fileInfo = new FileClass(tabPage.Text, "", false);
+            if (fileInfo == null) 
+            {
+                fileInfo = new FileClass(tabPage.Text, "", false);
+            }
 
             tabPage.Tag = fileInfo;
             
