@@ -8,31 +8,46 @@ namespace CompilerGUI
 {
     public class ControllerConsole
     {
-        private RichTextBox textBoxCode;
-        public event Action<ExceptionInfo>? FindException;
+        private RichTextBox? textBoxCode;
+        public event Action<string>? FindException;
 
         public ControllerConsole() 
         {
             textBoxCode = new RichTextBox();
         }
 
-        public void InitCodeTextBox(RichTextBox textBoxCode) 
+        public void InitCodeTextBox(TabPage tabPage)
         {
-            this.textBoxCode = textBoxCode;
+            textBoxCode = (RichTextBox) tabPage.Controls.Find("RichTextBoxOut", true)[0];
         }
-        public void StartCode() 
+        public void StartCode()
         {
+            if (textBoxCode == null) return;
             // Компилируем, анализируем и тд
             string code = textBoxCode.Text;
-            ExceptionInfo info = new ExceptionInfo();
+            string info = "ExceptionMessage";
+            if (!string.IsNullOrEmpty(info))
             FindException?.Invoke(info);
+            UpdateTextConsole(info);
         }
         
-        // Проверка в момент написания
+        // Проверка в момент написания на ошибки
         public List<ExceptionInfo> AnalysisSyntax()
         {
             return new List<ExceptionInfo>();
         }
+
+        private void UpdateTextConsole(string text) 
+        {
+            textBoxCode.Clear();
+            List<string> lines = new List<string>(text.Split("\n"));
+
+            foreach (string line in lines) 
+            {
+                textBoxCode.AppendText($"> {line}");
+            }
+        }
+
 
     }
 }

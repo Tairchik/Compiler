@@ -8,6 +8,8 @@ namespace CompilerGUI
         private ControllerTabControlAndPage controllerTCP;
         private ControllerRichTB controllerRichTB;
         private ControllerExceptionsCode controllerExceptionsCode;
+        private ControllerConsole controllerConsole;
+        private ControllerTextHighlighting controllerTextHighlighting;
         public CompilerForm()
         {
             InitializeComponent();
@@ -16,6 +18,8 @@ namespace CompilerGUI
             controllerTCP = new ControllerTabControlAndPage();
             controllerExceptionsCode = new ControllerExceptionsCode(this.dataGridView);
             controllerRichTB = new ControllerRichTB();
+            controllerConsole = new ControllerConsole();
+            controllerTextHighlighting = new ControllerTextHighlighting("txt");
             mainPanel.KeyDown += keyPressedMainForm;
             this.KeyDown += keyPressedMainForm;
             this.FormClosing += exit_Process;
@@ -23,12 +27,21 @@ namespace CompilerGUI
             this.DragDrop += CompilerForm_DragDrop;
             mainPanel.DragDrop += CompilerForm_DragDrop;
             mainPanel.DragEnter += CompilerForm_DragEnter;
+
             controllerTCP.TabPageCreate += controllerRichTB.init;
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
-            controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
             controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
+
+            controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
+
             controllerTCP.TextCodeChanged += controllerExceptionsCode.TextCodeChanged;
             controllerTCP.TabPageChangedE += controllerExceptionsCode.PageCodeChanged;
+
+            controllerTCP.TabPageChanged += controllerConsole.InitCodeTextBox;
+
+            controllerTCP.TabPageChanged += controllerTextHighlighting.InitTextBox;
+            controllerTCP.TabPageCreate += controllerTextHighlighting.InitTextBox;
+            controllerRichTB.TextIsChange += controllerTextHighlighting.HighlightCode;
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -169,7 +182,7 @@ namespace CompilerGUI
 
         private void Run_Click(object sender, EventArgs e)
         {
-
+            controllerConsole.StartCode();
         }
 
         private void aboutMI_Click(object sender, EventArgs e)

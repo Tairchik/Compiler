@@ -16,7 +16,6 @@ namespace CompilerGUI
         private RichTextBox richTextBoxNumbers;
         private TableLayoutPanel tableLayoutPanel;
         public event Action TextIsChange;
-
         private int lastLineCount;
         
         public void init(TabPage tabPape) 
@@ -37,6 +36,8 @@ namespace CompilerGUI
             richTextBoxText = (RichTextBox)tableLayoutPanel.Controls["richTextBoxText"];
             lastLineCount = GetLineCount(richTextBoxText);
             HighlightCurrentLine();
+            richTextBoxText.Focus();
+
         }
 
         private void SetupLineNumbers()
@@ -47,6 +48,8 @@ namespace CompilerGUI
             richTextBoxNumbers.VScroll += RichTextBoxNumbers_VScroll;
             UpdateLineNumbers();
             HighlightCurrentLine();
+            richTextBoxText.Focus();
+
         }
 
         public bool UndoText() 
@@ -117,8 +120,6 @@ namespace CompilerGUI
             }
             return false;
         }
-
-
 
         private void RichTextBoxTextCode_TextChanged(object sender, EventArgs e)
         {
@@ -212,7 +213,6 @@ namespace CompilerGUI
                     }
                 }
 
-                richTextBoxText.Focus();
             }
             catch
             {
