@@ -73,6 +73,7 @@
             LineColumn = new DataGridViewTextBoxColumn();
             Message = new DataGridViewTextBoxColumn();
             NumberColumn = new DataGridViewTextBoxColumn();
+            ColumnColumn = new DataGridViewTextBoxColumn();
             menuStrip.SuspendLayout();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)mainPanel).BeginInit();
@@ -401,7 +402,7 @@
             mainPanel.Panel2.BackColor = SystemColors.Control;
             mainPanel.Panel2.Controls.Add(dataGridView);
             mainPanel.Size = new Size(1073, 440);
-            mainPanel.SplitterDistance = 310;816
+            mainPanel.SplitterDistance = 310;
             mainPanel.TabIndex = 3;
             // 
             // dataGridView
@@ -412,7 +413,7 @@
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { FilePathColumn, LineColumn, Message });
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] {NumberColumn, FilePathColumn, LineColumn, ColumnColumn, Message });
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Window;
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
@@ -462,6 +463,13 @@
             NumberColumn.Name = "NumberColumn";
             NumberColumn.ReadOnly = true;
             NumberColumn.Width = 40;
+            // 
+            // ColumnColumn
+            // 
+            ColumnColumn.DataPropertyName = "Column";
+            ColumnColumn.HeaderText = "Колонка";
+            ColumnColumn.Name = "ColumnColumn";
+            ColumnColumn.ReadOnly = true;
             // 
             // CompilerForm
             // 
@@ -540,5 +548,6 @@
         private DataGridViewTextBoxColumn FilePathColumn;
         private DataGridViewTextBoxColumn LineColumn;
         private DataGridViewTextBoxColumn Message;
+        private DataGridViewTextBoxColumn ColumnColumn;
     }
 }

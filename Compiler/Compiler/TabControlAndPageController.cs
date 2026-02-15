@@ -596,6 +596,7 @@ namespace CompilerGUI
             richTextBoxOut.MouseWheel += RichTextBoxText_MouseWheel;
             richTextBoxOut.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             richTextBoxOut.BackColor = Color.White;
+            richTextBoxOut.ForeColor = Color.Black;
             richTextBoxOut.ReadOnly = false;
             richTextBoxOut.Location = new Point(4, 0);
             richTextBoxOut.Margin = new Padding(0);
@@ -603,7 +604,7 @@ namespace CompilerGUI
             richTextBoxOut.Name = "richTextBoxOut";
             richTextBoxOut.Size = new Size(142, 42);
             richTextBoxOut.TabIndex = 1;
-            richTextBoxOut.Text = "";
+            richTextBoxOut.Text = ">";
             richTextBoxOut.WordWrap = false;
             richTextBoxOut.DragDrop += DragDrop;
             richTextBoxOut.DragEnter += DragEnter;
@@ -625,7 +626,7 @@ namespace CompilerGUI
             tableLayoutPanel.TabIndex = 0;
 
             splitContainer.Dock = DockStyle.Fill;
-            splitContainer.BackColor = Color.Azure;
+            splitContainer.BackColor = Color.DarkGray;
             splitContainer.Location = new Point(3, 3);
             splitContainer.Name = $"splitContainer";
             splitContainer.Orientation = Orientation.Horizontal;

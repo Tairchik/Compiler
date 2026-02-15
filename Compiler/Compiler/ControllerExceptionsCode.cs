@@ -38,6 +38,7 @@ namespace CompilerGUI
             exception.Line = textCodeList.Count;
             exception.ExceptionMessage = $"Ошибка {textCodeList.Count}";
             exception.FileName = fileClass.FileName;
+            exception.Column = 0;
 
             if (string.IsNullOrEmpty(fileClass.FilePath)) exception.FilePath = $"..{exception.FileName}";
             else exception.FilePath = fileClass.FilePath;
@@ -58,6 +59,8 @@ namespace CompilerGUI
             exception.Line = textCodeList.Count;
             exception.ExceptionMessage = $"Ошибка {textCodeList.Count}";
             exception.FileName = fileClass.FileName;
+            exception.Column = 0;
+
 
             if (string.IsNullOrEmpty(fileClass.FilePath)) exception.FilePath = $"..{exception.FileName}";
             else exception.FilePath = fileClass.FilePath;
