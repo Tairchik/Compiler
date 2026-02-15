@@ -89,7 +89,7 @@
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.Padding = new Padding(5, 2, 0, 2);
-            menuStrip.Size = new Size(968, 23);
+            menuStrip.Size = new Size(1073, 23);
             menuStrip.TabIndex = 0;
             menuStrip.Text = "menuStrip";
             // 
@@ -278,10 +278,10 @@
             // statusStrip1
             // 
             statusStrip1.ImageScalingSize = new Size(20, 20);
-            statusStrip1.Location = new Point(0, 449);
+            statusStrip1.Location = new Point(0, 513);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new Padding(1, 0, 12, 0);
-            statusStrip1.Size = new Size(968, 22);
+            statusStrip1.Size = new Size(1073, 22);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
             // 
@@ -293,7 +293,7 @@
             toolStrip1.LayoutStyle = ToolStripLayoutStyle.Flow;
             toolStrip1.Location = new Point(0, 23);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(968, 45);
+            toolStrip1.Size = new Size(1073, 45);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip";
             // 
@@ -398,8 +398,8 @@
             // mainPanel.Panel2
             // 
             mainPanel.Panel2.Controls.Add(dataGridView);
-            mainPanel.Size = new Size(968, 381);
-            mainPanel.SplitterDistance = 183;
+            mainPanel.Size = new Size(1073, 445);
+            mainPanel.SplitterDistance = 213;
             mainPanel.TabIndex = 3;
             // 
             // dataGridView
@@ -410,7 +410,6 @@
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, Message });
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Window;
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
@@ -428,37 +427,37 @@
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView.Size = new Size(968, 194);
+            dataGridView.Size = new Size(1073, 228);
             dataGridView.TabIndex = 0;
             // 
             // NumberColumn
             // 
-            NumberColumn.HeaderText = "";
             NumberColumn.DataPropertyName = "Number";
+            NumberColumn.Frozen = true;
+            NumberColumn.HeaderText = "";
             NumberColumn.Name = "NumberColumn";
             NumberColumn.ReadOnly = true;
-            NumberColumn.Frozen = true;
             NumberColumn.Width = 40;
             // 
             // FilePathColumn
             // 
-            FilePathColumn.HeaderText = "Путь файла";
             FilePathColumn.DataPropertyName = "FilePath";
+            FilePathColumn.HeaderText = "Путь файла";
             FilePathColumn.Name = "FilePathColumn";
             FilePathColumn.ReadOnly = true;
             // 
             // LineColumn
             // 
+            LineColumn.DataPropertyName = "Line";
             LineColumn.HeaderText = "Строка";
             LineColumn.Name = "LineColumn";
-            LineColumn.DataPropertyName = "Line";
             LineColumn.ReadOnly = true;
             // 
             // Message
             // 
+            Message.DataPropertyName = "ExceptionMessage";
             Message.HeaderText = "Сообщение";
             Message.Name = "Message";
-            Message.DataPropertyName = "ExceptionMessage";
             Message.ReadOnly = true;
             // 
             // CompilerForm
@@ -467,7 +466,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(968, 471);
+            ClientSize = new Size(1073, 535);
             Controls.Add(mainPanel);
             Controls.Add(toolStrip1);
             Controls.Add(statusStrip1);
