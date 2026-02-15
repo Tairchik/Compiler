@@ -550,6 +550,7 @@ namespace CompilerGUI
             RichTextBox richTextBoxNumbers = new RichTextBox();
             RichTextBox richTextBoxText = new RichTextBox();
             Panel panel2 = new Panel();
+            RichTextBox richTextBoxOut = new RichTextBox();
 
             panel2.BackColor = SystemColors.Window;
             panel2.Dock = DockStyle.Fill;
@@ -562,7 +563,7 @@ namespace CompilerGUI
             richTextBoxNumbers.BorderStyle = BorderStyle.None;
             richTextBoxNumbers.Dock = DockStyle.Fill;
             richTextBoxNumbers.Enabled = false;
-            richTextBoxNumbers.Font = new Font("Segoe UI", 14F);
+            richTextBoxNumbers.Font = new Font("Segoe UI", 12F);
             richTextBoxNumbers.Location = new Point(0, 0);
             richTextBoxNumbers.Margin = new Padding(0);
             richTextBoxNumbers.Name = "richTextBoxNumbers";
@@ -580,9 +581,8 @@ namespace CompilerGUI
             richTextBoxText.Dock = DockStyle.Fill;
             richTextBoxText.Location = new Point(60, 0);
             richTextBoxText.Margin = new Padding(0);
-            richTextBoxText.Font = new Font("Segoe UI", 14F);
+            richTextBoxText.Font = new Font("Segoe UI", 12F);
             richTextBoxText.Name = "richTextBoxText";
-            richTextBoxText.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
             richTextBoxText.Size = new Size(716, 426);
             richTextBoxText.TabIndex = 1;
             richTextBoxText.Text = "";
@@ -590,6 +590,24 @@ namespace CompilerGUI
             richTextBoxText.DragDrop += DragDrop;
             richTextBoxText.DragEnter += DragEnter;
             richTextBoxText.AllowDrop = true;
+
+            richTextBoxOut.BorderStyle = BorderStyle.None;
+            richTextBoxOut.KeyDown += RichTextBoxText_KeyDown;
+            richTextBoxOut.MouseWheel += RichTextBoxText_MouseWheel;
+            richTextBoxOut.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            richTextBoxOut.BackColor = Color.White;
+            richTextBoxOut.ReadOnly = false;
+            richTextBoxOut.Location = new Point(4, 0);
+            richTextBoxOut.Margin = new Padding(0);
+            richTextBoxOut.Font = new Font("Segoe UI", 12F);
+            richTextBoxOut.Name = "richTextBoxOut";
+            richTextBoxOut.Size = new Size(142, 42);
+            richTextBoxOut.TabIndex = 1;
+            richTextBoxOut.Text = "";
+            richTextBoxOut.WordWrap = false;
+            richTextBoxOut.DragDrop += DragDrop;
+            richTextBoxOut.DragEnter += DragEnter;
+            richTextBoxOut.AllowDrop = true;
 
             tableLayoutPanel.ColumnCount = 3;
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 50F));
@@ -606,7 +624,17 @@ namespace CompilerGUI
             tableLayoutPanel.Size = new Size(776, 426);
             tableLayoutPanel.TabIndex = 0;
 
-            tabPage.Controls.Add(tableLayoutPanel);
+            splitContainer.Dock = DockStyle.Fill;
+            splitContainer.BackColor = Color.Azure;
+            splitContainer.Location = new Point(3, 3);
+            splitContainer.Name = $"splitContainer";
+            splitContainer.Orientation = Orientation.Horizontal;
+            splitContainer.Panel1.Controls.Add(tableLayoutPanel);
+            splitContainer.Panel2.Controls.Add(richTextBoxOut);
+            splitContainer.Size = new Size(954, 347);
+            splitContainer.SplitterDistance = 189;
+
+            tabPage.Controls.Add(splitContainer);
             tabPage.Location = new Point(4, 24);
             tabPage.Name = $"tabPage{indexTabPage}";
             tabPage.Padding = new Padding(3);

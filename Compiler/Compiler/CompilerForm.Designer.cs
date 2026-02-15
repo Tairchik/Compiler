@@ -69,10 +69,10 @@
             deleteTabTSB = new ToolStripButton();
             mainPanel = new SplitContainer();
             dataGridView = new DataGridView();
-            NumberColumn = new DataGridViewTextBoxColumn();
             FilePathColumn = new DataGridViewTextBoxColumn();
             LineColumn = new DataGridViewTextBoxColumn();
             Message = new DataGridViewTextBoxColumn();
+            NumberColumn = new DataGridViewTextBoxColumn();
             menuStrip.SuspendLayout();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)mainPanel).BeginInit();
@@ -278,7 +278,7 @@
             // statusStrip1
             // 
             statusStrip1.ImageScalingSize = new Size(20, 20);
-            statusStrip1.Location = new Point(0, 513);
+            statusStrip1.Location = new Point(0, 508);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new Padding(1, 0, 12, 0);
             statusStrip1.Size = new Size(1073, 22);
@@ -390,6 +390,7 @@
             // 
             // mainPanel
             // 
+            mainPanel.BackColor = SystemColors.GradientInactiveCaption;
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Location = new Point(0, 68);
             mainPanel.Name = "mainPanel";
@@ -397,9 +398,10 @@
             // 
             // mainPanel.Panel2
             // 
+            mainPanel.Panel2.BackColor = SystemColors.Control;
             mainPanel.Panel2.Controls.Add(dataGridView);
-            mainPanel.Size = new Size(1073, 445);
-            mainPanel.SplitterDistance = 213;
+            mainPanel.Size = new Size(1073, 440);
+            mainPanel.SplitterDistance = 310;816
             mainPanel.TabIndex = 3;
             // 
             // dataGridView
@@ -410,6 +412,7 @@
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { FilePathColumn, LineColumn, Message });
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = SystemColors.Window;
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
@@ -427,17 +430,8 @@
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView.Size = new Size(1073, 228);
+            dataGridView.Size = new Size(1073, 126);
             dataGridView.TabIndex = 0;
-            // 
-            // NumberColumn
-            // 
-            NumberColumn.DataPropertyName = "Number";
-            NumberColumn.Frozen = true;
-            NumberColumn.HeaderText = "";
-            NumberColumn.Name = "NumberColumn";
-            NumberColumn.ReadOnly = true;
-            NumberColumn.Width = 40;
             // 
             // FilePathColumn
             // 
@@ -460,13 +454,21 @@
             Message.Name = "Message";
             Message.ReadOnly = true;
             // 
+            // NumberColumn
+            // 
+            NumberColumn.DataPropertyName = "Number";
+            NumberColumn.Frozen = true;
+            NumberColumn.HeaderText = "";
+            NumberColumn.Name = "NumberColumn";
+            NumberColumn.ReadOnly = true;
+            NumberColumn.Width = 40;
+            // 
             // CompilerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1073, 535);
+            ClientSize = new Size(1073, 530);
             Controls.Add(mainPanel);
             Controls.Add(toolStrip1);
             Controls.Add(statusStrip1);
