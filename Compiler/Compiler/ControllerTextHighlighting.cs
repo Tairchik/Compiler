@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace CompilerGUI
 {
     public class ControllerTextHighlighting
     {
+        private string previousText = "";
         private string formatCode = "";
         private KeyWordViewList keys;
         public RichTextBox codeTextBox;
@@ -19,6 +21,10 @@ namespace CompilerGUI
             },
             ["base"] = new Dictionary<Color, string[]> { [Color.Black] = ["@BASE@"] }
         };
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, bool wParam, int lParam);
+        private const int WM_SETREDRAW = 0x0b;
 
         public ControllerTextHighlighting(string formatCode)
         {
@@ -39,10 +45,12 @@ namespace CompilerGUI
         {
             try
             {
-                TableLayoutPanel tableLayoutPanel = (TableLayoutPanel)tabPape.Controls.Find("tableLayoutPanel", true)[0];
-                codeTextBox = (RichTextBox)tableLayoutPanel.Controls["richTextBoxText"];
-
-                HighlightCode();
+                if (tabPape != null) 
+                {
+                    TableLayoutPanel tableLayoutPanel = (TableLayoutPanel)tabPape.Controls.Find("tableLayoutPanel", true)[0];
+                    codeTextBox = (RichTextBox)tableLayoutPanel.Controls["richTextBoxText"];
+                    codeTextBox.TextChanged += CodeTextBox_TextChanged;
+                }
             }
             catch (Exception ex)
             {
@@ -50,48 +58,93 @@ namespace CompilerGUI
             }
         }
 
-        public void HighlightCode()
+        private void HighlightLines(int startLine, int endLine)
         {
-            if (codeTextBox == null || string.IsNullOrEmpty(codeTextBox.Text))
-                return;
+            if (startLine < 0 || endLine < 0) return;
 
-            int savedSelectionStart = codeTextBox.SelectionStart;
-            int savedSelectionLength = codeTextBox.SelectionLength;
+            int savedStart = codeTextBox.SelectionStart;
+            int savedLen = codeTextBox.SelectionLength;
 
-            codeTextBox.SelectAll();
-            codeTextBox.SelectionColor = keys.baseColor;
+            SendMessage(codeTextBox.Handle, WM_SETREDRAW, false, 0);
 
-            string text = codeTextBox.Text;
-            int i = 0;
-            while (i < text.Length)
+            for (int line = startLine; line <= endLine; line++)
             {
-                if (!char.IsLetter(text[i]))
-                {
-                    i++;
-                    continue;
-                }
+                int start = codeTextBox.GetFirstCharIndexFromLine(line);
+                if (start < 0) continue;
 
-                int start = i;
-                while (i < text.Length && char.IsLetter(text[i]))
-                {
-                    i++;
-                }
-                int length = i - start;
-                string word = text.Substring(start, length);
+                int next = codeTextBox.GetFirstCharIndexFromLine(line + 1);
+                int length = (next < 0 ? codeTextBox.TextLength : next) - start;
 
-                Color wordColor = keys.GetColorByKeyWord(word);
+                if (length <= 0) continue;
 
-                if (wordColor != keys.baseColor)
+                string lineText = codeTextBox.Text.Substring(start, length);
+
+                // сброс цвета
+                codeTextBox.Select(start, length);
+                codeTextBox.SelectionColor = keys.baseColor;
+
+                int i = 0;
+                while (i < lineText.Length)
                 {
-                    codeTextBox.Select(start, length);
-                    codeTextBox.SelectionColor = wordColor;
+                    if (!char.IsLetter(lineText[i])) { i++; continue; }
+
+                    int wordStart = i;
+                    while (i < lineText.Length && char.IsLetter(lineText[i]))
+                        i++;
+
+                    int wordLength = i - wordStart;
+                    string word = lineText.Substring(wordStart, wordLength);
+
+                    Color color = keys.GetColorByKeyWord(word);
+                    if (color != keys.baseColor)
+                    {
+                        codeTextBox.Select(start + wordStart, wordLength);
+                        codeTextBox.SelectionColor = color;
+                    }
                 }
             }
-            codeTextBox.Select(savedSelectionStart, savedSelectionLength);
+
+            codeTextBox.Select(savedStart, savedLen);
+
+            SendMessage(codeTextBox.Handle, WM_SETREDRAW, true, 0);
+            codeTextBox.Refresh();
         }
+
+
         public void HighlightExceptions()
         {
 
+        }
+
+        private void CodeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (codeTextBox == null) return;
+
+            string newText = codeTextBox.Text;
+
+            int startDiff = 0;
+            while (startDiff < previousText.Length &&
+                   startDiff < newText.Length &&
+                   previousText[startDiff] == newText[startDiff])
+                startDiff++;
+
+            int endOld = previousText.Length - 1;
+            int endNew = newText.Length - 1;
+
+            while (endOld >= startDiff && endNew >= startDiff &&
+                   previousText[endOld] == newText[endNew])
+            {
+                endOld--;
+                endNew--;
+            }
+
+            // номера строк
+            int startLine = codeTextBox.GetLineFromCharIndex(startDiff);
+            int endLine = codeTextBox.GetLineFromCharIndex(endNew);
+
+            HighlightLines(startLine, endLine);
+
+            previousText = newText;
         }
 
     }

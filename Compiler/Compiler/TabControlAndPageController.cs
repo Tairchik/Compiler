@@ -84,15 +84,18 @@ namespace CompilerGUI
 
         private void SelectedPageChangedHandler(object sender, EventArgs e)
         {
-            TabPageChanged?.Invoke(tabControl.SelectedTab);
+            if (tabControl != null && tabControl.SelectedTab != null) 
+            {
+                TabPageChanged?.Invoke(tabControl.SelectedTab);
 
-            TabPage page = tabControl.SelectedTab;
-            RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+                TabPage page = tabControl.SelectedTab;
+                RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
 
-            string code = textBox.Text;
-            FileClass fileInfo = (FileClass)page.Tag;
+                string code = textBox.Text;
+                FileClass fileInfo = (FileClass)page.Tag;
 
-            TabPageChangedE?.Invoke(code, fileInfo);
+                TabPageChangedE?.Invoke(code, fileInfo);
+            }
         }
 
         public void UpdatePageInfo() 

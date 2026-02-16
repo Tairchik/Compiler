@@ -18,6 +18,7 @@ namespace CompilerGUI
 
         public void InitCodeTextBox(TabPage tabPage)
         {
+            if (tabPage != null)
             textBoxCode = (RichTextBox) tabPage.Controls.Find("RichTextBoxOut", true)[0];
         }
         public void StartCode()

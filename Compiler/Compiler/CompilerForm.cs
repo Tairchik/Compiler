@@ -41,7 +41,6 @@ namespace CompilerGUI
 
             controllerTCP.TabPageChanged += controllerTextHighlighting.InitTextBox;
             controllerTCP.TabPageCreate += controllerTextHighlighting.InitTextBox;
-            controllerRichTB.TextIsChange += controllerTextHighlighting.HighlightCode;
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
