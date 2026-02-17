@@ -69,11 +69,11 @@
             deleteTabTSB = new ToolStripButton();
             mainPanel = new SplitContainer();
             dataGridView = new DataGridView();
+            NumberColumn = new DataGridViewTextBoxColumn();
             FilePathColumn = new DataGridViewTextBoxColumn();
             LineColumn = new DataGridViewTextBoxColumn();
-            Message = new DataGridViewTextBoxColumn();
-            NumberColumn = new DataGridViewTextBoxColumn();
             ColumnColumn = new DataGridViewTextBoxColumn();
+            MessageColumn = new DataGridViewTextBoxColumn();
             menuStrip.SuspendLayout();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)mainPanel).BeginInit();
@@ -412,27 +412,33 @@
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
-            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] {NumberColumn, FilePathColumn, LineColumn, ColumnColumn, Message });
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = Color.LightSteelBlue;
-            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dataGridView.DefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView.Dock = DockStyle.Fill;
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, ColumnColumn, MessageColumn });
             dataGridView.GridColor = Color.Gray;
             dataGridView.Location = new Point(0, 0);
-            dataGridView.Margin = new Padding(0);
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
             dataGridView.RowHeadersVisible = false;
-            dataGridView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.AutoSizeToDisplayedHeaders;
-            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.Size = new Size(1073, 126);
             dataGridView.TabIndex = 0;
+            // 
+            // NumberColumn
+            // 
+            NumberColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            NumberColumn.DataPropertyName = "Number";
+            NumberColumn.Frozen = true;
+            NumberColumn.HeaderText = "";
+            NumberColumn.Name = "NumberColumn";
+            NumberColumn.ReadOnly = true;
+            NumberColumn.Width = 40;
             // 
             // FilePathColumn
             // 
@@ -448,28 +454,19 @@
             LineColumn.Name = "LineColumn";
             LineColumn.ReadOnly = true;
             // 
-            // Message
-            // 
-            Message.DataPropertyName = "ExceptionMessage";
-            Message.HeaderText = "Сообщение";
-            Message.Name = "Message";
-            Message.ReadOnly = true;
-            // 
-            // NumberColumn
-            // 
-            NumberColumn.DataPropertyName = "Number";
-            NumberColumn.Frozen = true;
-            NumberColumn.HeaderText = "";
-            NumberColumn.Name = "NumberColumn";
-            NumberColumn.ReadOnly = true;
-            NumberColumn.Width = 40;
-            // 
             // ColumnColumn
             // 
             ColumnColumn.DataPropertyName = "Column";
             ColumnColumn.HeaderText = "Колонка";
             ColumnColumn.Name = "ColumnColumn";
             ColumnColumn.ReadOnly = true;
+            // 
+            // MessageColumn
+            // 
+            MessageColumn.DataPropertyName = "ExceptionMessage";
+            MessageColumn.HeaderText = "Сообщение";
+            MessageColumn.Name = "MessageColumn";
+            MessageColumn.ReadOnly = true;
             // 
             // CompilerForm
             // 
@@ -547,7 +544,7 @@
         private DataGridViewTextBoxColumn NumberColumn;
         private DataGridViewTextBoxColumn FilePathColumn;
         private DataGridViewTextBoxColumn LineColumn;
-        private DataGridViewTextBoxColumn Message;
+        private DataGridViewTextBoxColumn MessageColumn;
         private DataGridViewTextBoxColumn ColumnColumn;
     }
 }

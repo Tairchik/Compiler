@@ -13,6 +13,7 @@ namespace CompilerGUI
         public CompilerForm()
         {
             InitializeComponent();
+            ApplyLocalization();
             this.AllowDrop = true;
             mainPanel.AllowDrop = true;
             controllerTCP = new ControllerTabControlAndPage();
@@ -27,20 +28,33 @@ namespace CompilerGUI
             this.DragDrop += CompilerForm_DragDrop;
             mainPanel.DragDrop += CompilerForm_DragDrop;
             mainPanel.DragEnter += CompilerForm_DragEnter;
-
             controllerTCP.TabPageCreate += controllerRichTB.init;
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
             controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
-
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
-
             controllerTCP.TextCodeChanged += controllerExceptionsCode.TextCodeChanged;
             controllerTCP.TabPageChangedE += controllerExceptionsCode.PageCodeChanged;
-
             controllerTCP.TabPageChanged += controllerConsole.InitCodeTextBox;
-
             controllerTCP.TabPageChanged += controllerTextHighlighting.InitTextBox;
             controllerTCP.TabPageCreate += controllerTextHighlighting.InitTextBox;
+        }
+
+        private void ApplyLocalization()
+        {
+            FileTS.Text = LocalizationService.Get("File");
+            Edit.Text = LocalizationService.Get("Edit");
+            Run.Text = LocalizationService.Get("Run");
+            SettingsMI.Text = LocalizationService.Get("Settings");
+            exitMI.Text = LocalizationService.Get("Exit");
+            createMI.Text = LocalizationService.Get("Create");
+            openMI.Text = LocalizationService.Get("Open");
+            SaveMI.Text = LocalizationService.Get("Save");
+            this.Text = LocalizationService.Get("Compiler");
+            dataGridView.Columns["FilePathColumn"].HeaderText = LocalizationService.Get("FilePath");
+            dataGridView.Columns["ColumnColumn"].HeaderText = LocalizationService.Get("Column");
+            dataGridView.Columns["LineColumn"].HeaderText = LocalizationService.Get("Line");
+            dataGridView.Columns["MessageColumn"].HeaderText = LocalizationService.Get("Message");
+            dataGridView.Refresh();
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -191,7 +205,13 @@ namespace CompilerGUI
 
         private void SettingsMI_Click(object sender, EventArgs e)
         {
+            Settings setForm = new Settings(LocalizationService.CurrentLanguage);
 
+            if (setForm.ShowDialog() == DialogResult.OK)
+            {
+                LocalizationService.ChangeLanguage(setForm.Language);
+                ApplyLocalization();
+            }
         }
 
         private void deleteTabTSB_Click(object sender, EventArgs e)

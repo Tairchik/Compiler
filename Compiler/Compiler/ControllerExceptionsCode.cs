@@ -36,7 +36,7 @@ namespace CompilerGUI
 
             List<string> textCodeList = new List<string>(textCode.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
             exception.Line = textCodeList.Count;
-            exception.ExceptionMessage = $"Ошибка {textCodeList.Count}";
+            exception.ExceptionMessage = $"{LocalizationService.Get("Error")} {textCodeList.Count}";
             exception.FileName = fileClass.FileName;
             exception.Column = 0;
 
@@ -57,7 +57,7 @@ namespace CompilerGUI
 
             List<string> textCodeList = new List<string>(textCode.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
             exception.Line = textCodeList.Count;
-            exception.ExceptionMessage = $"Ошибка {textCodeList.Count}";
+            exception.ExceptionMessage = $"{LocalizationService.Get("Error")} {textCodeList.Count}";
             exception.FileName = fileClass.FileName;
             exception.Column = 0;
 

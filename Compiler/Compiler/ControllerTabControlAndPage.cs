@@ -63,8 +63,8 @@ namespace CompilerGUI
                 if (info.IsSaved == false) 
                 {
                     DialogResult result = MessageBox.Show(
-                           $"Сохранить изменния в файле?\n{info.FileName}",
-                           "Уведомление",
+                           $"{LocalizationService.Get("SaveChangeInFile")}?\n{info.FileName}",
+                           LocalizationService.Get("Notification"),
                            MessageBoxButtons.YesNoCancel,
                            MessageBoxIcon.Question,
                            MessageBoxDefaultButton.Button1
@@ -122,7 +122,7 @@ namespace CompilerGUI
             openFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
             openFileDialog.FilterIndex = 1;
             openFileDialog.RestoreDirectory = true;
-            openFileDialog.Title = $"Открыть файл";
+            openFileDialog.Title = $"{LocalizationService.Get("OpenFileTitle")}";
             openFileDialog.DefaultExt = $"{fileInfo.Ext}";
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -130,7 +130,7 @@ namespace CompilerGUI
                 try
                 {
                     string text = File.ReadAllText(openFileDialog.FileName);
-                    if (text == null) throw new Exception("Ошибка чтения");
+                    if (text == null) throw new Exception(LocalizationService.Get("ErrorRead"));
 
                     fileInfo.FilePath = openFileDialog.FileName;
                     fileInfo.FileName = Path.GetFileName(openFileDialog.FileName);
@@ -185,7 +185,7 @@ namespace CompilerGUI
                 saveFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
                 saveFileDialog.FilterIndex = 1;
                 saveFileDialog.RestoreDirectory = true;
-                saveFileDialog.Title = $"Сохранить файл";
+                saveFileDialog.Title = LocalizationService.Get("SaveFileTitle");
                 saveFileDialog.DefaultExt = $"{fileInfo.Ext}";
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -201,7 +201,7 @@ namespace CompilerGUI
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
+                        MessageBox.Show($"{LocalizationService.Get("ErrorSaveMessage")}: {ex.Message}", LocalizationService.Get("Error"),
                                       MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
@@ -216,8 +216,8 @@ namespace CompilerGUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{LocalizationService.Get("ErrorSaveMessage")}: {ex.Message}", LocalizationService.Get("Error"),
+                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -229,8 +229,8 @@ namespace CompilerGUI
             if (page == null) 
             {
                 MessageBox.Show(
-                    "Выберите файл, чтобы сохранить",
-                    "Предупреждение",
+                    LocalizationService.Get("NotificationSavingFile"),
+                    LocalizationService.Get("Warning"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning,
                     MessageBoxDefaultButton.Button1
@@ -248,7 +248,7 @@ namespace CompilerGUI
                 saveFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
                 saveFileDialog.FilterIndex = 1;
                 saveFileDialog.RestoreDirectory = true;
-                saveFileDialog.Title = $"Сохранить файл";
+                saveFileDialog.Title = LocalizationService.Get("SaveFileTitle");
                 saveFileDialog.DefaultExt = $"{fileInfo.Ext}";
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -279,11 +279,10 @@ namespace CompilerGUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{LocalizationService.Get("ErrorSaveMessage")}: {ex.Message}", LocalizationService.Get("Error"),
+                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
         }
 
         public void SaveUsFile() 
@@ -293,8 +292,8 @@ namespace CompilerGUI
             if (page == null)
             {
                 MessageBox.Show(
-                    "Выберите файл, чтобы сохранить",
-                    "Предупреждение",
+                    LocalizationService.Get("NotificationSavingFile"),
+                    LocalizationService.Get("Warning"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning,
                     MessageBoxDefaultButton.Button1
@@ -310,7 +309,7 @@ namespace CompilerGUI
             saveFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
             saveFileDialog.FilterIndex = 1;
             saveFileDialog.RestoreDirectory = true;
-            saveFileDialog.Title = $"Сохранить файл";
+            saveFileDialog.Title = LocalizationService.Get("SaveFileTitle");
             saveFileDialog.DefaultExt = $"{fileInfo.Ext}";
 
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -328,8 +327,8 @@ namespace CompilerGUI
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{LocalizationService.Get("ErrorSaveMessage")}: {ex.Message}", LocalizationService.Get("Error"),
+                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -392,7 +391,7 @@ namespace CompilerGUI
             try
             {
                 string text = File.ReadAllText(filePath);
-                if (text == null) throw new Exception("Ошибка чтения");
+                if (text == null) throw new Exception(LocalizationService.Get("ErrorRead"));
 
                 fileInfo.FilePath = filePath;
                 fileInfo.FileName = Path.GetFileName(filePath);
@@ -410,8 +409,8 @@ namespace CompilerGUI
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"{LocalizationService.Get("ErrorSaveMessage")}: {ex.Message}", LocalizationService.Get("Error"),
+                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
        
@@ -454,8 +453,8 @@ namespace CompilerGUI
             if (info.IsSaved == false)
             {
                 DialogResult result = MessageBox.Show(
-                       $"Сохранить изменния в файле?\n{info.FileName}",
-                       "Уведомление",
+                       $"{LocalizationService.Get("SaveChangeInFile")}?\n{info.FileName}",
+                       LocalizationService.Get("Notification"),
                        MessageBoxButtons.YesNoCancel,
                        MessageBoxIcon.Question,
                        MessageBoxDefaultButton.Button1
