@@ -28,7 +28,7 @@ namespace CompilerGUI
 
         public override string ToString()
         {
-            return DisplayName;
+            return DisplayName[0].ToString().ToUpper() + DisplayName.Substring(1, DisplayName.Length - 1);
         }
     }
 

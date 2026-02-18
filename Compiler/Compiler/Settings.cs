@@ -18,13 +18,20 @@ namespace CompilerGUI
         public Settings(string currentLanguage)
         {
             InitializeComponent();
-
+            UploadLocalization();
             UploadList();
-
             languageComboBox.SelectedItem = currentLanguage;
 
             buttonOk.Click += ButtonOk_Click;
             buttonCancel.Click += (s, e) => this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void UploadLocalization()
+        {
+            this.Text = LocalizationService.Get("Settings");
+            Languagelabel.Text = LocalizationService.Get("Language");
+            buttonOk.Text = LocalizationService.Get("OK");
+            buttonCancel.Text = LocalizationService.Get("Cancel");
         }
 
         private void UploadList()

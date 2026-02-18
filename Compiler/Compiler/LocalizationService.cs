@@ -40,7 +40,8 @@ namespace CompilerGUI
             "ErrorRead": "Ошибка чтения файла",
             "ErrorSaveMessage": "Ошибка при сохранении файла",
             "NewFile": "Новый файл",
-            "Language": "Язык"
+            "Language": "Язык",
+            "Cancel": "Отмена"
           },
 
           "en": {
@@ -67,7 +68,8 @@ namespace CompilerGUI
             "ErrorRead": "File read error",
             "ErrorSaveMessage": "Error while saving file",
             "NewFile": "New file",
-            "Language": "Language"
+            "Language": "Language",
+            "Cancel": "Cancel"
           }
         }
         """;
@@ -156,7 +158,7 @@ namespace CompilerGUI
                 if (_languages[CurrentLanguage].ContainsKey(key))
                     return _languages[CurrentLanguage][key];
 
-            return key; // fallback
+            return key; 
         }
 
         public static List<LanguageItem> GetLanguages()
