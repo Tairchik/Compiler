@@ -346,7 +346,6 @@
             saveUsTSB.Name = "saveUsTSB";
             saveUsTSB.Size = new Size(42, 42);
             saveUsTSB.Text = "Сохранить как";
-            saveUsTSB.ToolTipText = "Сохранить как";
             saveUsTSB.Click += saveUsFile_Click;
             // 
             // copyTSB
@@ -422,6 +421,7 @@
             dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, ColumnColumn, MessageColumn });
+            dataGridView.Dock = DockStyle.Fill;
             dataGridView.GridColor = Color.Gray;
             dataGridView.Location = new Point(0, 0);
             dataGridView.Name = "dataGridView";
@@ -493,11 +493,6 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ResumeLayout(false);
             PerformLayout();
-        }
-
-        private void SaveMI_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
