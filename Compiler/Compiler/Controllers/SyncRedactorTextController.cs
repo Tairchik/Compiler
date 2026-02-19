@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace CompilerGUI
+namespace CompilerGUI.Controllers
 {
-    public class ControllerRichTB
+    public class SyncRedactorTextController
     {
         private RichTextBox richTextBoxText;
         private RichTextBox richTextBoxNumbers;

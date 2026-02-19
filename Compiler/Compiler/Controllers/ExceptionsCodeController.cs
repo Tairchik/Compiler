@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompilerGUI.HelpClass;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -6,14 +7,14 @@ using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CompilerGUI
+namespace CompilerGUI.Controllers
 {
-    public class ControllerExceptionsCode
+    public class ExceptionsCodeController
     {
         public DataGridView exceptionGrid;
         private BindingList<ExceptionInfo> gridLines = new BindingList<ExceptionInfo>();
 
-        public ControllerExceptionsCode(DataGridView dataGridView) 
+        public ExceptionsCodeController(DataGridView dataGridView) 
         {
             exceptionGrid = dataGridView;
             exceptionGrid.DataSource = gridLines;

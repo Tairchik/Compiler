@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="FileClass.cs" />
+    <None Include="HelpClass\FileClass.cs" />
   </ItemGroup>
 
   <ItemGroup>

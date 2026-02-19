@@ -4,24 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CompilerGUI
+namespace CompilerGUI.HelpClass
 {
-    public class KeyWordViewList
+    public class KeyWordFashionList
     {
-        public List<KeyWordView> keyWordViews;
+        public List<KeyWordFashion> keyWordViews;
         public Color baseColor = Color.White;
 
-        public KeyWordViewList()
+        public KeyWordFashionList()
         {
-            keyWordViews = new List<KeyWordView>();
+            keyWordViews = new List<KeyWordFashion>();
         }
 
-        public KeyWordViewList(Dictionary<Color, string[]> colorWordsDict)
+        public KeyWordFashionList(Dictionary<Color, string[]> colorWordsDict)
         {
             keyWordViews = convertFromDict(colorWordsDict);
         }
 
-        public KeyWordViewList(List<KeyWordView> keyWordViews)
+        public KeyWordFashionList(List<KeyWordFashion> keyWordViews)
         {
             this.keyWordViews = keyWordViews;
         }
@@ -45,13 +45,13 @@ namespace CompilerGUI
 
         public void Add(string[] keyWords, Color color)
         {
-            KeyWordView keyWordView = new KeyWordView(color, reductionToOneForm(keyWords));
+            KeyWordFashion keyWordView = new KeyWordFashion(color, reductionToOneForm(keyWords));
             keyWordViews.Add(keyWordView);
         }
 
         public void Add(List<string> keyWords, Color color)
         {
-            KeyWordView keyWordView = new KeyWordView(color, reductionToOneForm(keyWords));
+            KeyWordFashion keyWordView = new KeyWordFashion(color, reductionToOneForm(keyWords));
             keyWordViews.Add(keyWordView);
         }
 
@@ -75,12 +75,12 @@ namespace CompilerGUI
             return keyWords;
         }
 
-        private List<KeyWordView> convertFromDict(Dictionary<Color, string[]> dict)
+        private List<KeyWordFashion> convertFromDict(Dictionary<Color, string[]> dict)
         {
-            List<KeyWordView> result = new List<KeyWordView>();
+            List<KeyWordFashion> result = new List<KeyWordFashion>();
             foreach (Color color in dict.Keys) 
             {
-                result.Add(new KeyWordView(color, new List<string>(dict[color])));
+                result.Add(new KeyWordFashion(color, new List<string>(dict[color])));
                 foreach (var i in dict[color]) 
                 {
                     if (i == "@BASE@") 

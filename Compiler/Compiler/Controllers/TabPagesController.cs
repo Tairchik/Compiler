@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompilerGUI.HelpClass;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,11 +8,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace CompilerGUI
+namespace CompilerGUI.Controllers
 {
-    public class ControllerTabControlAndPage
+    public class TabPagesController
     {
-        private bool tableIsInit = false;
         private int indexTabPage = 0;
         public TabControl tabControl;
         public delegate void TabPageInited(TabPage tabPage);
@@ -20,160 +20,110 @@ namespace CompilerGUI
         public event Action ZoomChanged;
         public event Action<string, FileClass> TextCodeChanged;
         public event Action<string, FileClass> TabPageChangedE;
+        public event Action<Keys> TapPageKeyDown;
 
-
-        public ControllerTabControlAndPage() 
+        public TabPagesController(Control parentPanel) 
         {
-            tabControl = new TabControl();
+            initTabControl(parentPanel);
             tabControl.SelectedIndexChanged += SelectedPageChangedHandler;
             tabControl.KeyDown += KeyDownTabPanel;
             tabControl.DragEnter += DragEnter;
             tabControl.DragDrop += DragDrop;
         }
 
-        private void DragEnter(object sender, DragEventArgs e)
+        private void initTabControl(Control parentPanel) 
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                e.Effect = DragDropEffects.Copy;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
-            }
+            tabControl = new TabControl();
+            parentPanel.Controls.Add(tabControl);
+            tabControl.Dock = DockStyle.Fill;
+            tabControl.Name = "tabControl";
+            tabControl.Visible = tabControl.TabCount == 0 ? false : true;
         }
 
-        private void DragDrop(object sender, DragEventArgs e)
+        public void CreateFile(FileClass? fileInfo = null)
         {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            tabControl.Visible = true;
+            indexTabPage = tabControl.TabCount + 1;
+            TabPage tabPage = createTabPage();
 
-            foreach (string filePath in files)
+            if (fileInfo != null)
             {
-                OpenFileByDrop(filePath, null);
+                tabPage.Tag = fileInfo;
+                tabPage.Text = fileInfo.FileName;
             }
+
+            TabPageCreate?.Invoke(tabControl.SelectedTab);
         }
 
-        public bool Exit(Form view) 
+        public void OpenFile(string filePath = "")
         {
-            FileClass info;
-
-            foreach (TabPage tabPage in tabControl.TabPages) 
-            {
-                info = (FileClass) tabPage.Tag;
-                if (info.IsSaved == false) 
-                {
-                    DialogResult result = MessageBox.Show(
-                           $"{LocalizationService.Get("SaveChangeInFile")}?\n{info.FileName}",
-                           LocalizationService.Get("Notification"),
-                           MessageBoxButtons.YesNoCancel,
-                           MessageBoxIcon.Question,
-                           MessageBoxDefaultButton.Button1
-                    );
-                    if (result == DialogResult.Cancel)
-                    {
-                        return false;
-                    }
-                    else if (result == DialogResult.Yes)
-                    {
-                        SaveFile(tabPage);
-                    }
-                }
-            }
-            return true;
-        }
-
-        private void SelectedPageChangedHandler(object sender, EventArgs e)
-        {
-            if (tabControl != null && tabControl.SelectedTab != null) 
-            {
-                TabPageChanged?.Invoke(tabControl.SelectedTab);
-
-                TabPage page = tabControl.SelectedTab;
-                RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
-
-                string code = textBox.Text;
-                FileClass fileInfo = (FileClass)page.Tag;
-
-                TabPageChangedE?.Invoke(code, fileInfo);
-            }
-        }
-
-        public void UpdatePageInfo() 
-        {
-            TabPage page = tabControl.SelectedTab;
-            FileClass fileInfo = (FileClass)page.Tag;
-
-            RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
-            string code = textBox.Text;
-
-            TextCodeChanged?.Invoke(code, fileInfo);
-
-            if (fileInfo.IsSaved == false) return;
-            
-            fileInfo.IsSaved = false;
-            page.Text = $"{fileInfo.FileName}*";
-        }
-
-        public void OpenFile(Control parentPanel) 
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
             FileClass fileInfo = new FileClass("", "", true);
-            
-            openFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.RestoreDirectory = true;
-            openFileDialog.Title = $"{LocalizationService.Get("OpenFileTitle")}";
-            openFileDialog.DefaultExt = $"{fileInfo.Ext}";
+            DialogResult result = DialogResult.OK;
+            if (string.IsNullOrEmpty(filePath)) 
+            {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
+                openFileDialog.FilterIndex = 1;
+                openFileDialog.RestoreDirectory = true;
+                openFileDialog.Title = $"{LocalizationService.Get("OpenFileTitle")}";
+                openFileDialog.DefaultExt = $"{fileInfo.Ext}";
+                result = openFileDialog.ShowDialog();
+                fileInfo.FilePath = openFileDialog.FileName;
+                fileInfo.FileName = Path.GetFileName(openFileDialog.FileName);
+            }
+            else 
+            {
+                fileInfo.FilePath = filePath;
+                fileInfo.FileName = Path.GetFileName(filePath);
+            }
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (result == DialogResult.OK)
             {
                 try
                 {
-                    string text = File.ReadAllText(openFileDialog.FileName);
+                    string text = File.ReadAllText(fileInfo.FilePath);
                     if (text == null) throw new Exception(LocalizationService.Get("ErrorRead"));
-
-                    fileInfo.FilePath = openFileDialog.FileName;
-                    fileInfo.FileName = Path.GetFileName(openFileDialog.FileName);
+                    
+                    tabControl.Visible = true;
                     fileInfo.IsSaved = true;
-
-                    TabPage page = createTabPage(fileInfo);
-
-                    if (tableIsInit == false)
-                    {
-                        indexTabPage = 1;
-                        tabControl.Dock = DockStyle.Fill;
-                        tabControl.Name = "tabControl";
-                        tableIsInit = true;
-                        parentPanel.Controls.Add(tabControl);
-                        tabControl.Controls.Add(page);
-                        tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
-                        TabPageCreate?.Invoke(tabControl.SelectedTab);
-                    }
-                    else
-                    {
-                        indexTabPage++;
-                        tabControl.Controls.Add(page);
-                        tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
-                        TabPageCreate?.Invoke(tabControl.SelectedTab);
-                    }
-
-                    RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+                    TabPage tabPage = createTabPage(fileInfo);
+                    RichTextBox textBox = (RichTextBox)tabPage.Controls.Find("richTextBoxText", true)[0];
 
                     textBox.Text = text;
                     fileInfo.IsSaved = true;
-                    page.Text = fileInfo.FileName;
+                    tabPage.Text = fileInfo.FileName;
+                    TabPageCreate?.Invoke(tabControl.SelectedTab);
+
+                    if (tabControl.TabCount == 1) 
+                    {
+                        TabPageChanged?.Invoke(tabControl.SelectedTab);
+                        TabPageChangedE?.Invoke(text, fileInfo);
+                    }
+
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
-                                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"{LocalizationService.Get("ErrorOpenMessage")}: {ex.Message}", LocalizationService.Get("Error"),
+                                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        public void SaveFile(TabPage tabPage) 
+        public void SaveFile(TabPage? tabPage = null)
         {
-            TabPage page = tabPage;
+            TabPage? page = tabPage == null ? tabControl.SelectedTab : tabPage;
+
+            if (page == null)
+            {
+                MessageBox.Show(
+                    LocalizationService.Get("NotificationSavingFile"),
+                    LocalizationService.Get("Warning"),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button1
+                );
+                return;
+            }
 
             FileClass fileInfo = (FileClass)page.Tag;
             RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
@@ -181,7 +131,6 @@ namespace CompilerGUI
             if (fileInfo.FilePath == "" && fileInfo.IsSaved == false)
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
-
                 saveFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
                 saveFileDialog.FilterIndex = 1;
                 saveFileDialog.RestoreDirectory = true;
@@ -193,7 +142,6 @@ namespace CompilerGUI
                     try
                     {
                         File.WriteAllText(saveFileDialog.FileName, textBox.Text);
-
                         fileInfo.FileName = Path.GetFileName(saveFileDialog.FileName);
                         fileInfo.IsSaved = true;
                         fileInfo.FilePath = saveFileDialog.FileName;
@@ -222,70 +170,7 @@ namespace CompilerGUI
             }
         }
 
-        public void SaveFile() 
-        {
-            TabPage page = tabControl.SelectedTab;
-            
-            if (page == null) 
-            {
-                MessageBox.Show(
-                    LocalizationService.Get("NotificationSavingFile"),
-                    LocalizationService.Get("Warning"),
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning,
-                    MessageBoxDefaultButton.Button1
-                );
-                return;
-            }
-
-            FileClass fileInfo = (FileClass)page.Tag;
-            RichTextBox textBox = (RichTextBox) page.Controls.Find("richTextBoxText", true)[0];
-
-            if (fileInfo.FilePath == "" && fileInfo.IsSaved == false) 
-            {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-
-                saveFileDialog.Filter = $"Текстовые файлы (*.{fileInfo.Ext})|*.{fileInfo.Ext}|Все файлы (*.*)|*.*";
-                saveFileDialog.FilterIndex = 1;
-                saveFileDialog.RestoreDirectory = true;
-                saveFileDialog.Title = LocalizationService.Get("SaveFileTitle");
-                saveFileDialog.DefaultExt = $"{fileInfo.Ext}";
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    try
-                    {
-                        File.WriteAllText(saveFileDialog.FileName, textBox.Text);
-
-                        fileInfo.FileName = Path.GetFileName(saveFileDialog.FileName);
-                        fileInfo.IsSaved = true;
-                        fileInfo.FilePath = saveFileDialog.FileName;
-                        page.Text = fileInfo.FileName;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка",
-                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-            }
-            else if (fileInfo.IsSaved == false)
-            {
-                try
-                {
-                    File.WriteAllText(fileInfo.FilePath, textBox.Text);
-                    page.Text = fileInfo.FileName;
-                    fileInfo.IsSaved = true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"{LocalizationService.Get("ErrorSaveMessage")}: {ex.Message}", LocalizationService.Get("Error"),
-                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        public void SaveUsFile() 
+        public void SaveUsFile()
         {
             TabPage page = tabControl.SelectedTab;
 
@@ -333,111 +218,89 @@ namespace CompilerGUI
             }
         }
 
-        public void CreateFileBtnClick(Control parentPanel) 
+        private void DragEnter(object? sender, DragEventArgs e)
         {
-            if (tableIsInit == false) 
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                indexTabPage = 1;
-                parentPanel.Controls.Add(tabControl);
-                tabControl.Dock = DockStyle.Fill;
-                tabControl.Name = "tabControl";
-                TabPage tabPage = createTabPage();
-                tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
-                tabControl.Controls.Add(tabPage);
-                tableIsInit = true;
-                TabPageCreate?.Invoke(tabControl.SelectedTab);
+                e.Effect = DragDropEffects.Copy;
             }
             else
             {
-                indexTabPage++;
-                TabPage tabPage = createTabPage();
-                tabControl.Controls.Add(tabPage);
-                tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
-                TabPageCreate?.Invoke(tabControl.SelectedTab);
+                e.Effect = DragDropEffects.None;
             }
         }
 
-        public void CreateFileBtnClick(Control parentPanel, FileClass fileInfo)
+        private void DragDrop(object? sender, DragEventArgs e)
         {
-            if (tableIsInit == false)
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            foreach (string filePath in files)
             {
-                indexTabPage = 1;
-                parentPanel.Controls.Add(tabControl);
-                TabPage tabPage = createTabPage();
-                tabControl.Dock = DockStyle.Fill;
-                tabControl.Name = "tabControl";
-                tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
-                tabPage.Tag = fileInfo;
-                tabPage.Text = fileInfo.FileName;
-                tableIsInit = true;
-                tabControl.Controls.Add(tabPage);
-                TabPageCreate?.Invoke(tabControl.SelectedTab);
-            }
-            else
-            {
-                indexTabPage++;
-                TabPage tabPage = createTabPage();
-                tabPage.Tag = fileInfo;
-                tabPage.Text = fileInfo.FileName;
-                tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
-                tabControl.Controls.Add(tabPage);
-                TabPageCreate?.Invoke(tabControl.SelectedTab);
+                OpenFile(filePath);
             }
         }
 
-        public void OpenFileByDrop(string filePath, Control parentPanel) 
+        public bool Exit(Form view) 
         {
-            FileClass fileInfo = new FileClass("", "", true);
-            try
+            FileClass info;
+
+            foreach (TabPage tabPage in tabControl.TabPages) 
             {
-                string text = File.ReadAllText(filePath);
-                if (text == null) throw new Exception(LocalizationService.Get("ErrorRead"));
+                info = (FileClass) tabPage.Tag;
+                if (info.IsSaved == false) 
+                {
+                    DialogResult result = MessageBox.Show(
+                           $"{LocalizationService.Get("SaveChangeInFile")}?\n{info.FileName}",
+                           LocalizationService.Get("Notification"),
+                           MessageBoxButtons.YesNoCancel,
+                           MessageBoxIcon.Question,
+                           MessageBoxDefaultButton.Button1
+                    );
+                    if (result == DialogResult.Cancel)
+                    {
+                        return false;
+                    }
+                    else if (result == DialogResult.Yes)
+                    {
+                        SaveFile(tabPage);
+                    }
+                }
+            }
+            return true;
+        }
 
-                fileInfo.FilePath = filePath;
-                fileInfo.FileName = Path.GetFileName(filePath);
-                fileInfo.IsSaved = true;
-
-                CreateFileBtnClick(parentPanel);
+        private void SelectedPageChangedHandler(object? sender, EventArgs e)
+        {
+            if (tabControl != null && tabControl.SelectedTab != null) 
+            {
+                TabPageChanged?.Invoke(tabControl.SelectedTab);
 
                 TabPage page = tabControl.SelectedTab;
                 RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
 
-                page.Tag = fileInfo;
-                textBox.Text = text;
-                fileInfo.IsSaved = true;
-                page.Text = fileInfo.FileName;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{LocalizationService.Get("ErrorSaveMessage")}: {ex.Message}", LocalizationService.Get("Error"),
-                                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string code = textBox.Text;
+                TabPageChangedE?.Invoke(code, (FileClass)page.Tag);
             }
         }
-       
-        private void KeyDownTabPanel(object sender, KeyEventArgs e)
+
+        public void UpdatePageInfo() 
         {
-            if (Control.ModifierKeys.HasFlag(Keys.Control) && Control.ModifierKeys.HasFlag(Keys.Shift))
-            {
-                if (e.KeyCode == Keys.S)
-                {
-                    SaveUsFile();
-                }
-            }
-            else if (Control.ModifierKeys.HasFlag(Keys.Control))
-            {
-                if (e.KeyCode == Keys.O)
-                {
-                    OpenFile(null);
-                }
-                else if (e.KeyCode == Keys.N)
-                {
-                    CreateFileBtnClick(null);
-                }
-                else if (e.KeyCode == Keys.S)
-                {
-                    SaveFile();
-                }
-            }
+            TabPage page = tabControl.SelectedTab;
+            FileClass fileInfo = (FileClass)page.Tag;
+
+            RichTextBox textBox = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
+            string code = textBox.Text;
+
+            TextCodeChanged?.Invoke(code, fileInfo);
+            if (fileInfo.IsSaved == false) return;
+            
+            fileInfo.IsSaved = false;
+            page.Text = $"{fileInfo.FileName}*";
+        }
+
+        private void KeyDownTabPanel(object? sender, KeyEventArgs e)
+        {
+            TapPageKeyDown?.Invoke(e.KeyCode);
         }
 
         public bool CloseTabe()
@@ -473,8 +336,7 @@ namespace CompilerGUI
             tabControl.TabPages.Remove(page);
             if (tabControl.TabPages.Count == 0) 
             {
-                tableIsInit = false;
-                tabControl.Parent.Controls.Remove(tabControl);
+                tabControl.Visible = false;
             }
             return true;
         }
@@ -485,12 +347,14 @@ namespace CompilerGUI
 
             RichTextBox richTextBoxText = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
             RichTextBox richTextBoxNumbers = (RichTextBox)page.Controls.Find("richTextBoxNumbers", true)[0];
-
+            RichTextBox richTextBoxOut = (RichTextBox)page.Controls.Find("richTextBoxOut", true)[0];
 
             if (richTextBoxText == null) return false;
 
             richTextBoxText.ZoomFactor += size;
             richTextBoxNumbers.ZoomFactor += size;
+            richTextBoxOut.ZoomFactor += size;
+
             return true;
         }
 
@@ -652,7 +516,10 @@ namespace CompilerGUI
             }
 
             tabPage.Tag = fileInfo;
-            
+
+            tabControl.Controls.Add(tabPage);
+            tabControl.SelectedIndex = tabControl.TabPages.Count - 1;
+
             return tabPage;
         }
     }

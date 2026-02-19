@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerForm));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -57,6 +57,9 @@
             aboutMI = new ToolStripMenuItem();
             SettingsMI = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
+            statusRunLabel = new ToolStripStatusLabel();
+            capsLockLabel = new ToolStripStatusLabel();
+            languageLabel = new ToolStripStatusLabel();
             toolStrip1 = new ToolStrip();
             undoTSB = new ToolStripButton();
             redoTSB = new ToolStripButton();
@@ -75,6 +78,7 @@
             ColumnColumn = new DataGridViewTextBoxColumn();
             MessageColumn = new DataGridViewTextBoxColumn();
             menuStrip.SuspendLayout();
+            statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)mainPanel).BeginInit();
             mainPanel.Panel2.SuspendLayout();
@@ -279,12 +283,35 @@
             // statusStrip1
             // 
             statusStrip1.ImageScalingSize = new Size(20, 20);
+            statusStrip1.Items.AddRange(new ToolStripItem[] { statusRunLabel, capsLockLabel, languageLabel });
             statusStrip1.Location = new Point(0, 508);
             statusStrip1.Name = "statusStrip1";
             statusStrip1.Padding = new Padding(1, 0, 12, 0);
             statusStrip1.Size = new Size(1073, 22);
             statusStrip1.TabIndex = 1;
             statusStrip1.Text = "statusStrip1";
+            // 
+            // statusRunLabel
+            // 
+            statusRunLabel.Name = "statusRunLabel";
+            statusRunLabel.Padding = new Padding(10, 0, 0, 0);
+            statusRunLabel.Size = new Size(55, 17);
+            statusRunLabel.Text = "Готово";
+            // 
+            // capsLockLabel
+            // 
+            capsLockLabel.Name = "capsLockLabel";
+            capsLockLabel.Size = new Size(803, 17);
+            capsLockLabel.Spring = true;
+            capsLockLabel.Text = "Клавиша CapsLock нажата";
+            capsLockLabel.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // languageLabel
+            // 
+            languageLabel.Name = "languageLabel";
+            languageLabel.Padding = new Padding(30, 0, 0, 0);
+            languageLabel.Size = new Size(171, 17);
+            languageLabel.Text = "Язык ввода Английский";
             // 
             // toolStrip1
             // 
@@ -395,6 +422,9 @@
             mainPanel.Location = new Point(0, 68);
             mainPanel.Name = "mainPanel";
             mainPanel.Orientation = Orientation.Horizontal;
+            mainPanel.KeyDown += keyPressedMainForm;
+            mainPanel.DragDrop += CompilerForm_DragDrop;
+            mainPanel.DragEnter += CompilerForm_DragEnter;
             // 
             // mainPanel.Panel2
             // 
@@ -411,14 +441,14 @@
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = SystemColors.Control;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, ColumnColumn, MessageColumn });
             dataGridView.Dock = DockStyle.Fill;
@@ -478,13 +508,20 @@
             Controls.Add(toolStrip1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip);
+            KeyDown += keyPressedMainForm;
             MainMenuStrip = menuStrip;
+            FormClosing += exit_Process;
+            DragEnter += CompilerForm_DragEnter;
+            DragDrop += CompilerForm_DragDrop;
+            InputLanguageChanged += Form_InputLanguageChanged;
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(984, 510);
             Name = "CompilerForm";
             Text = "Компилятор";
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
+            statusStrip1.ResumeLayout(false);
+            statusStrip1.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
             mainPanel.Panel2.ResumeLayout(false);
@@ -541,5 +578,8 @@
         private DataGridViewTextBoxColumn LineColumn;
         private DataGridViewTextBoxColumn MessageColumn;
         private DataGridViewTextBoxColumn ColumnColumn;
+        private ToolStripStatusLabel statusRunLabel;
+        private ToolStripStatusLabel capsLockLabel;
+        private ToolStripStatusLabel languageLabel;
     }
 }

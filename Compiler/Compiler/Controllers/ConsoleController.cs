@@ -1,17 +1,18 @@
-﻿using System;
+﻿using CompilerGUI.HelpClass;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CompilerGUI
+namespace CompilerGUI.Controllers
 {
-    public class ControllerConsole
+    public class ConsoleController
     {
         private RichTextBox? textBoxCode;
         public event Action<string>? FindException;
 
-        public ControllerConsole() 
+        public ConsoleController() 
         {
             textBoxCode = new RichTextBox();
         }
@@ -48,7 +49,5 @@ namespace CompilerGUI
                 textBoxCode.AppendText($"> {line}");
             }
         }
-
-
     }
 }

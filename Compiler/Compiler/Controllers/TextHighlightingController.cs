@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using CompilerGUI.HelpClass;
 
-namespace CompilerGUI
+namespace CompilerGUI.Controllers
 {
-    public class ControllerTextHighlighting
+    public class TextHighlightingController
     {
         private string previousText = "";
         private string formatCode = "";
-        private KeyWordViewList keys;
+        private KeyWordFashionList keys;
         public RichTextBox codeTextBox;
         private Dictionary<string, Dictionary<Color, string[]>> dict = new Dictionary<string, Dictionary<Color, string[]>>()
         {
@@ -26,18 +27,18 @@ namespace CompilerGUI
         private static extern IntPtr SendMessage(IntPtr hWnd, int msg, bool wParam, int lParam);
         private const int WM_SETREDRAW = 0x0b;
 
-        public ControllerTextHighlighting(string formatCode)
+        public TextHighlightingController(string formatCode)
         {
             this.formatCode = formatCode;
             var result = new Dictionary<Color, string[]>();
             if (dict.TryGetValue(formatCode, out result))
             {
-                keys = new KeyWordViewList(dict[formatCode]);
+                keys = new KeyWordFashionList(dict[formatCode]);
             }
             else
             {
                 formatCode = "base";
-                keys = new KeyWordViewList(dict[formatCode]);
+                keys = new KeyWordFashionList(dict[formatCode]);
             }
         }
 
