@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompilerGUI.HelpClass;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,12 +21,12 @@ namespace CompilerGUI.Controllers
         public void Initialize()
         {
             bool currentCapsState = Control.IsKeyLocked(Keys.CapsLock);
-            string capsMessage = currentCapsState ? "Клавиша CapsLock нажата" : "Клавиша CapsLock не нажата";
+            string capsMessage = currentCapsState ? LocalizationService.Get("CapsLockPressed") : LocalizationService.Get("CapsLockNotPressed");
             CapsLockChanged?.Invoke(this, capsMessage);
 
             var culture = InputLanguage.CurrentInputLanguage.Culture;
             string lang = culture.TwoLetterISOLanguageName.ToUpper();
-            string langMessage = lang == "RU" ? "Язык ввода Русский" : "Язык ввода Английский";
+            string langMessage = lang == "RU" ? LocalizationService.Get("InputLanguageRu") : LocalizationService.Get("InputLanguageEn");
             InputLanguageChanged?.Invoke(this, langMessage);
         }
 
@@ -37,7 +38,7 @@ namespace CompilerGUI.Controllers
                 if (currentState != _lastCapsState)
                 {
                     _lastCapsState = currentState;
-                    string statusMessage = currentState ? "Клавиша CapsLock нажата" : "Клавиша CapsLock не нажата";
+                    string statusMessage = currentState ? LocalizationService.Get("CapsLockPressed") : LocalizationService.Get("CapsLockNotPressed");
                     CapsLockChanged?.Invoke(this, statusMessage);
                 }
             }
@@ -74,7 +75,7 @@ namespace CompilerGUI.Controllers
             var culture = InputLanguage.CurrentInputLanguage.Culture;
             string lang = culture.TwoLetterISOLanguageName.ToUpper();
 
-            string res = lang == "RU" ? "Язык ввода Русский" : "Язык ввода Английский";
+            string res = lang == "RU" ? LocalizationService.Get("InputLanguageRu"): LocalizationService.Get("InputLanguageEn");
             InputLanguageChanged?.Invoke(this, res);
         }
     }

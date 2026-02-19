@@ -45,12 +45,6 @@ namespace CompilerGUI
             keyController.CtrlShiftSPressed += SaveUsFile;
 
             controllerTCP.TapPageKeyDown += keyController.OnKeyDown;
-            /*
-            keyController.CtrlCPressed += copy_Click;
-            keyController.CtrlXPressed += cut_Click;
-            keyController.CtrlVPressed += insert_Click;
-            keyController.CtrlAPressed += selectAll_Click;
-            */
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -89,6 +83,11 @@ namespace CompilerGUI
         private void CreateFile()
         {
             controllerTCP.CreateFile();
+        }
+
+        private void StatusChanged(string status) 
+        {
+            statusRunLabel.Text = LocalizationService.Get(status);
         }
 
         private void OnCapsLockChanged(object sender, string statusMessage)
@@ -272,6 +271,8 @@ namespace CompilerGUI
             cutTSB.Text = LocalizationService.Get("Cut");
             selectAllTSB.Text = LocalizationService.Get("SelectAll");
             deleteTabTSB.Text = LocalizationService.Get("CloseTab");
+            StatusChanged("Ready");
+            keyController?.Initialize();
 
             this.Text = LocalizationService.Get("Compiler");
             dataGridView.Columns["FilePathColumn"].HeaderText = LocalizationService.Get("FilePath");

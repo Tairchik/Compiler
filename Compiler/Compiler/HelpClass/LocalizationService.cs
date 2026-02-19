@@ -60,7 +60,16 @@ namespace CompilerGUI.HelpClass
             "ErrorSaveMessage": "Ошибка при сохранении файла",
             "NewFile": "Новый файл",
             "Language": "Язык",
-            "Cancel": "Отмена"
+            "Cancel": "Отмена",
+            "InputLanguageRu": "Язык ввода Русский", 
+            "InputLanguageEn": "Язык ввода Английский",
+            "CapsLockPressed": "Клавиша CapsLock нажата",
+            "CapsLockNotPressed": "Клавиша CapsLock не нажата",
+            "Ready": "Готово",
+            "Run": "Запущено",
+            "Load": "Загрузка",
+            "Wait": "Ожидание",
+            "Assembling": "Сборка"
           },
 
           "en": {
@@ -107,7 +116,16 @@ namespace CompilerGUI.HelpClass
             "ErrorSaveMessage": "Error while saving file",
             "NewFile": "New file",
             "Language": "Language",
-            "Cancel": "Cancel"
+            "Cancel": "Cancel",
+            "InputLanguageRu": "Input language Russia", 
+            "InputLanguageEn": "Input language English",
+            "CapsLockPressed": "The CapsLock key is pressed",
+            "CapsLockNotPressed": "The CapsLock key is not pressed",
+            "Ready": "Ready",
+            "Run": "Run",
+            "Load": "Load",
+            "Wait": "Wait",
+            "Assembling": "Assembling"
           }
         }
         """;
