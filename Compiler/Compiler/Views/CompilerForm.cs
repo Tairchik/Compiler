@@ -1,7 +1,6 @@
 using CompilerGUI.Controllers;
 using CompilerGUI.HelpClass;
 using System.Media;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace CompilerGUI
 {
@@ -40,7 +39,12 @@ namespace CompilerGUI
             keyController.CapsLockChanged += OnCapsLockChanged;
             keyController.InputLanguageChanged += OnInputLanguageChanged;
             keyController.Initialize();
+            keyController.CtrlSPressed += SaveFile;
+            keyController.CtrlNPressed += CreateFile;
+            keyController.CtrlOPressed += OpenFile;
+            keyController.CtrlShiftSPressed += SaveUsFile;
 
+            controllerTCP.TapPageKeyDown += keyController.OnKeyDown;
             /*
             keyController.CtrlCPressed += copy_Click;
             keyController.CtrlXPressed += cut_Click;
@@ -70,6 +74,22 @@ namespace CompilerGUI
                 controllerTCP.OpenFile(filePath);
             }
         }
+        private void SaveFile() 
+        {
+            controllerTCP.SaveFile();
+        }
+        private void OpenFile()
+        {
+            controllerTCP.OpenFile();
+        }
+        private void SaveUsFile()
+        {
+            controllerTCP.SaveUsFile();
+        }
+        private void CreateFile()
+        {
+            controllerTCP.CreateFile();
+        }
 
         private void OnCapsLockChanged(object sender, string statusMessage)
         {
@@ -89,19 +109,6 @@ namespace CompilerGUI
         private void keyPressedMainForm(object sender, KeyEventArgs e)
         {
             keyController.OnKeyDown(e.KeyCode);
-            /*
-            if (ModifierKeys.HasFlag(Keys.Control))
-            {
-                if (e.KeyCode == Keys.O)
-                {
-                    controllerTCP.OpenFile(mainPanel.Panel1);
-                }
-                else if (e.KeyCode == Keys.N)
-                {
-                    controllerTCP.CreateFileBtnClick(mainPanel.Panel1);
-                }
-            }
-            */
         }
 
         private void createFile_Click(object sender, EventArgs e)

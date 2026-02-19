@@ -9,8 +9,12 @@ namespace CompilerGUI.Controllers
     public class KeyController
     {
 
-        public event EventHandler<string> CapsLockChanged;
-        public event EventHandler<string> InputLanguageChanged;
+        public event EventHandler<string>? CapsLockChanged;
+        public event EventHandler<string>? InputLanguageChanged;
+        public event Action? CtrlOPressed;
+        public event Action? CtrlNPressed;
+        public event Action? CtrlSPressed;
+        public event Action? CtrlShiftSPressed;
 
         private bool _lastCapsState = Control.IsKeyLocked(Keys.CapsLock);
         public void Initialize()
@@ -37,15 +41,30 @@ namespace CompilerGUI.Controllers
                     CapsLockChanged?.Invoke(this, statusMessage);
                 }
             }
+            else if (Control.ModifierKeys.HasFlag(Keys.Control) && Control.ModifierKeys.HasFlag(Keys.Shift))
+            {
+                if (key == Keys.S)
+                {
+                    CtrlShiftSPressed?.Invoke();
+                }
+            }
             else if (Control.ModifierKeys.HasFlag(Keys.Control))
             {
                 if (key == Keys.O)
                 {
-                    // Открыть файл
+                    CtrlOPressed?.Invoke();
                 }
                 else if (key == Keys.N)
                 {
-                    // Создать новый файл
+                    CtrlNPressed?.Invoke();
+                }
+                else if (key == Keys.S)
+                {
+                    CtrlSPressed?.Invoke();
+                }
+                else if (key == Keys.N)
+                {
+                    CtrlNPressed?.Invoke();
                 }
             }
         }
