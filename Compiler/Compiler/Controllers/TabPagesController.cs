@@ -366,6 +366,8 @@ namespace CompilerGUI.Controllers
 
                 RichTextBox richTextBoxText = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
                 RichTextBox richTextBoxNumbers = (RichTextBox)page.Controls.Find("richTextBoxNumbers", true)[0];
+                RichTextBox richTextBoxOut = (RichTextBox)page.Controls.Find("richTextBoxOut", true)[0];
+
 
                 if (richTextBoxText != null)
                 {
@@ -376,7 +378,17 @@ namespace CompilerGUI.Controllers
                         newZoom -= 0.1f;
 
                     newZoom = Math.Max(0.1f, Math.Min(5f, newZoom));
-                    richTextBoxNumbers.ZoomFactor = newZoom;
+
+                    if (sender == richTextBoxText) 
+                    {
+                        richTextBoxNumbers.ZoomFactor = newZoom;
+                        richTextBoxOut.ZoomFactor = newZoom;
+                    }
+                    else if (sender == richTextBoxOut) 
+                    {
+                        richTextBoxNumbers.ZoomFactor = newZoom;
+                        richTextBoxText.ZoomFactor = newZoom;
+                    }
                 }
             }
         }
