@@ -45,6 +45,8 @@ namespace CompilerGUI
             keyController.CtrlShiftSPressed += SaveUsFile;
 
             controllerTCP.TapPageKeyDown += keyController.OnKeyDown;
+
+            controllerConsole.ChangeStatusRun += StatusChanged;
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -68,7 +70,7 @@ namespace CompilerGUI
                 controllerTCP.OpenFile(filePath);
             }
         }
-        private void SaveFile() 
+        private void SaveFile()
         {
             controllerTCP.SaveFile();
         }
@@ -85,9 +87,9 @@ namespace CompilerGUI
             controllerTCP.CreateFile();
         }
 
-        private void StatusChanged(string status) 
+        private void StatusChanged(string status)
         {
-            statusRunLabel.Text = LocalizationService.Get(status);
+            statusRunLabel.Text = status;
         }
 
         private void OnCapsLockChanged(object sender, string statusMessage)
@@ -235,6 +237,15 @@ namespace CompilerGUI
             controllerTCP.CloseTabe();
         }
 
+        private void zoomPlus_Click(object sender, EventArgs e)
+        {
+            controllerTCP.ChangeZoomText(0.1f);
+        }
+        private void zoomMinus_Click(object sender, EventArgs e)
+        {
+            controllerTCP.ChangeZoomText(-0.1f);
+        }
+
         private void ApplyLocalization()
         {
             FileTS.Text = LocalizationService.Get("File");
@@ -271,7 +282,7 @@ namespace CompilerGUI
             cutTSB.Text = LocalizationService.Get("Cut");
             selectAllTSB.Text = LocalizationService.Get("SelectAll");
             deleteTabTSB.Text = LocalizationService.Get("CloseTab");
-            StatusChanged("Ready");
+            StatusChanged(LocalizationService.Get("Ready"));
             keyController?.Initialize();
 
             this.Text = LocalizationService.Get("Compiler");
@@ -281,5 +292,6 @@ namespace CompilerGUI
             dataGridView.Columns["MessageColumn"].HeaderText = LocalizationService.Get("Message");
             dataGridView.Refresh();
         }
+
     }
 }

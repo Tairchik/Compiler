@@ -66,7 +66,7 @@ namespace CompilerGUI.HelpClass
             "CapsLockPressed": "Клавиша CapsLock нажата",
             "CapsLockNotPressed": "Клавиша CapsLock не нажата",
             "Ready": "Готово",
-            "Run": "Запущено",
+            "RunStatus": "Запущено",
             "Load": "Загрузка",
             "Wait": "Ожидание",
             "Assembling": "Сборка"
@@ -122,7 +122,7 @@ namespace CompilerGUI.HelpClass
             "CapsLockPressed": "The CapsLock key is pressed",
             "CapsLockNotPressed": "The CapsLock key is not pressed",
             "Ready": "Ready",
-            "Run": "Run",
+            "RunStatus": "Run",
             "Load": "Load",
             "Wait": "Wait",
             "Assembling": "Assembling"

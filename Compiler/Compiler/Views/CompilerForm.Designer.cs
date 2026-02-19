@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerForm));
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -70,6 +70,8 @@
             cutTSB = new ToolStripButton();
             selectAllTSB = new ToolStripButton();
             deleteTabTSB = new ToolStripButton();
+            zoomPlus = new ToolStripButton();
+            zoomMinus = new ToolStripButton();
             mainPanel = new SplitContainer();
             dataGridView = new DataGridView();
             NumberColumn = new DataGridViewTextBoxColumn();
@@ -301,7 +303,7 @@
             // capsLockLabel
             // 
             capsLockLabel.Name = "capsLockLabel";
-            capsLockLabel.Size = new Size(803, 17);
+            capsLockLabel.Size = new Size(837, 17);
             capsLockLabel.Spring = true;
             capsLockLabel.Text = "Клавиша CapsLock нажата";
             capsLockLabel.TextAlign = ContentAlignment.MiddleRight;
@@ -310,14 +312,14 @@
             // 
             languageLabel.Name = "languageLabel";
             languageLabel.Padding = new Padding(30, 0, 0, 0);
-            languageLabel.Size = new Size(171, 17);
+            languageLabel.Size = new Size(168, 17);
             languageLabel.Text = "Язык ввода Английский";
             // 
             // toolStrip1
             // 
             toolStrip1.CanOverflow = false;
             toolStrip1.ImageScalingSize = new Size(38, 38);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, deleteTabTSB });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, deleteTabTSB, zoomPlus, zoomMinus });
             toolStrip1.LayoutStyle = ToolStripLayoutStyle.Flow;
             toolStrip1.Location = new Point(0, 23);
             toolStrip1.Name = "toolStrip1";
@@ -415,6 +417,26 @@
             deleteTabTSB.Text = "Удалить вкладку";
             deleteTabTSB.Click += deleteTabTSB_Click;
             // 
+            // zoomPlus
+            // 
+            zoomPlus.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            zoomPlus.Image = (Image)resources.GetObject("zoomPlus.Image");
+            zoomPlus.ImageTransparentColor = Color.Magenta;
+            zoomPlus.Name = "zoomPlus";
+            zoomPlus.Size = new Size(42, 42);
+            zoomPlus.Text = "Увеличить текст";
+            zoomPlus.Click += zoomPlus_Click;
+            // 
+            // zoomMinus
+            // 
+            zoomMinus.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            zoomMinus.Image = (Image)resources.GetObject("zoomMinus.Image");
+            zoomMinus.ImageTransparentColor = Color.Magenta;
+            zoomMinus.Name = "zoomMinus";
+            zoomMinus.Size = new Size(42, 42);
+            zoomMinus.Text = "Уменьшить текст";
+            zoomMinus.Click += zoomMinus_Click;
+            // 
             // mainPanel
             // 
             mainPanel.BackColor = SystemColors.GradientInactiveCaption;
@@ -422,9 +444,6 @@
             mainPanel.Location = new Point(0, 68);
             mainPanel.Name = "mainPanel";
             mainPanel.Orientation = Orientation.Horizontal;
-            mainPanel.KeyDown += keyPressedMainForm;
-            mainPanel.DragDrop += CompilerForm_DragDrop;
-            mainPanel.DragEnter += CompilerForm_DragEnter;
             // 
             // mainPanel.Panel2
             // 
@@ -433,6 +452,9 @@
             mainPanel.Size = new Size(1073, 440);
             mainPanel.SplitterDistance = 310;
             mainPanel.TabIndex = 3;
+            mainPanel.DragDrop += CompilerForm_DragDrop;
+            mainPanel.DragEnter += CompilerForm_DragEnter;
+            mainPanel.KeyDown += keyPressedMainForm;
             // 
             // dataGridView
             // 
@@ -441,14 +463,14 @@
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, ColumnColumn, MessageColumn });
             dataGridView.Dock = DockStyle.Fill;
@@ -508,16 +530,16 @@
             Controls.Add(toolStrip1);
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip);
-            KeyDown += keyPressedMainForm;
             MainMenuStrip = menuStrip;
-            FormClosing += exit_Process;
-            DragEnter += CompilerForm_DragEnter;
-            DragDrop += CompilerForm_DragDrop;
-            InputLanguageChanged += Form_InputLanguageChanged;
             Margin = new Padding(3, 2, 3, 2);
             MinimumSize = new Size(984, 510);
             Name = "CompilerForm";
             Text = "Компилятор";
+            FormClosing += exit_Process;
+            InputLanguageChanged += Form_InputLanguageChanged;
+            DragDrop += CompilerForm_DragDrop;
+            DragEnter += CompilerForm_DragEnter;
+            KeyDown += keyPressedMainForm;
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             statusStrip1.ResumeLayout(false);
@@ -581,5 +603,7 @@
         private ToolStripStatusLabel statusRunLabel;
         private ToolStripStatusLabel capsLockLabel;
         private ToolStripStatusLabel languageLabel;
+        private ToolStripButton zoomPlus;
+        private ToolStripButton zoomMinus;
     }
 }

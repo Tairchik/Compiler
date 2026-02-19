@@ -11,7 +11,7 @@ namespace CompilerGUI.Controllers
     {
         private RichTextBox? textBoxCode;
         public event Action<string>? FindException;
-
+        public event Action<string>? ChangeStatusRun;
         public ConsoleController() 
         {
             textBoxCode = new RichTextBox();
@@ -26,13 +26,16 @@ namespace CompilerGUI.Controllers
         {
             if (textBoxCode == null) return;
             // Компилируем, анализируем и тд
+            ChangeStatusRun?.Invoke(LocalizationService.Get("Assembling"));
             string code = textBoxCode.Text;
             string info = "ExceptionMessage";
+            ChangeStatusRun?.Invoke(LocalizationService.Get("RunStatus"));
             if (!string.IsNullOrEmpty(info))
             FindException?.Invoke(info);
             UpdateTextConsole(info);
+            ChangeStatusRun?.Invoke(LocalizationService.Get("Ready"));
         }
-        
+
         // Проверка в момент написания на ошибки
         public List<ExceptionInfo> AnalysisSyntax()
         {

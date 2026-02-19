@@ -341,9 +341,10 @@ namespace CompilerGUI.Controllers
             return true;
         }
 
-        private bool ChangeZoomText(float size)
+        public bool ChangeZoomText(float size)
         {
-            TabPage page = tabControl.SelectedTab;
+            if (tabControl.SelectedTab == null) return false;
+            TabPage? page = tabControl.SelectedTab;
 
             RichTextBox richTextBoxText = (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];
             RichTextBox richTextBoxNumbers = (RichTextBox)page.Controls.Find("richTextBoxNumbers", true)[0];
