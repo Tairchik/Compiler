@@ -71,9 +71,12 @@
             copyTSB = new ToolStripButton();
             cutTSB = new ToolStripButton();
             selectAllTSB = new ToolStripButton();
-            deleteTabTSB = new ToolStripButton();
             zoomPlus = new ToolStripButton();
             zoomMinus = new ToolStripButton();
+            deleteTabTSB = new ToolStripButton();
+            runBtn = new ToolStripButton();
+            aboutProgramBtn = new ToolStripButton();
+            helpBtn = new ToolStripButton();
             mainPanel = new SplitContainer();
             dataGridView = new DataGridView();
             NumberColumn = new DataGridViewTextBoxColumn();
@@ -81,9 +84,6 @@
             LineColumn = new DataGridViewTextBoxColumn();
             ColumnColumn = new DataGridViewTextBoxColumn();
             MessageColumn = new DataGridViewTextBoxColumn();
-            helpBtn = new ToolStripButton();
-            aboutProgramBtn = new ToolStripButton();
-            runProgramBtn = new ToolStripButton();
             menuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -286,6 +286,7 @@
             AboutProgramMI.Name = "AboutProgramMI";
             AboutProgramMI.Size = new Size(199, 22);
             AboutProgramMI.Text = "О программе";
+            AboutProgramMI.Click += AboutProgramMI_Click;
             // 
             // Run
             // 
@@ -338,8 +339,7 @@
             // 
             toolStrip1.CanOverflow = false;
             toolStrip1.ImageScalingSize = new Size(38, 38);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, deleteTabTSB, zoomPlus, zoomMinus, helpBtn, aboutProgramBtn, runProgramBtn });
-            toolStrip1.LayoutStyle = ToolStripLayoutStyle.Flow;
+            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, zoomPlus, zoomMinus, deleteTabTSB, runBtn, aboutProgramBtn, helpBtn });
             toolStrip1.Location = new Point(0, 23);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1073, 45);
@@ -370,7 +370,9 @@
             // 
             createTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
             createTSB.Image = (Image)resources.GetObject("createTSB.Image");
+            createTSB.ImageAlign = ContentAlignment.MiddleRight;
             createTSB.ImageTransparentColor = Color.Magenta;
+            createTSB.Margin = new Padding(42, 1, 0, 2);
             createTSB.Name = "createTSB";
             createTSB.Size = new Size(42, 42);
             createTSB.Text = "Создать файл";
@@ -400,7 +402,9 @@
             // 
             copyTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
             copyTSB.Image = (Image)resources.GetObject("copyTSB.Image");
+            copyTSB.ImageAlign = ContentAlignment.MiddleRight;
             copyTSB.ImageTransparentColor = Color.Magenta;
+            copyTSB.Margin = new Padding(42, 1, 0, 2);
             copyTSB.Name = "copyTSB";
             copyTSB.Size = new Size(42, 42);
             copyTSB.Text = "Копировать";
@@ -426,16 +430,6 @@
             selectAllTSB.Text = "Выделить все";
             selectAllTSB.Click += selectAll_Click;
             // 
-            // deleteTabTSB
-            // 
-            deleteTabTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            deleteTabTSB.Image = (Image)resources.GetObject("deleteTabTSB.Image");
-            deleteTabTSB.ImageTransparentColor = Color.Magenta;
-            deleteTabTSB.Name = "deleteTabTSB";
-            deleteTabTSB.Size = new Size(42, 42);
-            deleteTabTSB.Text = "Удалить вкладку";
-            deleteTabTSB.Click += deleteTabTSB_Click;
-            // 
             // zoomPlus
             // 
             zoomPlus.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -455,6 +449,51 @@
             zoomMinus.Size = new Size(42, 42);
             zoomMinus.Text = "Уменьшить текст";
             zoomMinus.Click += zoomMinus_Click;
+            // 
+            // deleteTabTSB
+            // 
+            deleteTabTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            deleteTabTSB.Image = (Image)resources.GetObject("deleteTabTSB.Image");
+            deleteTabTSB.ImageTransparentColor = Color.Magenta;
+            deleteTabTSB.Margin = new Padding(42, 1, 42, 2);
+            deleteTabTSB.Name = "deleteTabTSB";
+            deleteTabTSB.Size = new Size(42, 42);
+            deleteTabTSB.Text = "Удалить вкладку";
+            deleteTabTSB.Click += deleteTabTSB_Click;
+            // 
+            // runBtn
+            // 
+            runBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            runBtn.Image = (Image)resources.GetObject("runBtn.Image");
+            runBtn.ImageTransparentColor = Color.Magenta;
+            runBtn.Name = "runBtn";
+            runBtn.RightToLeft = RightToLeft.No;
+            runBtn.Size = new Size(42, 42);
+            runBtn.Text = "Пуск";
+            runBtn.Click += runBtn_Click;
+            // 
+            // aboutProgramBtn
+            // 
+            aboutProgramBtn.Alignment = ToolStripItemAlignment.Right;
+            aboutProgramBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            aboutProgramBtn.Image = (Image)resources.GetObject("aboutProgramBtn.Image");
+            aboutProgramBtn.ImageTransparentColor = Color.Magenta;
+            aboutProgramBtn.Name = "aboutProgramBtn";
+            aboutProgramBtn.Size = new Size(42, 42);
+            aboutProgramBtn.Text = "О программе";
+            aboutProgramBtn.Click += aboutProgramBtn_Click;
+            // 
+            // helpBtn
+            // 
+            helpBtn.Alignment = ToolStripItemAlignment.Right;
+            helpBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            helpBtn.Image = (Image)resources.GetObject("helpBtn.Image");
+            helpBtn.ImageAlign = ContentAlignment.MiddleRight;
+            helpBtn.ImageTransparentColor = Color.Magenta;
+            helpBtn.Name = "helpBtn";
+            helpBtn.Size = new Size(42, 42);
+            helpBtn.Text = "Помощь";
+            helpBtn.Click += helpBtn_Click;
             // 
             // mainPanel
             // 
@@ -538,33 +577,6 @@
             MessageColumn.HeaderText = "Сообщение";
             MessageColumn.Name = "MessageColumn";
             MessageColumn.ReadOnly = true;
-            // 
-            // helpBtn
-            // 
-            helpBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            helpBtn.Image = (Image)resources.GetObject("helpBtn.Image");
-            helpBtn.ImageTransparentColor = Color.Magenta;
-            helpBtn.Name = "helpBtn";
-            helpBtn.Size = new Size(42, 42);
-            helpBtn.Text = "Помощь";
-            // 
-            // aboutProgramBtn
-            // 
-            aboutProgramBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            aboutProgramBtn.Image = (Image)resources.GetObject("aboutProgramBtn.Image");
-            aboutProgramBtn.ImageTransparentColor = Color.Magenta;
-            aboutProgramBtn.Name = "aboutProgramBtn";
-            aboutProgramBtn.Size = new Size(42, 42);
-            aboutProgramBtn.Text = "О программе";
-            // 
-            // runProgramBtn
-            // 
-            runProgramBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            runProgramBtn.Image = (Image)resources.GetObject("runProgramBtn.Image");
-            runProgramBtn.ImageTransparentColor = Color.Magenta;
-            runProgramBtn.Name = "runProgramBtn";
-            runProgramBtn.Size = new Size(42, 42);
-            runProgramBtn.Text = "toolStripButton1";
             // 
             // CompilerForm
             // 
@@ -655,6 +667,6 @@
         private ToolStripMenuItem AboutProgramMI;
         private ToolStripButton helpBtn;
         private ToolStripButton aboutProgramBtn;
-        private ToolStripButton runProgramBtn;
+        private ToolStripButton runBtn;
     }
 }

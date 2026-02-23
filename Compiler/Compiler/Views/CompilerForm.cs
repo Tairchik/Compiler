@@ -1,6 +1,7 @@
 using CompilerGUI.Controllers;
 using CompilerGUI.HelpClass;
 using CompilerGUI.Views;
+using System.Diagnostics;
 using System.Media;
 
 namespace CompilerGUI
@@ -88,12 +89,11 @@ namespace CompilerGUI
         {
             controllerTCP.CreateFile();
         }
-
-        private void OpenHelp() 
+        private void OpenHelp()
         {
             HelpForm helpForm = new HelpForm();
             helpForm.ShowDialog();
-        } 
+        }
         private void StatusChanged(string status)
         {
             statusRunLabel.Text = status;
@@ -226,6 +226,7 @@ namespace CompilerGUI
         {
             controllerConsole.StartCode();
         }
+
         private void SettingsMI_Click(object sender, EventArgs e)
         {
             Settings setForm = new Settings(LocalizationService.CurrentLanguage);
@@ -241,7 +242,10 @@ namespace CompilerGUI
         {
             controllerTCP.CloseTabe();
         }
-
+        private void runBtn_Click(object sender, EventArgs e)
+        {
+            controllerConsole.StartCode();
+        }
         private void zoomPlus_Click(object sender, EventArgs e)
         {
             controllerTCP.ChangeZoomText(0.1f);
@@ -250,7 +254,33 @@ namespace CompilerGUI
         {
             controllerTCP.ChangeZoomText(-0.1f);
         }
+        private void helpBtn_Click(object sender, EventArgs e)
+        {
+            OpenHelp();
+        }
+        private void aboutProgramBtn_Click(object sender, EventArgs e)
+        {
+            openReadMe();
+        }
+        private void openReadMe()
+        {
+            string url = "https://github.com/Tairchik/Compiler/blob/main/README.md";
 
+            try
+            {
+                // Для .NET Core / .NET 5+ (современный способ)
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                // На случай, если что-то пошло не так (например, не найден браузер)
+                MessageBox.Show("Не удалось открыть ссылку: " + ex.Message);
+            }
+        }
         private void ApplyLocalization()
         {
             FileTS.Text = LocalizationService.Get("File");
@@ -296,6 +326,11 @@ namespace CompilerGUI
             dataGridView.Columns["LineColumn"].HeaderText = LocalizationService.Get("Line");
             dataGridView.Columns["MessageColumn"].HeaderText = LocalizationService.Get("Message");
             dataGridView.Refresh();
+        }
+
+        private void AboutProgramMI_Click(object sender, EventArgs e)
+        {
+            openReadMe();
         }
     }
 }
