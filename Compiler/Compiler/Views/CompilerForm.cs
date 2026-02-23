@@ -1,5 +1,6 @@
 using CompilerGUI.Controllers;
 using CompilerGUI.HelpClass;
+using CompilerGUI.Views;
 using System.Media;
 
 namespace CompilerGUI
@@ -42,6 +43,7 @@ namespace CompilerGUI
             keyController.CtrlSPressed += SaveFile;
             keyController.CtrlNPressed += CreateFile;
             keyController.CtrlOPressed += OpenFile;
+            keyController.CtrlHPressed += OpenHelp;
             keyController.CtrlShiftSPressed += SaveUsFile;
 
             controllerTCP.TapPageKeyDown += keyController.OnKeyDown;
@@ -87,6 +89,11 @@ namespace CompilerGUI
             controllerTCP.CreateFile();
         }
 
+        private void OpenHelp() 
+        {
+            HelpForm helpForm = new HelpForm();
+            helpForm.ShowDialog();
+        } 
         private void StatusChanged(string status)
         {
             statusRunLabel.Text = status;
@@ -160,7 +167,7 @@ namespace CompilerGUI
 
         private void helpMI_Click(object sender, EventArgs e)
         {
-
+            OpenHelp();
         }
 
         private void cut_Click(object sender, EventArgs e)
@@ -182,7 +189,6 @@ namespace CompilerGUI
             {
                 SystemSounds.Beep.Play();
             }
-
         }
 
         private void deleteText_Click(object sender, EventArgs e)
@@ -220,12 +226,6 @@ namespace CompilerGUI
         {
             controllerConsole.StartCode();
         }
-
-        private void aboutMI_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void SettingsMI_Click(object sender, EventArgs e)
         {
             Settings setForm = new Settings(LocalizationService.CurrentLanguage);

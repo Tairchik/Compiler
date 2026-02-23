@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerForm));
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -53,8 +53,10 @@
             testExampleMI = new ToolStripMenuItem();
             bibliographyMI = new ToolStripMenuItem();
             gitURLMI = new ToolStripMenuItem();
-            Run = new ToolStripMenuItem();
             aboutMI = new ToolStripMenuItem();
+            helpMI = new ToolStripMenuItem();
+            AboutProgramMI = new ToolStripMenuItem();
+            Run = new ToolStripMenuItem();
             SettingsMI = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             statusRunLabel = new ToolStripStatusLabel();
@@ -79,8 +81,9 @@
             LineColumn = new DataGridViewTextBoxColumn();
             ColumnColumn = new DataGridViewTextBoxColumn();
             MessageColumn = new DataGridViewTextBoxColumn();
-            helpMI = new ToolStripMenuItem();
-            AboutProgramMI = new ToolStripMenuItem();
+            helpBtn = new ToolStripButton();
+            aboutProgramBtn = new ToolStripButton();
+            runProgramBtn = new ToolStripButton();
             menuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -263,20 +266,33 @@
             gitURLMI.Size = new Size(231, 22);
             gitURLMI.Text = "Исходный код программы";
             // 
-            // Run
-            // 
-            Run.Name = "Run";
-            Run.Size = new Size(46, 19);
-            Run.Text = "Пуск";
-            Run.Click += Run_Click;
-            // 
             // aboutMI
             // 
             aboutMI.DropDownItems.AddRange(new ToolStripItem[] { helpMI, AboutProgramMI });
             aboutMI.Name = "aboutMI";
             aboutMI.Size = new Size(65, 19);
             aboutMI.Text = "Справка";
-            aboutMI.Click += aboutMI_Click;
+            // 
+            // helpMI
+            // 
+            helpMI.Name = "helpMI";
+            helpMI.ShortcutKeyDisplayString = "Ctrl+H";
+            helpMI.Size = new Size(199, 22);
+            helpMI.Text = "Вызов справки";
+            helpMI.Click += helpMI_Click;
+            // 
+            // AboutProgramMI
+            // 
+            AboutProgramMI.Name = "AboutProgramMI";
+            AboutProgramMI.Size = new Size(199, 22);
+            AboutProgramMI.Text = "О программе";
+            // 
+            // Run
+            // 
+            Run.Name = "Run";
+            Run.Size = new Size(46, 19);
+            Run.Text = "Пуск";
+            Run.Click += Run_Click;
             // 
             // SettingsMI
             // 
@@ -322,7 +338,7 @@
             // 
             toolStrip1.CanOverflow = false;
             toolStrip1.ImageScalingSize = new Size(38, 38);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, deleteTabTSB, zoomPlus, zoomMinus });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, deleteTabTSB, zoomPlus, zoomMinus, helpBtn, aboutProgramBtn, runProgramBtn });
             toolStrip1.LayoutStyle = ToolStripLayoutStyle.Flow;
             toolStrip1.Location = new Point(0, 23);
             toolStrip1.Name = "toolStrip1";
@@ -466,14 +482,14 @@
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, ColumnColumn, MessageColumn });
             dataGridView.Dock = DockStyle.Fill;
@@ -523,19 +539,32 @@
             MessageColumn.Name = "MessageColumn";
             MessageColumn.ReadOnly = true;
             // 
-            // helpMI
+            // helpBtn
             // 
-            helpMI.Name = "helpMI";
-            helpMI.ShortcutKeyDisplayString = "Ctrl+H";
-            helpMI.Size = new Size(199, 22);
-            helpMI.Text = "Вызов справки";
-            helpMI.Click += helpMI_Click;
+            helpBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            helpBtn.Image = (Image)resources.GetObject("helpBtn.Image");
+            helpBtn.ImageTransparentColor = Color.Magenta;
+            helpBtn.Name = "helpBtn";
+            helpBtn.Size = new Size(42, 42);
+            helpBtn.Text = "Помощь";
             // 
-            // AboutProgramMI
+            // aboutProgramBtn
             // 
-            AboutProgramMI.Name = "AboutProgramMI";
-            AboutProgramMI.Size = new Size(199, 22);
-            AboutProgramMI.Text = "О программе";
+            aboutProgramBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            aboutProgramBtn.Image = (Image)resources.GetObject("aboutProgramBtn.Image");
+            aboutProgramBtn.ImageTransparentColor = Color.Magenta;
+            aboutProgramBtn.Name = "aboutProgramBtn";
+            aboutProgramBtn.Size = new Size(42, 42);
+            aboutProgramBtn.Text = "О программе";
+            // 
+            // runProgramBtn
+            // 
+            runProgramBtn.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            runProgramBtn.Image = (Image)resources.GetObject("runProgramBtn.Image");
+            runProgramBtn.ImageTransparentColor = Color.Magenta;
+            runProgramBtn.Name = "runProgramBtn";
+            runProgramBtn.Size = new Size(42, 42);
+            runProgramBtn.Text = "toolStripButton1";
             // 
             // CompilerForm
             // 
@@ -624,5 +653,8 @@
         private ToolStripButton zoomMinus;
         private ToolStripMenuItem helpMI;
         private ToolStripMenuItem AboutProgramMI;
+        private ToolStripButton helpBtn;
+        private ToolStripButton aboutProgramBtn;
+        private ToolStripButton runProgramBtn;
     }
 }

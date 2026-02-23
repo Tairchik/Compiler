@@ -16,6 +16,8 @@ namespace CompilerGUI.Controllers
         public event Action? CtrlNPressed;
         public event Action? CtrlSPressed;
         public event Action? CtrlShiftSPressed;
+        public event Action? CtrlHPressed;
+
 
         private bool _lastCapsState = Control.IsKeyLocked(Keys.CapsLock);
         public void Initialize()
@@ -66,6 +68,10 @@ namespace CompilerGUI.Controllers
                 else if (key == Keys.N)
                 {
                     CtrlNPressed?.Invoke();
+                }
+                else if (key == Keys.H) 
+                {
+                    CtrlHPressed?.Invoke();
                 }
             }
         }
