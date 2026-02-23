@@ -158,6 +158,11 @@ namespace CompilerGUI
             }
         }
 
+        private void helpMI_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void cut_Click(object sender, EventArgs e)
         {
             string text = controllerRichTB.GetSelectedTextAndCut();
@@ -292,6 +297,5 @@ namespace CompilerGUI
             dataGridView.Columns["MessageColumn"].HeaderText = LocalizationService.Get("Message");
             dataGridView.Refresh();
         }
-
     }
 }
