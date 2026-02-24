@@ -317,6 +317,13 @@ namespace CompilerGUI
             cutTSB.Text = LocalizationService.Get("Cut");
             selectAllTSB.Text = LocalizationService.Get("SelectAll");
             deleteTabTSB.Text = LocalizationService.Get("CloseTab");
+            zoomPlus.Text = LocalizationService.Get("EnlargeText");
+            zoomMinus.Text = LocalizationService.Get("ReduceText");
+            helpMI.Text = LocalizationService.Get("CallingHelp");
+            AboutProgramMI.Text = LocalizationService.Get("AboutProgram");
+            helpBtn.Text = LocalizationService.Get("Help");
+            aboutProgramBtn.Text = LocalizationService.Get("AboutProgram");
+            runBtn.Text = LocalizationService.Get("Run");
             StatusChanged(LocalizationService.Get("Ready"));
             keyController?.Initialize();
 

@@ -1,4 +1,6 @@
-﻿namespace CompilerGUI.Views
+﻿using CompilerGUI.HelpClass;
+
+namespace CompilerGUI.Views
 {
     partial class HelpForm
     {
@@ -81,7 +83,7 @@
             ClientSize = new Size(800, 500);
             Controls.Add(splitContainer1);
             Name = "HelpForm";
-            Text = "Справочная система";
+            Text = LocalizationService.Get("Guide");
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();

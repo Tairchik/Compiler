@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CompilerGUI.HelpClass;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -21,104 +22,93 @@ namespace CompilerGUI.Views
         private void InitializeHelpContent()
         {
             treeView1.Nodes.Clear();
+            var loc = LocalizationService.Get;
 
-            // Корень
-            TreeNode root = new TreeNode("Содержание");
+            TreeNode root = new TreeNode(loc("Help_Contents"));
 
-            // Раздел: Меню Файл
-            TreeNode fileMenu = new TreeNode("Меню Файл");
-            fileMenu.Nodes.Add("Создать");
-            fileMenu.Nodes.Add("Открыть");
-            fileMenu.Nodes.Add("Сохранение (Сохранить/Как)");
-            fileMenu.Nodes.Add("Выход");
+            // Меню Файл
+            TreeNode fileMenu = new TreeNode(loc("Help_MenuFile"));
+            fileMenu.Nodes.Add(loc("Create"));      // уже есть в словаре
+            fileMenu.Nodes.Add(loc("Open"));        // уже есть
+            fileMenu.Nodes.Add(loc("Help_SaveTitle"));
+            fileMenu.Nodes.Add(loc("Exit"));        // уже есть
 
-            // Раздел: Меню Правка
-            TreeNode editMenu = new TreeNode("Меню Правка");
-            editMenu.Nodes.Add("Отмена и повтор");
-            editMenu.Nodes.Add("Работа с текстом (Буфер)");
-            editMenu.Nodes.Add("Выделение и удаление");
-            editMenu.Nodes.Add("Изменение размера текста");
+            // Меню Правка
+            TreeNode editMenu = new TreeNode(loc("Help_MenuEdit"));
+            editMenu.Nodes.Add(loc("Help_UndoRedo"));
+            editMenu.Nodes.Add(loc("Help_Clipboard"));
+            editMenu.Nodes.Add(loc("Help_SelectionDelete"));
+            editMenu.Nodes.Add(loc("Help_TextSize"));
 
-            // Раздел: Функционал
-            TreeNode functions = new TreeNode("Функции и окна");
-            functions.Nodes.Add("Область редактирования");
-            functions.Nodes.Add("Область результатов");
-            functions.Nodes.Add("Команда Пуск");
-
+            // Функции и окна
+            TreeNode functions = new TreeNode(loc("Help_FunctionsWindows"));
+            functions.Nodes.Add(loc("Help_EditArea"));
+            functions.Nodes.Add(loc("Help_ResultsArea"));
+            functions.Nodes.Add(loc("Help_RunCommand"));
 
             root.Nodes.Add(fileMenu);
             root.Nodes.Add(editMenu);
             root.Nodes.Add(functions);
 
             treeView1.Nodes.Add(root);
-            root.ExpandAll(); // Разворачиваем дерево полностью
+            root.ExpandAll();
         }
 
         private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            // Выбираем текст в зависимости от выбранного узла
-            switch (e.Node.Text)
+            var loc = LocalizationService.Get;
+            string nodeText = e.Node.Text;
+
+            // ФАЙЛ
+            if (nodeText == loc("Create"))
             {
-                // ФАЙЛ
-                case "Создать":
-                    ShowHelp("Создать (Ctrl+N)",
-                        "Очищает область редактирования для создания нового документа. \n\n" +
-                        "Внимание: Если текущий текст был изменен, программа предложит сохранить изменения перед очисткой.");
-                    break;
-                case "Открыть":
-                    ShowHelp("Открыть (Ctrl+O)",
-                        "Вызывает стандартное диалоговое окно для выбора и загрузки текстового файла в редактор.");
-                    break;
-                case "Сохранение (Сохранить/Как)":
-                    ShowHelp("Сохранить (Ctrl+S)",
-                        "Команда 'Сохранить' записывает изменения в текущий файл. \n\n" +
-                        "Команда 'Сохранить как' позволяет выбрать новое имя файла или местоположение.");
-                    break;
-                case "Выход":
-                    ShowHelp("Выход (Alt+F4)",
-                        "Завершает работу приложения. При наличии несохраненных правок выводится запрос на сохранение.");
-                    break;
-
-                // ПРАВКА
-                case "Отмена и повтор":
-                    ShowHelp("Отмена (Ctrl+Z) и Повтор (Ctrl+Y)",
-                        "Позволяет перемещаться по истории изменений текста назад и вперед.");
-                    break;
-                case "Работа с текстом (Буфер)":
-                    ShowHelp("Буфер обмена",
-                        "- Вырезать (Ctrl+X): Перемещает текст в буфер.\n" +
-                        "- Копировать (Ctrl+C): Копирует текст в буфер.\n" +
-                        "- Вставить (Ctrl+V): Вставляет текст из буфера.");
-                    break;
-                case "Выделение и удаление":
-                    ShowHelp("Выделение и удаление",
-                        "- Удалить (Del): Удаляет выделенный фрагмент.\n" +
-                        "- Выделить все (Ctrl+A): Выделяет весь текст в окне редактора.");
-                    break;
-                case "Изменение размера текста":
-                    ShowHelp("Изменение размера текста",
-                        "- Через соответсвующие кнопки (лупа со знаком + и лупа со знаком минус)\n" +
-                        "- При помощи сочетания клавиш для увеличения текста: Ctrl+<+> (Ctrl+MOUSEUP)\n"+
-                        "для уменьшения: Ctrl+<-> (Ctrl+MOUSEDOWN)");
-                    break;
-
-                // ДОПОЛНИТЕЛЬНО
-                case "Область редактирования":
-                    ShowHelp("Редактор текста",
-                        "Основное окно для работы. Здесь реализована подсветка синтаксиса и базовая навигация.");
-                    break;
-                case "Область результатов":
-                    ShowHelp("Окно вывода",
-                        "Служит для отображения сообщений анализатора. При щелчке по сообщению об ошибке, курсор в редакторе автоматически переходит к проблемному месту.");
-                    break;
-                case "Команда Пуск":
-                    ShowHelp("Пуск (Анализатор)",
-                        "Запускает языковой процессор для анализа введенного текста. На текущем этапе функционал находится в разработке.");
-                    break;
-
-                default:
-                    richTextBox1.Text = "Выберите раздел для просмотра справки.";
-                    break;
+                ShowHelp(loc("Help_Create_Title"), loc("Help_Create_Content"));
+            }
+            else if (nodeText == loc("Open"))
+            {
+                ShowHelp(loc("Help_Open_Title"), loc("Help_Open_Content"));
+            }
+            else if (nodeText == loc("Help_SaveTitle"))
+            {
+                ShowHelp(loc("Help_Save_Short_Title"), loc("Help_Save_Content"));
+            }
+            else if (nodeText == loc("Exit"))
+            {
+                ShowHelp(loc("Help_Exit_Title"), loc("Help_Exit_Content"));
+            }
+            // ПРАВКА
+            else if (nodeText == loc("Help_UndoRedo"))
+            {
+                ShowHelp(loc("Help_UndoRedo_Title"), loc("Help_UndoRedo_Content"));
+            }
+            else if (nodeText == loc("Help_Clipboard"))
+            {
+                ShowHelp(loc("Help_Clipboard_Title"), loc("Help_Clipboard_Content"));
+            }
+            else if (nodeText == loc("Help_SelectionDelete"))
+            {
+                ShowHelp(loc("Help_SelectionDelete_Title"), loc("Help_SelectionDelete_Content"));
+            }
+            else if (nodeText == loc("Help_TextSize"))
+            {
+                ShowHelp(loc("Help_TextSize_Title"), loc("Help_TextSize_Content"));
+            }
+            // ДОПОЛНИТЕЛЬНО
+            else if (nodeText == loc("Help_EditArea"))
+            {
+                ShowHelp(loc("Help_Editor_Title"), loc("Help_Editor_Content"));
+            }
+            else if (nodeText == loc("Help_ResultsArea"))
+            {
+                ShowHelp(loc("Help_Output_Title"), loc("Help_Output_Content"));
+            }
+            else if (nodeText == loc("Help_RunCommand"))
+            {
+                ShowHelp(loc("Help_Run_Title"), loc("Help_Run_Content"));
+            }
+            else
+            {
+                richTextBox1.Text = loc("Help_Default_Content");
             }
         }
 
