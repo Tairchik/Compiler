@@ -20,7 +20,7 @@ namespace CompilerGUI.Controllers
         public void InitCodeTextBox(TabPage tabPage)
         {
             if (tabPage != null)
-            textBoxCode = (RichTextBox) tabPage.Controls.Find("RichTextBoxOut", true)[0];
+            textBoxCode = (RichTextBox) tabPage.Controls.Find("richTextBoxOut", true)[0];
         }
         public void StartCode()
         {

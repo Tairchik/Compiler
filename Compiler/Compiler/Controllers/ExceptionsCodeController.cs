@@ -84,13 +84,26 @@ namespace CompilerGUI.Controllers
             gridLines.Clear();
         }
 
-        public void Clear(string FileName)
+        public void Clear(string FileName, string FilePath = "")
         {
-            for (int i = gridLines.Count - 1; i >= 0; i--)
+            if (string.IsNullOrEmpty(FilePath)) 
             {
-                if (gridLines[i].FileName == FileName)
+                for (int i = gridLines.Count - 1; i >= 0; i--)
                 {
-                    gridLines.RemoveAt(i);
+                    if (gridLines[i].FileName == FileName)
+                    {
+                        gridLines.RemoveAt(i);
+                    }
+                }
+            }
+            else 
+            {
+                for (int i = gridLines.Count - 1; i >= 0; i--)
+                {
+                    if (gridLines[i].FilePath == FilePath)
+                    {
+                        gridLines.RemoveAt(i);
+                    }
                 }
             }
         }

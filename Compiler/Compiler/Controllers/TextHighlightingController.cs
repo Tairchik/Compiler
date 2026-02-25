@@ -44,20 +44,17 @@ namespace CompilerGUI.Controllers
 
         public void InitTextBox(TabPage tabPape)
         {
-            try
-            {
-                if (tabPape != null) 
-                {
-                    TableLayoutPanel tableLayoutPanel = (TableLayoutPanel)tabPape.Controls.Find("tableLayoutPanel", true)[0];
-                    codeTextBox = (RichTextBox)tableLayoutPanel.Controls["richTextBoxText"];
-                    codeTextBox.TextChanged += CodeTextBox_TextChanged;
-                }
-            }
-            catch (Exception ex)
-            {
+            if (tabPape == null) return;
+            var tableLayoutPanel = (TableLayoutPanel)tabPape.Controls.Find("tableLayoutPanel", true)[0];
+            var found = tableLayoutPanel.Controls["richTextBoxText"] as RichTextBox;
+            if (found == null) return;
 
-            }
+            found.TextChanged -= CodeTextBox_TextChanged;
+            found.TextChanged += CodeTextBox_TextChanged;
+
+            codeTextBox = found;
         }
+
 
         private void HighlightLines(int startLine, int endLine)
         {
@@ -112,11 +109,6 @@ namespace CompilerGUI.Controllers
         }
 
 
-        public void HighlightExceptions()
-        {
-
-        }
-
         private void CodeTextBox_TextChanged(object sender, EventArgs e)
         {
             if (codeTextBox == null) return;
@@ -146,6 +138,12 @@ namespace CompilerGUI.Controllers
             HighlightLines(startLine, endLine);
 
             previousText = newText;
+        }
+
+
+        public void HighlightExceptions()
+        {
+
         }
 
     }

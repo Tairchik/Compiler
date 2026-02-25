@@ -21,6 +21,7 @@ namespace CompilerGUI.Controllers
         public event Action<string, FileClass> TextCodeChanged;
         public event Action<string, FileClass> TabPageChangedE;
         public event Action<Keys> TapPageKeyDown;
+        public event Action<string, string> TabClose;
 
         public TabPagesController(Control parentPanel) 
         {
@@ -88,8 +89,9 @@ namespace CompilerGUI.Controllers
                     fileInfo.IsSaved = true;
                     TabPage tabPage = createTabPage(fileInfo);
                     RichTextBox textBox = (RichTextBox)tabPage.Controls.Find("richTextBoxText", true)[0];
-
-                    textBox.Text = text;
+                    
+                    textBox.Clear(); 
+                    textBox.SelectedText = text;
                     fileInfo.IsSaved = true;
                     tabPage.Text = fileInfo.FileName;
                     TabPageCreate?.Invoke(tabControl.SelectedTab);
@@ -338,6 +340,8 @@ namespace CompilerGUI.Controllers
             {
                 tabControl.Visible = false;
             }
+            TabClose?.Invoke(info.FileName, info.FilePath);
+
             return true;
         }
 
@@ -451,7 +455,6 @@ namespace CompilerGUI.Controllers
             richTextBoxNumbers.Size = new Size(50, 426);
             richTextBoxNumbers.TabIndex = 0;
             richTextBoxNumbers.TabStop = false;
-            richTextBoxNumbers.Text = "";
             richTextBoxNumbers.WordWrap = false;
            
             richTextBoxText.BorderStyle = BorderStyle.None;
@@ -464,7 +467,6 @@ namespace CompilerGUI.Controllers
             richTextBoxText.Name = "richTextBoxText";
             richTextBoxText.Size = new Size(716, 426);
             richTextBoxText.TabIndex = 1;
-            richTextBoxText.Text = "";
             richTextBoxText.WordWrap = false;
             richTextBoxText.DragDrop += DragDrop;
             richTextBoxText.DragEnter += DragEnter;
@@ -488,6 +490,7 @@ namespace CompilerGUI.Controllers
             richTextBoxOut.DragDrop += DragDrop;
             richTextBoxOut.DragEnter += DragEnter;
             richTextBoxOut.AllowDrop = true;
+            richTextBoxOut.ReadOnly = true;
 
             tableLayoutPanel.ColumnCount = 3;
             tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 50F));

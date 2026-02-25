@@ -35,7 +35,7 @@ namespace CompilerGUI
             controllerTCP.TabPageChangedE += controllerExceptionsCode.PageCodeChanged;
             controllerTCP.TabPageChanged += controllerConsole.InitCodeTextBox;
             controllerTCP.TabPageChanged += controllerTextHighlighting.InitTextBox;
-
+            controllerTCP.TabClose += controllerExceptionsCode.Clear;
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
 
             keyController.CapsLockChanged += OnCapsLockChanged;

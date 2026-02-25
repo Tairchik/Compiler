@@ -192,6 +192,10 @@ namespace CompilerGUI.Controllers
                 richTextBoxNumbers.SelectionAlignment = HorizontalAlignment.Center;
                 richTextBoxNumbers.SelectionBackColor = SystemColors.Control;
                 richTextBoxNumbers.SelectionColor = Color.Gray;
+                richTextBoxNumbers.SelectionFont = new Font(
+                                richTextBoxNumbers.Font,
+                                FontStyle.Regular
+                            );
 
                 if (currentLine <= lastLineCount && currentLine > 0)
                 {
@@ -212,7 +216,6 @@ namespace CompilerGUI.Controllers
                         }
                     }
                 }
-
             }
             catch
             {
@@ -290,7 +293,5 @@ namespace CompilerGUI.Controllers
                 Marshal.FreeHGlobal(ptr);
             }
         }
-
-        
     }
 }
