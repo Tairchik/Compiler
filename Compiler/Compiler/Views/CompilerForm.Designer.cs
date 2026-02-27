@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerForm));
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -68,6 +70,7 @@
             createTSB = new ToolStripButton();
             saveTSB = new ToolStripButton();
             saveUsTSB = new ToolStripButton();
+            openTSB = new ToolStripButton();
             copyTSB = new ToolStripButton();
             cutTSB = new ToolStripButton();
             selectAllTSB = new ToolStripButton();
@@ -339,7 +342,7 @@
             // 
             toolStrip1.CanOverflow = false;
             toolStrip1.ImageScalingSize = new Size(38, 38);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, zoomPlus, zoomMinus, deleteTabTSB, runBtn, aboutProgramBtn, helpBtn });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { undoTSB, redoTSB, createTSB, openTSB, saveTSB, saveUsTSB, copyTSB, cutTSB, selectAllTSB, zoomPlus, zoomMinus, deleteTabTSB, runBtn, aboutProgramBtn, helpBtn });
             toolStrip1.Location = new Point(0, 23);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(1073, 45);
@@ -397,6 +400,16 @@
             saveUsTSB.Size = new Size(42, 42);
             saveUsTSB.Text = "Сохранить как";
             saveUsTSB.Click += saveUsFile_Click;
+            // 
+            // openTSB
+            // 
+            openTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            openTSB.Image = (Image)resources.GetObject("openTSB.Image");
+            openTSB.ImageTransparentColor = Color.Magenta;
+            openTSB.Name = "openTSB";
+            openTSB.Size = new Size(42, 42);
+            openTSB.Text = "Открыть";
+            openTSB.Click += openTSB_Click;
             // 
             // copyTSB
             // 
@@ -531,11 +544,27 @@
             dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, ColumnColumn, MessageColumn });
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridView.Dock = DockStyle.Fill;
             dataGridView.GridColor = Color.Gray;
             dataGridView.Location = new Point(0, 0);
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView.RowHeadersVisible = false;
             dataGridView.Size = new Size(1073, 126);
             dataGridView.TabIndex = 0;
@@ -668,5 +697,6 @@
         private ToolStripButton helpBtn;
         private ToolStripButton aboutProgramBtn;
         private ToolStripButton runBtn;
+        private ToolStripButton openTSB;
     }
 }

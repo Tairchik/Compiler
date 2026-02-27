@@ -12,7 +12,7 @@ namespace CompilerGUI
         private SyncRedactorTextController controllerRichTB;
         private ExceptionsCodeController controllerExceptionsCode;
         private ConsoleController controllerConsole;
-        private TextHighlightingController controllerTextHighlighting;
+        //private TextHighlightingController controllerTextHighlighting;
         private KeyController keyController;
 
         public CompilerForm()
@@ -26,7 +26,7 @@ namespace CompilerGUI
             controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView);
             controllerRichTB = new SyncRedactorTextController();
             controllerConsole = new ConsoleController();
-            controllerTextHighlighting = new TextHighlightingController("txt");
+            //controllerTextHighlighting = new TextHighlightingController("txt");
 
             controllerTCP.TabPageCreate += controllerRichTB.init;
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
@@ -310,6 +310,7 @@ namespace CompilerGUI
             aboutMI.Text = LocalizationService.Get("Help");
             undoTSB.Text = LocalizationService.Get("Undo");
             redoTSB.Text = LocalizationService.Get("Redo");
+            openTSB.Text = LocalizationService.Get("Open");
             createTSB.Text = LocalizationService.Get("Create");
             saveTSB.Text = LocalizationService.Get("Save");
             saveUsTSB.Text = LocalizationService.Get("SaveUs");
@@ -338,6 +339,11 @@ namespace CompilerGUI
         private void AboutProgramMI_Click(object sender, EventArgs e)
         {
             openReadMe();
+        }
+
+        private void openTSB_Click(object sender, EventArgs e)
+        {
+            controllerTCP.OpenFile();
         }
     }
 }
