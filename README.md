@@ -87,6 +87,12 @@
 <img width="1070" height="124" alt="image" src="https://github.com/user-attachments/assets/2b1c3c53-68fc-4d15-8c0e-5508d50e7dcb" />
 - В таблице указываются ошибки по коду в области ввода
 
+Drag and drop (тащи и вставляй)
+
+<img width="610" height="93" alt="image" src="https://github.com/user-attachments/assets/e593e093-f037-4ccc-ab26-a0bbb078eb29" />
+<img width="1075" height="562" alt="image" src="https://github.com/user-attachments/assets/4197916b-b021-4c86-898e-3b735578109c" />
+
+- Файлы можно открыть, перетащив их в область окна
 Строка состояние
 <img width="1069" height="21" alt="image" src="https://github.com/user-attachments/assets/eeb582c5-262a-4830-a592-58e044294e49" />
 - Отображает текущую информацию о состоянии работы приложения:
