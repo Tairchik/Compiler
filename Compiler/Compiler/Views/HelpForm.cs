@@ -13,7 +13,6 @@ namespace CompilerGUI.Views
             InitializeComponent();
             InitializeHelpContent();
 
-            // Подписка на событие выбора раздела
             treeView1.AfterSelect += TreeView1_AfterSelect;
 
             this.StartPosition = FormStartPosition.CenterParent;
@@ -28,10 +27,10 @@ namespace CompilerGUI.Views
 
             // Меню Файл
             TreeNode fileMenu = new TreeNode(loc("Help_MenuFile"));
-            fileMenu.Nodes.Add(loc("Create"));      // уже есть в словаре
-            fileMenu.Nodes.Add(loc("Open"));        // уже есть
+            fileMenu.Nodes.Add(loc("Create"));  
+            fileMenu.Nodes.Add(loc("Open"));       
             fileMenu.Nodes.Add(loc("Help_SaveTitle"));
-            fileMenu.Nodes.Add(loc("Exit"));        // уже есть
+            fileMenu.Nodes.Add(loc("Exit"));    
 
             // Меню Правка
             TreeNode editMenu = new TreeNode(loc("Help_MenuEdit"));
@@ -115,13 +114,9 @@ namespace CompilerGUI.Views
         private void ShowHelp(string title, string content)
         {
             richTextBox1.Clear();
-
-            // Форматируем заголовок
             richTextBox1.SelectionFont = new Font("Segoe UI", 12, FontStyle.Bold);
             richTextBox1.SelectionColor = Color.DarkBlue;
             richTextBox1.AppendText(title + Environment.NewLine + Environment.NewLine);
-
-            // Форматируем основной текст
             richTextBox1.SelectionFont = new Font("Segoe UI", 10, FontStyle.Regular);
             richTextBox1.SelectionColor = Color.Black;
             richTextBox1.AppendText(content);

@@ -261,7 +261,6 @@ namespace CompilerGUI.HelpClass
             }
             catch
             {
-                // если файл поврежден → восстановить
                 File.WriteAllText(LanguagesPath, DefaultLanguagesJson);
                 _languages = JsonSerializer.Deserialize<Dictionary<string, Dictionary<string, string>>>(DefaultLanguagesJson);
             }

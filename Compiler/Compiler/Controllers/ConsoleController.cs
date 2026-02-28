@@ -25,7 +25,6 @@ namespace CompilerGUI.Controllers
         public void StartCode()
         {
             if (textBoxCode == null) return;
-            // Компилируем, анализируем и тд
             ChangeStatusRun?.Invoke(LocalizationService.Get("Assembling"));
             string code = textBoxCode.Text;
             string info = "ExceptionMessage";
@@ -36,7 +35,6 @@ namespace CompilerGUI.Controllers
             ChangeStatusRun?.Invoke(LocalizationService.Get("Ready"));
         }
 
-        // Проверка в момент написания на ошибки
         public List<ExceptionInfo> AnalysisSyntax()
         {
             return new List<ExceptionInfo>();

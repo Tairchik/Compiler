@@ -236,7 +236,7 @@ namespace CompilerGUI.Controllers
             tableLayoutPanel.ColumnStyles[0].Width = columnWidth;
         }
 
-        // Импорты WinAPI для синхронизации прокрутки
+
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         private static extern int SendMessage(IntPtr hWnd, int wMsg, IntPtr wParam, IntPtr lParam);
 

@@ -268,7 +268,6 @@ namespace CompilerGUI
 
             try
             {
-                // Для .NET Core / .NET 5+ (современный способ)
                 Process.Start(new ProcessStartInfo
                 {
                     FileName = url,
@@ -277,7 +276,6 @@ namespace CompilerGUI
             }
             catch (Exception ex)
             {
-                // На случай, если что-то пошло не так (например, не найден браузер)
                 MessageBox.Show("Не удалось открыть ссылку: " + ex.Message);
             }
         }

@@ -44,7 +44,6 @@ namespace CompilerGUI
             foreach (var lang in languages)
                 languageComboBox.Items.Add(lang);
 
-            // Выбираем текущий язык
             languageComboBox.SelectedItem = languages
                 .FirstOrDefault(l => l.Code == LocalizationService.CurrentLanguage);
         }

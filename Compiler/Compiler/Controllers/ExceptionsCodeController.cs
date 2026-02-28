@@ -32,7 +32,6 @@ namespace CompilerGUI.Controllers
         public void TextCodeChanged(string textCode, FileClass fileClass) 
         {
             Clear(fileClass.FileName);
-            // Анализируем код программы (Анализ будет со стороны другого контроллера -> консольного, который и будет общаться с ядром)
             ExceptionInfo exception = new ExceptionInfo();
 
             List<string> textCodeList = new List<string>(textCode.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
@@ -53,7 +52,6 @@ namespace CompilerGUI.Controllers
                 if (ex.FileName == fileClass.FileName) return;
             }
 
-            // Анализируем код программы
             ExceptionInfo exception = new ExceptionInfo();
 
             List<string> textCodeList = new List<string>(textCode.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
