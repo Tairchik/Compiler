@@ -7,7 +7,6 @@ namespace CompilerGUI
         {
             ApplicationConfiguration.Initialize();
             Application.Run(new CompilerForm());
-            // Можно сделать json файл с настройками и языком
         }
     }
 }

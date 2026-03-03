@@ -538,5 +538,12 @@ namespace CompilerGUI.Controllers
 
             return tabPage;
         }
+
+        public string GetTextEditor() 
+        {
+            TabPage? page = tabControl.SelectedTab;
+            if (page == null) return "";
+            return ((RichTextBox)page.Controls.Find("richTextBoxText", true)[0]).Text;
+        }
     }
 }

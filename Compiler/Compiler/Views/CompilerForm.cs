@@ -1,5 +1,6 @@
 using CompilerGUI.Controllers;
 using CompilerGUI.HelpClass;
+using CompilerGUI.Scaner;
 using CompilerGUI.Views;
 using System.Diagnostics;
 using System.Media;
@@ -33,7 +34,6 @@ namespace CompilerGUI
             controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
             controllerTCP.TextCodeChanged += controllerExceptionsCode.TextCodeChanged;
             controllerTCP.TabPageChangedE += controllerExceptionsCode.PageCodeChanged;
-            controllerTCP.TabPageChanged += controllerConsole.InitCodeTextBox;
             //controllerTCP.TabPageChanged += controllerTextHighlighting.InitTextBox;
             controllerTCP.TabClose += controllerExceptionsCode.Clear;
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
@@ -50,6 +50,7 @@ namespace CompilerGUI
             controllerTCP.TapPageKeyDown += keyController.OnKeyDown;
 
             controllerConsole.ChangeStatusRun += StatusChanged;
+            controllerConsole.ScanCompleted += OpenTableResultScan;
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -224,7 +225,7 @@ namespace CompilerGUI
 
         private void Run_Click(object sender, EventArgs e)
         {
-            controllerConsole.StartCode();
+            controllerConsole.StartCode(controllerTCP.GetTextEditor());
         }
 
         private void SettingsMI_Click(object sender, EventArgs e)
@@ -244,7 +245,7 @@ namespace CompilerGUI
         }
         private void runBtn_Click(object sender, EventArgs e)
         {
-            controllerConsole.StartCode();
+            controllerConsole.StartCode(controllerTCP.GetTextEditor());
         }
         private void zoomPlus_Click(object sender, EventArgs e)
         {
@@ -342,6 +343,19 @@ namespace CompilerGUI
         private void openTSB_Click(object sender, EventArgs e)
         {
             controllerTCP.OpenFile();
+        }
+
+        private void OpenTableResultScan(List<Token> tokens) 
+        {
+            if (tokens == null || tokens.Count == 0)
+            {
+                MessageBox.Show("Список токенов пуст.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            using (ScannerResultForm resultForm = new ScannerResultForm(tokens))
+            {
+                resultForm.ShowDialog();
+            }
         }
     }
 }

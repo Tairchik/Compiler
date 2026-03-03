@@ -1,4 +1,5 @@
 ﻿using CompilerGUI.HelpClass;
+using CompilerGUI.Scaner;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,30 +10,27 @@ namespace CompilerGUI.Controllers
 {
     public class ConsoleController
     {
-        private RichTextBox? textBoxCode;
         public event Action<string>? FindException;
         public event Action<string>? ChangeStatusRun;
+        public event Action<List<Token>>? ScanCompleted;
         public ConsoleController() 
         {
-            textBoxCode = new RichTextBox();
-        }
 
-        public void InitCodeTextBox(TabPage tabPage)
-        {
-            if (tabPage != null)
-            textBoxCode = (RichTextBox) tabPage.Controls.Find("richTextBoxOut", true)[0];
         }
-        public void StartCode()
+        public void StartCode(string code)
         {
-            if (textBoxCode == null) return;
+            Lexer lexer = new Lexer();
+            List<Token> tokens = lexer.Analyze(code);
+            ScanCompleted?.Invoke(tokens);
+            /*
             ChangeStatusRun?.Invoke(LocalizationService.Get("Assembling"));
-            string code = textBoxCode.Text;
             string info = "ExceptionMessage";
             ChangeStatusRun?.Invoke(LocalizationService.Get("RunStatus"));
             if (!string.IsNullOrEmpty(info))
             FindException?.Invoke(info);
             UpdateTextConsole(info);
             ChangeStatusRun?.Invoke(LocalizationService.Get("Ready"));
+            */
         }
 
         public List<ExceptionInfo> AnalysisSyntax()
@@ -42,13 +40,7 @@ namespace CompilerGUI.Controllers
 
         private void UpdateTextConsole(string text) 
         {
-            textBoxCode.Clear();
-            List<string> lines = new List<string>(text.Split("\n"));
-
-            foreach (string line in lines) 
-            {
-                textBoxCode.AppendText($"> {line}");
-            }
+            
         }
     }
 }
