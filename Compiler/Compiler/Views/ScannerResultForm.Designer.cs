@@ -31,33 +31,31 @@
             dgvResult = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgvResult).BeginInit();
             SuspendLayout();
-
             // 
             // dgvResult
             // 
             dgvResult.AllowUserToAddRows = false;
             dgvResult.AllowUserToDeleteRows = false;
             dgvResult.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvResult.BackgroundColor = Color.White; // Фон таблицы
+            dgvResult.BackgroundColor = Color.White; 
             dgvResult.BorderStyle = BorderStyle.None;
             dgvResult.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvResult.Dock = DockStyle.Fill;
-            dgvResult.GridColor = Color.Black; // Цвет сетки
+            dgvResult.GridColor = Color.Black;
             dgvResult.Location = new Point(0, 0);
             dgvResult.MultiSelect = false;
             dgvResult.Name = "dgvResult";
             dgvResult.ReadOnly = true;
-            dgvResult.RowHeadersVisible = false; // Скрыть первый пустой столбец
+            dgvResult.RowHeadersVisible = false;
             dgvResult.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvResult.Size = new Size(800, 450);
             dgvResult.TabIndex = 0;
 
-            // Настройка стиля ячеек для соответствия фону
             dgvResult.DefaultCellStyle.BackColor = Color.White;
             dgvResult.DefaultCellStyle.ForeColor = Color.Black;
             dgvResult.DefaultCellStyle.SelectionBackColor = Color.LightGray;
             dgvResult.DefaultCellStyle.SelectionForeColor = Color.Black;
-
+            dgvResult.AllowUserToResizeRows = false;
             // 
             // ScannerResultForm
             // 
@@ -66,7 +64,7 @@
             BackColor = Color.White;
             ClientSize = new Size(800, 450);
             Controls.Add(dgvResult);
-            FormBorderStyle = FormBorderStyle.FixedDialog; // Оставляет только крестик (при отключении Min/Max)
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ScannerResultForm";

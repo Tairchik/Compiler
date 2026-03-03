@@ -345,6 +345,8 @@ namespace CompilerGUI
             controllerTCP.OpenFile();
         }
 
+        private bool scanForm = false;
+        private ScannerResultForm resultForm;
         private void OpenTableResultScan(List<Token> tokens) 
         {
             if (tokens == null || tokens.Count == 0)
@@ -352,10 +354,33 @@ namespace CompilerGUI
                 MessageBox.Show("Список токенов пуст.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            using (ScannerResultForm resultForm = new ScannerResultForm(tokens))
+            if (scanForm == false) 
             {
-                resultForm.ShowDialog();
+                resultForm = new ScannerResultForm(tokens);
+                resultForm.RowSelected -= ResultForm_RowSelected;
+                resultForm.RowSelected += ResultForm_RowSelected;
+                resultForm.CloseForm -= ResultForm_CloseForm;
+                resultForm.CloseForm += ResultForm_CloseForm;
+                scanForm = true;
+                resultForm.Show();
+                resultForm.Focus();
             }
+            else 
+            {
+                resultForm.UpdateGrid(tokens);
+                resultForm.Focus();
+            }
+        }
+
+        private void ResultForm_CloseForm()
+        {
+            scanForm = false;
+        }
+
+        private void ResultForm_RowSelected(Token obj)
+        {
+            controllerTCP.FocusToEditor(obj);
+            this.Focus();
         }
     }
 }

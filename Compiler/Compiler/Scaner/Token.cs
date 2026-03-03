@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,10 +17,15 @@ namespace CompilerGUI.Scaner
             }
         }
         public string Value { get; set; }
+        [Browsable(false)]
         public int Line { get; set; }
+        [Browsable(false)]
         public int StartPos { get; set; }
+        [Browsable(false)]
         public int EndPos { get; set; }
+        [Browsable(false)]
         public int AbsoluteIndex { get; set; }
+        [Browsable(false)]
         public TokenType Type { get; set; }
         public string TypeName => Type switch
         {
@@ -41,5 +47,6 @@ namespace CompilerGUI.Scaner
             _ => "Неизвестная лексема"
         };
 
+        public string Location => $"Стр: {Line}, Поз: {StartPos}-{EndPos}";
     }
 }

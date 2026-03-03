@@ -1,4 +1,5 @@
 ﻿using CompilerGUI.HelpClass;
+using CompilerGUI.Scaner;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -284,7 +285,14 @@ namespace CompilerGUI.Controllers
                 TabPageChangedE?.Invoke(code, (FileClass)page.Tag);
             }
         }
-
+        private RichTextBox Editor 
+        {
+            get
+            {
+                TabPage page = tabControl.SelectedTab;
+                return (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];   
+            }
+        }
         public void UpdatePageInfo() 
         {
             TabPage page = tabControl.SelectedTab;
@@ -425,6 +433,12 @@ namespace CompilerGUI.Controllers
             }
         }
 
+        public void FocusToEditor(Token token)
+        {
+            Editor.Focus();
+            Editor.Select(token.AbsoluteIndex, token.EndPos - token.StartPos + 1);
+        }
+
         private TabPage createTabPage(FileClass? fileInfo = null) 
         {
             TabPage tabPage = new TabPage();
@@ -442,7 +456,7 @@ namespace CompilerGUI.Controllers
             panel2.Name = "panel2";
             panel2.Size = new Size(10, 426);
             panel2.TabIndex = 2;
-
+            
             richTextBoxNumbers.BorderStyle = BorderStyle.None;
             richTextBoxNumbers.Dock = DockStyle.Fill;
             richTextBoxNumbers.Enabled = false;
