@@ -129,7 +129,7 @@ namespace CompilerGUI.Scaner
                     }
                     while (pos < text.Length && text[pos] != '\'');
 
-                    if (text[pos] == '\'')
+                    if (pos < text.Length && text[pos] == '\'')
                     {
                         lexeme += text[pos];
                         col++; pos++;
@@ -182,7 +182,7 @@ namespace CompilerGUI.Scaner
 
                     TokenType tokenType = TokenType.Error;
 
-                    if (text[pos] == '.') 
+                    if (pos < text.Length && text[pos] == '.') 
                     {
                         tokenType = TokenType.ConstFloat;
                         do
