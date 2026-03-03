@@ -431,6 +431,10 @@ namespace CompilerGUI.Controllers
                     ZoomChanged?.Invoke();
                 }
             }
+            else if (e.KeyCode == Keys.Space || e.KeyCode == Keys.Enter)
+            {
+                Editor.SelectionFont = Editor.SelectionFont;
+            }
         }
 
         public void FocusToEditor(Token token)
