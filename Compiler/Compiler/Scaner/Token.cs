@@ -32,7 +32,7 @@ namespace CompilerGUI.Scaner
             TokenType.Id => "Идентификатор",
             TokenType.ConstInt => "Целочисленная константа без знака",
             TokenType.ConstString => "Строковая константа",
-            TokenType.ConstFloat => "Вещественная константа",
+            TokenType.ConstFloat => "Вещественная константа без знака",
             TokenType.ConstTrue => "Логическая константа (True)",
             TokenType.ConstFalse => "Логическая константа (False)",
             TokenType.WhiteSpace => "Разделитель (пробел)",

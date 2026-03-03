@@ -39,7 +39,7 @@ namespace CompilerGUI.Scaner
                     tokens.Add(new Token
                     {
                         Type = TokenType.WhiteSpace,
-                        Value = spaces,
+                        Value = "(пробел)",
                         Line = line,
                         StartPos = startCol,
                         EndPos = col - 1,
@@ -137,7 +137,7 @@ namespace CompilerGUI.Scaner
                         tokens.Add(new Token
                         {
                             Type = TokenType.ConstString,
-                            Value = "(пробел)",
+                            Value = lexeme,
                             Line = line,
                             StartPos = startCol,
                             EndPos = col - 1,
