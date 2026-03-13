@@ -95,10 +95,10 @@ namespace CompilerGUI.Scaner
                             type = TokenType.Minus;
                             break;
                         case '[':
-                            type = TokenType.CloseListDelimiter;
+                            type = TokenType.OpenListDelimiter;
                             break;
                         case ']':
-                            type = TokenType.OpenListDelimiter;
+                            type = TokenType.CloseListDelimiter;
                             break;
                         case ',':
                             type = TokenType.Comma;
