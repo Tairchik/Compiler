@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Scaner\Flex&amp;Bison\**" />
+    <EmbeddedResource Remove="Scaner\Flex&amp;Bison\**" />
+    <None Remove="Scaner\Flex&amp;Bison\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="HelpClass\FileClass.cs" />
   </ItemGroup>
 

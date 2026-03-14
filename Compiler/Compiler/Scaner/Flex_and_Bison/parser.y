@@ -1,10 +1,11 @@
-﻿%{
+%{
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
 
 extern int yylex();
 extern int yylineno;
+extern FILE *yyin;
 
 void yyerror(const char *s);
 
@@ -31,38 +32,42 @@ int line_error = 0;
 
 program:
       /* empty */
-    | program line
-;
-
-line:
-      statement EOL
-      {
-          if (!line_error)
-              printf("SUCCESS: List declared correctly (line %d)\n", yylineno);
-
-          line_error = 0;
-      }
-
-    | error EOL
-      {
-          line_error = 0;
-          yyerrok;
-      }
-    | EOL
+    | program statement
 ;
 
 statement:
       ID '=' list_expr ';'
+      {
+          if (!line_error)
+              printf("SUCCESS: List declared correctly (line %d)\n", yylineno);
+          line_error = 0;
+      }
+    | error ';'
+      {
+          line_error = 0;
+          yyerrok;
+      }
+    | ';'
 ;
 
 list_expr:
       '[' ']'
     | '[' elements ']'
+    | '[' error ']'
+      {
+          yyerror("invalid list content");
+          yyerrok;
+      }
 ;
 
 elements:
       value
     | elements ',' value
+    | elements error value
+      {
+          yyerror("missing comma between elements");
+          yyerrok;
+      }
 ;
 
 value:
@@ -95,14 +100,23 @@ void yyerror(const char *s)
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
     SetConsoleCP(65001);
     SetConsoleOutputCP(65001);
 
-    printf("Analyzer started. Waiting for input...\n\n");
-
+    if (argc > 1)
+    {
+        yyin = fopen(argv[1], "r");
+        if (!yyin)
+        {
+            perror("Cannot open file");
+            return 1;
+        }
+    }
+    printf("Analyzer started...\n\n");
     yyparse();
-
+    if (yyin)
+        fclose(yyin);
     return 0;
 }

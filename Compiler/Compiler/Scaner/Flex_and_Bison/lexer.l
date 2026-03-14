@@ -1,4 +1,4 @@
-﻿%{
+%{
 #include "parser.tab.h" 
 #include <io.h>
 #define isatty _isatty
@@ -33,8 +33,7 @@ STRING          \'[^'\n]*\'
 "+"             { return '+'; } 
 "-"             { return '-'; } 
 
-[ \t\r]+        { } 
-\n              { return EOL; }
+[ \t\r\n]+      { } 
 .               { return yytext[0]; } 
 
 %%
