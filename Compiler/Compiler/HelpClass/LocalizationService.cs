@@ -14,7 +14,7 @@ namespace CompilerGUI.HelpClass
         static public bool isInit = true;
         private static string SettingsPath => Path.Combine(appDataPath, "appsettings.json");
         private static string LanguagesPath => Path.Combine(appDataPath, "languages.json");
-        private static string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CompilierGUI");
+        private static string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "CompilerGUI");
         private static string DefaultLanguagesJson => """
         {
           "ru": {
@@ -111,7 +111,8 @@ namespace CompilerGUI.HelpClass
             "Help_Output_Content": "Служит для отображения сообщений анализатора. При щелчке по сообщению об ошибке, курсор в редакторе автоматически переходит к проблемному месту.",
             "Help_Run_Content": "Запускает языковой процессор для анализа введенного текста. На текущем этапе функционал находится в разработке.",
             "Help_Default_Content": "Выберите раздел для просмотра справки.",
-            "Guide": "Справочник"
+            "Guide": "Справочник",
+            "Success": "Синтаксический анализ пройден успешно!"
           },
 
           "en": {
@@ -208,7 +209,8 @@ namespace CompilerGUI.HelpClass
             "Help_Output_Content": "Used to display analyzer messages. When clicking on an error message, the cursor in the editor automatically jumps to the problematic location.",
             "Help_Run_Content": "Launches the language processor to analyze the entered text. Currently, this functionality is under development.",
             "Help_Default_Content": "Select a section to view help.",
-            "Guide": "Guide"
+            "Guide": "Guide",
+            "Success": "The parsing was completed successfully!"
           }
         }
         """;

@@ -14,7 +14,7 @@ namespace CompilerGUI.HelpClass
         private delegate void ErrorCallbackDelegate(int line, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
 
         // Импорт функции (используем UTF8 для безопасности)
-        [DllImport("parser.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
+        [DllImport("NativeParser.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
         private static extern int ParseSourceCode(
             [MarshalAs(UnmanagedType.LPUTF8Str)] string sourceCode,
             ErrorCallbackDelegate errorCb);
@@ -35,7 +35,7 @@ namespace CompilerGUI.HelpClass
 
             if (result == 0 && string.IsNullOrEmpty(errors))
             {
-                return (true, "Синтаксический анализ пройден успешно!", null);
+                return (true, LocalizationService.Get("Success"), null);
             }
             else
             {

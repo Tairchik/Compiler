@@ -1,3 +1,9 @@
 <Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
   <Project Path="Compiler/CompilerGUI.csproj" />
+  <Project Path="NativeParser/NativeParser.vcxproj" Id="d1e4d978-371f-440e-ba66-aa8480c4646f" />
 </Solution>

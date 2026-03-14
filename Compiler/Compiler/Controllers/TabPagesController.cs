@@ -514,7 +514,7 @@ namespace CompilerGUI.Controllers
             richTextBoxOut.Name = "richTextBoxOut";
             richTextBoxOut.Size = new Size(142, 42);
             richTextBoxOut.TabIndex = 1;
-            richTextBoxOut.Text = ">";
+            richTextBoxOut.Text = "";
             richTextBoxOut.WordWrap = false;
             richTextBoxOut.DragDrop += DragDrop;
             richTextBoxOut.DragEnter += DragEnter;

@@ -12,7 +12,7 @@ void yyerror(const char *s);
 int line_error = 0;
 %}
 
-%define parse.error verbose
+%error-verbose
 
 %union {
     char* str_val;
@@ -88,25 +88,3 @@ sign:
 ;
 
 %%
-
-
-int main(int argc, char **argv)
-{
-    SetConsoleCP(65001);
-    SetConsoleOutputCP(65001);
-
-    if (argc > 1)
-    {
-        yyin = fopen(argv[1], "r");
-        if (!yyin)
-        {
-            perror("Cannot open file");
-            return 1;
-        }
-    }
-    printf("Analyzer started...\n\n");
-    yyparse();
-    if (yyin)
-        fclose(yyin);
-    return 0;
-}

@@ -38,6 +38,7 @@ namespace CompilerGUI.Controllers
             else 
             {
                 ChangeStatusRun?.Invoke(LocalizationService.Get("Error"));
+                UpdateTextConsole("Ошибка");
                 exc_controller.ClearBeforeAdd();
                 int i = 0;
                 var str_res = res.Message.Split('\r');
