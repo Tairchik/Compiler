@@ -226,6 +226,7 @@ calculator.exe
 lex.yy.c
 parser.tab.*
 test_fb.txt
+parser.dll
 
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
