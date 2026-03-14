@@ -221,6 +221,12 @@ project.lock.json
 # UWP Projects
 AppPackages/
 
+# Flex&Bison
+calculator.exe
+lex.yy.c
+parser.tab.*
+test_fb.txt
+
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
