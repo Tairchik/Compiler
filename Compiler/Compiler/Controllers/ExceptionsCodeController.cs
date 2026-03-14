@@ -13,6 +13,7 @@ namespace CompilerGUI.Controllers
     {
         public DataGridView exceptionGrid;
         private BindingList<ExceptionInfo> gridLines = new BindingList<ExceptionInfo>();
+        public event Func<FileClass> GetFileClass;
 
         public ExceptionsCodeController(DataGridView dataGridView) 
         {
@@ -29,44 +30,28 @@ namespace CompilerGUI.Controllers
             }
         }
 
-        public void TextCodeChanged(string textCode, FileClass fileClass) 
+        public void ClearBeforeAdd() 
         {
-            Clear(fileClass.FileName);
-            ExceptionInfo exception = new ExceptionInfo();
-
-            List<string> textCodeList = new List<string>(textCode.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
-            exception.Line = textCodeList.Count;
-            exception.ExceptionMessage = $"{LocalizationService.Get("Error")} {textCodeList.Count}";
-            exception.FileName = fileClass.FileName;
-            exception.Column = 0;
-
-            if (string.IsNullOrEmpty(fileClass.FilePath)) exception.FilePath = $"..{exception.FileName}";
-            else exception.FilePath = fileClass.FilePath;
-            AddExseptionInGrid(exception);
+            FileClass fc = GetFileClass.Invoke();
+            Clear(fc.FileName, fc.FilePath);
         }
 
-        public void PageCodeChanged(string textCode, FileClass fileClass)
+        public void AddExceptionToGrid(string errorMessage, int line)
         {
-            foreach (var ex in gridLines) 
-            {
-                if (ex.FileName == fileClass.FileName) return;
-            }
+            FileClass fc = GetFileClass.Invoke();
 
             ExceptionInfo exception = new ExceptionInfo();
-
-            List<string> textCodeList = new List<string>(textCode.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries));
-            exception.Line = textCodeList.Count;
-            exception.ExceptionMessage = $"{LocalizationService.Get("Error")} {textCodeList.Count}";
-            exception.FileName = fileClass.FileName;
+            exception.Line = line;
+            exception.ExceptionMessage = errorMessage;
+            exception.FileName = fc.FileName;
             exception.Column = 0;
 
-
-            if (string.IsNullOrEmpty(fileClass.FilePath)) exception.FilePath = $"..{exception.FileName}";
-            else exception.FilePath = fileClass.FilePath;
-            AddExseptionInGrid(exception);
+            if (string.IsNullOrEmpty(fc.FilePath)) exception.FilePath = $"..{exception.FileName}";
+            else exception.FilePath = fc.FilePath;
+            AddLineGrid(exception);
         }
 
-        public void AddExseptionInGrid(ExceptionInfo exception) 
+        public void AddLineGrid(ExceptionInfo exception) 
         {
             gridLines.Add(exception);
         }

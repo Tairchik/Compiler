@@ -68,9 +68,9 @@
             undoTSB = new ToolStripButton();
             redoTSB = new ToolStripButton();
             createTSB = new ToolStripButton();
+            openTSB = new ToolStripButton();
             saveTSB = new ToolStripButton();
             saveUsTSB = new ToolStripButton();
-            openTSB = new ToolStripButton();
             copyTSB = new ToolStripButton();
             cutTSB = new ToolStripButton();
             selectAllTSB = new ToolStripButton();
@@ -85,7 +85,6 @@
             NumberColumn = new DataGridViewTextBoxColumn();
             FilePathColumn = new DataGridViewTextBoxColumn();
             LineColumn = new DataGridViewTextBoxColumn();
-            ColumnColumn = new DataGridViewTextBoxColumn();
             MessageColumn = new DataGridViewTextBoxColumn();
             menuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -381,6 +380,16 @@
             createTSB.Text = "Создать файл";
             createTSB.Click += createFile_Click;
             // 
+            // openTSB
+            // 
+            openTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            openTSB.Image = (Image)resources.GetObject("openTSB.Image");
+            openTSB.ImageTransparentColor = Color.Magenta;
+            openTSB.Name = "openTSB";
+            openTSB.Size = new Size(42, 42);
+            openTSB.Text = "Открыть";
+            openTSB.Click += openTSB_Click;
+            // 
             // saveTSB
             // 
             saveTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
@@ -400,16 +409,6 @@
             saveUsTSB.Size = new Size(42, 42);
             saveUsTSB.Text = "Сохранить как";
             saveUsTSB.Click += saveUsFile_Click;
-            // 
-            // openTSB
-            // 
-            openTSB.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            openTSB.Image = (Image)resources.GetObject("openTSB.Image");
-            openTSB.ImageTransparentColor = Color.Magenta;
-            openTSB.Name = "openTSB";
-            openTSB.Size = new Size(42, 42);
-            openTSB.Text = "Открыть";
-            openTSB.Click += openTSB_Click;
             // 
             // copyTSB
             // 
@@ -531,10 +530,10 @@
             // 
             dataGridView.AllowUserToAddRows = false;
             dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.AllowUserToResizeRows = false;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
-            dataGridView.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = SystemColors.Control;
             dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
@@ -544,7 +543,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, ColumnColumn, MessageColumn });
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, FilePathColumn, LineColumn, MessageColumn });
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = SystemColors.Window;
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
@@ -566,8 +565,8 @@
             dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.RowHeadersVisible = false;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.Size = new Size(1073, 126);
             dataGridView.TabIndex = 0;
             // 
@@ -594,13 +593,6 @@
             LineColumn.HeaderText = "Строка";
             LineColumn.Name = "LineColumn";
             LineColumn.ReadOnly = true;
-            // 
-            // ColumnColumn
-            // 
-            ColumnColumn.DataPropertyName = "Column";
-            ColumnColumn.HeaderText = "Колонка";
-            ColumnColumn.Name = "ColumnColumn";
-            ColumnColumn.ReadOnly = true;
             // 
             // MessageColumn
             // 
@@ -684,11 +676,6 @@
         private ToolStripButton deleteTabTSB;
         private SplitContainer mainPanel;
         private DataGridView dataGridView;
-        private DataGridViewTextBoxColumn NumberColumn;
-        private DataGridViewTextBoxColumn FilePathColumn;
-        private DataGridViewTextBoxColumn LineColumn;
-        private DataGridViewTextBoxColumn MessageColumn;
-        private DataGridViewTextBoxColumn ColumnColumn;
         private ToolStripStatusLabel statusRunLabel;
         private ToolStripStatusLabel capsLockLabel;
         private ToolStripStatusLabel languageLabel;
@@ -700,5 +687,9 @@
         private ToolStripButton aboutProgramBtn;
         private ToolStripButton runBtn;
         private ToolStripButton openTSB;
+        private DataGridViewTextBoxColumn NumberColumn;
+        private DataGridViewTextBoxColumn FilePathColumn;
+        private DataGridViewTextBoxColumn LineColumn;
+        private DataGridViewTextBoxColumn MessageColumn;
     }
 }

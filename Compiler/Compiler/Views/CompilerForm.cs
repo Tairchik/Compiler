@@ -26,14 +26,12 @@ namespace CompilerGUI
             controllerTCP = new TabPagesController(mainPanel.Panel1);
             controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView);
             controllerRichTB = new SyncRedactorTextController();
-            controllerConsole = new ConsoleController();
+            controllerConsole = new ConsoleController(controllerExceptionsCode);
             //controllerTextHighlighting = new TextHighlightingController("txt");
 
             controllerTCP.TabPageCreate += controllerRichTB.init;
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
             controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
-            controllerTCP.TextCodeChanged += controllerExceptionsCode.TextCodeChanged;
-            controllerTCP.TabPageChangedE += controllerExceptionsCode.PageCodeChanged;
             //controllerTCP.TabPageChanged += controllerTextHighlighting.InitTextBox;
             controllerTCP.TabClose += controllerExceptionsCode.Clear;
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
@@ -51,6 +49,10 @@ namespace CompilerGUI
 
             controllerConsole.ChangeStatusRun += StatusChanged;
             controllerConsole.ScanCompleted += OpenTableResultScan;
+            controllerConsole.UpdateConsoleOutPut += controllerTCP.UpdateTextConsole;
+
+            controllerExceptionsCode.GetFileClass += controllerTCP.GetFileClassPage;
+
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -329,7 +331,6 @@ namespace CompilerGUI
 
             this.Text = LocalizationService.Get("Compiler");
             dataGridView.Columns["FilePathColumn"].HeaderText = LocalizationService.Get("FilePath");
-            dataGridView.Columns["ColumnColumn"].HeaderText = LocalizationService.Get("Column");
             dataGridView.Columns["LineColumn"].HeaderText = LocalizationService.Get("Line");
             dataGridView.Columns["MessageColumn"].HeaderText = LocalizationService.Get("Message");
             dataGridView.Refresh();

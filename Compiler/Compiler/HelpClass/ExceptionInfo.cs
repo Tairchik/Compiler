@@ -10,14 +10,15 @@ namespace CompilerGUI.HelpClass
     public class ExceptionInfo
     {
         public int Number { get; set; }
-        public int Column { get; set; }
-
         public string FilePath { get; set; }
         public int Line { get; set; }
         public string ExceptionMessage { get; set; }
 
         [Browsable(false)]
         public string FileName { get; set; }
+        [Browsable(false)]
+        public int Column { get; set; }
+
 
     }
 }

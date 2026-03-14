@@ -13,15 +13,41 @@ namespace CompilerGUI.Controllers
         public event Action<string>? FindException;
         public event Action<string>? ChangeStatusRun;
         public event Action<List<Token>>? ScanCompleted;
-        public ConsoleController() 
-        {
+        public event Action<string>? UpdateConsoleOutPut;
+        private ParserService parser_bison = new ParserService();
+        private ExceptionsCodeController exc_controller;
 
+        public ConsoleController(ExceptionsCodeController exc_controll) 
+        {
+            exc_controller = exc_controll;
         }
         public void StartCode(string code)
         {
             Lexer lexer = new Lexer();
             List<Token> tokens = lexer.Analyze(code);
             ScanCompleted?.Invoke(tokens);
+
+            var res = parser_bison.Parse(code);
+            if (res.IsSuccess) 
+            {
+                ChangeStatusRun?.Invoke(LocalizationService.Get("Ready"));
+
+                exc_controller.ClearBeforeAdd();
+                UpdateTextConsole(res.Message);
+            }
+            else 
+            {
+                ChangeStatusRun?.Invoke(LocalizationService.Get("Error"));
+                exc_controller.ClearBeforeAdd();
+                int i = 0;
+                var str_res = res.Message.Split('\r');
+
+                foreach (var err in str_res) 
+                {
+                    exc_controller.AddExceptionToGrid(err, res.line[i]);
+                    i++;
+                }
+            }
             /*
             ChangeStatusRun?.Invoke(LocalizationService.Get("Assembling"));
             string info = "ExceptionMessage";
@@ -38,9 +64,9 @@ namespace CompilerGUI.Controllers
             return new List<ExceptionInfo>();
         }
 
-        private void UpdateTextConsole(string text) 
+        private void UpdateTextConsole(string errors) 
         {
-            
+            UpdateConsoleOutPut?.Invoke(errors);
         }
     }
 }

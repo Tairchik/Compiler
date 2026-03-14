@@ -293,6 +293,17 @@ namespace CompilerGUI.Controllers
                 return (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];   
             }
         }
+        private RichTextBox Console
+        {
+            get
+            {
+                TabPage page = tabControl.SelectedTab;
+                if (page != null)
+                return (RichTextBox)page.Controls.Find("richTextBoxOut", true)[0];
+                return null;
+            }
+        }
+
         public void UpdatePageInfo() 
         {
             TabPage page = tabControl.SelectedTab;
@@ -562,6 +573,18 @@ namespace CompilerGUI.Controllers
             TabPage? page = tabControl.SelectedTab;
             if (page == null) return "";
             return ((RichTextBox)page.Controls.Find("richTextBoxText", true)[0]).Text;
+        }
+
+        public void UpdateTextConsole(string text) 
+        {
+            if (Console != null)
+            Console.Text = text;
+        }
+
+        public FileClass GetFileClassPage()
+        {
+            TabPage? page = tabControl.SelectedTab;
+            return (FileClass)page.Tag;
         }
     }
 }
