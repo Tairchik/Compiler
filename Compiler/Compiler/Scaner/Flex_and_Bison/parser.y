@@ -55,8 +55,7 @@ list_expr:
     | '[' elements ']'
     | '[' error ']'
       {
-          yyerror("invalid list content");
-          yyerrok;
+
       }
 ;
 
@@ -65,8 +64,7 @@ elements:
     | elements ',' value
     | elements error value
       {
-          yyerror("missing comma between elements");
-          yyerrok;
+
       }
 ;
 
@@ -91,14 +89,6 @@ sign:
 
 %%
 
-void yyerror(const char *s)
-{
-    if (!line_error)
-    {
-        printf("Line %d error: %s\n", yylineno, s);
-        line_error = 1;
-    }
-}
 
 int main(int argc, char **argv)
 {
