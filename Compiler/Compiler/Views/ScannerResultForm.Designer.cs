@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             dgvResult = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dgvResult).BeginInit();
             SuspendLayout();
@@ -36,10 +37,19 @@
             // 
             dgvResult.AllowUserToAddRows = false;
             dgvResult.AllowUserToDeleteRows = false;
+            dgvResult.AllowUserToResizeRows = false;
             dgvResult.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvResult.BackgroundColor = Color.White; 
+            dgvResult.BackgroundColor = Color.White;
             dgvResult.BorderStyle = BorderStyle.None;
             dgvResult.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = Color.LightGray;
+            dataGridViewCellStyle1.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
+            dgvResult.DefaultCellStyle = dataGridViewCellStyle1;
             dgvResult.Dock = DockStyle.Fill;
             dgvResult.GridColor = Color.Black;
             dgvResult.Location = new Point(0, 0);
@@ -48,21 +58,15 @@
             dgvResult.ReadOnly = true;
             dgvResult.RowHeadersVisible = false;
             dgvResult.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvResult.Size = new Size(800, 450);
+            dgvResult.Size = new Size(795, 975);
             dgvResult.TabIndex = 0;
-
-            dgvResult.DefaultCellStyle.BackColor = Color.White;
-            dgvResult.DefaultCellStyle.ForeColor = Color.Black;
-            dgvResult.DefaultCellStyle.SelectionBackColor = Color.LightGray;
-            dgvResult.DefaultCellStyle.SelectionForeColor = Color.Black;
-            dgvResult.AllowUserToResizeRows = false;
             // 
             // ScannerResultForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(795, 975);
             Controls.Add(dgvResult);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;

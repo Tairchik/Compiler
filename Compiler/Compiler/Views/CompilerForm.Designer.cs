@@ -589,8 +589,8 @@
             // 
             // LineColumn
             // 
-            LineColumn.DataPropertyName = "Line";
-            LineColumn.HeaderText = "Строка";
+            LineColumn.DataPropertyName = "Location";
+            LineColumn.HeaderText = "Местоположение";
             LineColumn.Name = "LineColumn";
             LineColumn.ReadOnly = true;
             // 

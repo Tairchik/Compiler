@@ -14,23 +14,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\NativeParser\NativeParser.vcxproj">
-			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-			<PrivateAssets>all</PrivateAssets>
-		</ProjectReference>
-	</ItemGroup>
-
-	<ItemGroup>
 		<Compile Remove="Scaner\Flex&amp;Bison\**" />
 		<EmbeddedResource Remove="Scaner\Flex&amp;Bison\**" />
 		<None Remove="Scaner\Flex&amp;Bison\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="NativeParser.dll" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Include="NativeParser.dll" />
 	</ItemGroup>
 </Project>

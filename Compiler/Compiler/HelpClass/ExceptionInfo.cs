@@ -11,14 +11,16 @@ namespace CompilerGUI.HelpClass
     {
         public int Number { get; set; }
         public string FilePath { get; set; }
-        public int Line { get; set; }
+        public string Location { get; set; }
         public string ExceptionMessage { get; set; }
 
         [Browsable(false)]
         public string FileName { get; set; }
         [Browsable(false)]
         public int Column { get; set; }
-
-
+        [Browsable(false)]
+        public int StartPos { get; set; }
+        [Browsable(false)]
+        public int EndPos { get; set; }
     }
 }

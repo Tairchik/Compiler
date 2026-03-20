@@ -71,10 +71,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)Compiler\bin\Debug\net8.0-windows\</OutDir>
+    <OutDir>$(SolutionDir)Compiler\bin\Debug\net8.0-windows\win-x64</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Compiler\bin\Debug\net8.0-windows\</OutDir>
+    <OutDir>$(SolutionDir)Compiler\bin\Debug\net8.0-windows\win-x64</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)NativeParser\x64\Release\</OutDir>
@@ -114,6 +114,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,6 +158,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -190,6 +192,12 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">lex.yy.c</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Running Flex...</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Running Flex...</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)vendor\win_flex.exe" --outfile=lex.yy.c lexer.l</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Running Flex...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">lex.yy.c</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(SolutionDir)vendor\win_flex.exe" --outfile=lex.yy.c lexer.l</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Running Flex...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">lex.yy.c</Outputs>
     </CustomBuild>
     <CustomBuild Include="parser.y">
       <FileType>Document</FileType>
@@ -199,6 +207,12 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(SolutionDir)vendor\win_bison.exe" -d parser.y --output=parser.tab.c</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Running Bison...</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">parser.tab.c;parser.tab.h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(SolutionDir)vendor\win_bison.exe" -d parser.y --output=parser.tab.c</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(SolutionDir)vendor\win_bison.exe" -d parser.y --output=parser.tab.c</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">parser.tab.c;parser.tab.h</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">parser.tab.c;parser.tab.h</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Running Bison...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Running Bison...</Message>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

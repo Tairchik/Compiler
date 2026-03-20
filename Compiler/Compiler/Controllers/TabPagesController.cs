@@ -453,6 +453,11 @@ namespace CompilerGUI.Controllers
             Editor.Focus();
             Editor.Select(token.AbsoluteIndex, token.EndPos - token.StartPos + 1);
         }
+        public void FocusToEditor(int abs_index, int endPos, int startpos)
+        {
+            Editor.Focus();
+            Editor.Select(abs_index, endPos - startpos + 1);
+        }
 
         private TabPage createTabPage(FileClass? fileInfo = null) 
         {
@@ -584,6 +589,7 @@ namespace CompilerGUI.Controllers
         public FileClass GetFileClassPage()
         {
             TabPage? page = tabControl.SelectedTab;
+            if (page == null) return null;
             return (FileClass)page.Tag;
         }
     }

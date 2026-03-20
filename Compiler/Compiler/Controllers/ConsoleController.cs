@@ -23,10 +23,31 @@ namespace CompilerGUI.Controllers
         }
         public void StartCode(string code)
         {
+            if (code == null) return;
             Lexer lexer = new Lexer();
             List<Token> tokens = lexer.Analyze(code);
-            ScanCompleted?.Invoke(tokens);
+            //ScanCompleted?.Invoke(tokens);
+            Parser parser = new Parser();
 
+            var pars = parser.Parse(tokens);
+            if (pars == null || pars.Count == 0) 
+            {
+                exc_controller.ClearBeforeAdd();
+                UpdateTextConsole("Успешно");
+            }
+            else 
+            {
+                ChangeStatusRun?.Invoke(LocalizationService.Get("Error"));
+                UpdateTextConsole($"Ошибка. Число ошибок: {pars.Count}");
+                exc_controller.ClearBeforeAdd();
+                int i = 0;
+                foreach (var err in pars)
+                {
+                    exc_controller.AddExceptionToGrid(err.Message, err.Line, err.AbsoluteIndex, err.StartPos, err.EndPos);
+                    i++;
+                }
+            }
+            /*
             var res = parser_bison.Parse(code);
             if (res.IsSuccess) 
             {
@@ -49,6 +70,7 @@ namespace CompilerGUI.Controllers
                     i++;
                 }
             }
+            */
             /*
             ChangeStatusRun?.Invoke(LocalizationService.Get("Assembling"));
             string info = "ExceptionMessage";

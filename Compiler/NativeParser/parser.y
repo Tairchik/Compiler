@@ -47,7 +47,6 @@ statement:
           line_error = 0;
           yyerrok;
       }
-    | ';'
 ;
 
 list_expr:

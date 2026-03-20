@@ -12,7 +12,7 @@ namespace CompilerGUI.Controllers
     public class ExceptionsCodeController
     {
         public DataGridView exceptionGrid;
-        private BindingList<ExceptionInfo> gridLines = new BindingList<ExceptionInfo>();
+        public BindingList<ExceptionInfo> gridLines = new BindingList<ExceptionInfo>();
         public event Func<FileClass> GetFileClass;
 
         public ExceptionsCodeController(DataGridView dataGridView) 
@@ -36,15 +36,18 @@ namespace CompilerGUI.Controllers
             Clear(fc.FileName, fc.FilePath);
         }
 
-        public void AddExceptionToGrid(string errorMessage, int line)
+
+        public void AddExceptionToGrid(string errorMessage, int line, int position, int startPos, int endPos)
         {
             FileClass fc = GetFileClass.Invoke();
 
             ExceptionInfo exception = new ExceptionInfo();
-            exception.Line = line;
+            exception.Location = $"Строка: {line}, позиция: {startPos}-{endPos}";
+            exception.StartPos = startPos;
+            exception.EndPos = endPos;
             exception.ExceptionMessage = errorMessage;
             exception.FileName = fc.FileName;
-            exception.Column = 0;
+            exception.Column = position;
 
             if (string.IsNullOrEmpty(fc.FilePath)) exception.FilePath = $"..{exception.FileName}";
             else exception.FilePath = fc.FilePath;

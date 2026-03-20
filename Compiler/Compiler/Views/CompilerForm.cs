@@ -52,7 +52,14 @@ namespace CompilerGUI
             controllerConsole.UpdateConsoleOutPut += controllerTCP.UpdateTextConsole;
 
             controllerExceptionsCode.GetFileClass += controllerTCP.GetFileClassPage;
+            dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
+        }
 
+        private void DataGridView_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            if (controllerTCP.GetFileClassPage().FileName == controllerExceptionsCode.gridLines[e.RowIndex].FileName)
+            GridException_RowSelected(controllerExceptionsCode.gridLines[e.RowIndex]);
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -381,6 +388,11 @@ namespace CompilerGUI
         private void ResultForm_RowSelected(Token obj)
         {
             controllerTCP.FocusToEditor(obj);
+            this.Focus();
+        }
+        private void GridException_RowSelected(ExceptionInfo syntaxError)
+        {
+            controllerTCP.FocusToEditor(syntaxError.Column, syntaxError.EndPos, syntaxError.StartPos);
             this.Focus();
         }
     }
