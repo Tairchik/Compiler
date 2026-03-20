@@ -1,6 +1,9 @@
 ﻿using CompilerGUI.HelpClass;
 using CompilerGUI.Scaner;
+
+using MyLangParser;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,11 +62,10 @@ namespace CompilerGUI.Controllers
             var res = parser_bison.Parse(code);
             if (res.IsSuccess) 
             {
-                UpdateTextConsole(res.Message);
+
             }
             else 
             {
-                UpdateTextConsole("Ошибка");
                 int i = 0;
                 var str_res = res.Message.Split('\r');
 
@@ -73,16 +75,20 @@ namespace CompilerGUI.Controllers
                     i++;
                 }
             }
-            
-            /*
-            ChangeStatusRun?.Invoke(LocalizationService.Get("Assembling"));
-            string info = "ExceptionMessage";
-            ChangeStatusRun?.Invoke(LocalizationService.Get("RunStatus"));
-            if (!string.IsNullOrEmpty(info))
-            FindException?.Invoke(info);
-            UpdateTextConsole(info);
-            ChangeStatusRun?.Invoke(LocalizationService.Get("Ready"));
-            */
+            MyLangParser.CodeParser parsAtnlr = new MyLangParser.CodeParser();
+            var result = parsAtnlr.Parse(code);
+            if (result == null || result.Count == 0)
+            {
+
+            }
+            else
+            {
+                foreach (var err in result)
+                {
+                    exc_controller.AddExceptionAntlrToGrid(err.Message, err.Value, err.Line, err.AbsoluteIndex, err.StartPos, err.EndPos);
+                }
+            }
+
         }
 
         public List<ExceptionInfo> AnalysisSyntax()

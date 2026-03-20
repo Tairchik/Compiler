@@ -29,4 +29,47 @@ namespace CompilerGUI.Scaner
         // ОШИБКИ
         Error = 99
     }
+
+    public static class TokenToString 
+    {
+        public static string GetString(TokenType token) 
+        { 
+            switch (token)
+            {
+                case TokenType.Id:
+                    return "Идентификатор";
+                case TokenType.ConstInt:
+                    return "Целочисленная константа без знака";
+                case TokenType.ConstString:
+                    return "Строковая константа";
+                case TokenType.ConstFloat:
+                    return "Вещественная константа без знака";
+                case TokenType.ConstTrue:
+                    return "Логическая константа (True)";
+                case TokenType.ConstFalse:
+                    return "Логическая константа (False)";
+                case TokenType.WhiteSpace:
+                    return "Разделитель (пробел)";
+                case TokenType.Comma:
+                    return "Разделитель (запятая)";
+                case TokenType.OpenListDelimiter:
+                    return "Разделитель (открывающая скобка)";
+                case TokenType.CloseListDelimiter:
+                    return "Разделитель (закрывающая скобка)";
+                case TokenType.End_operator:
+                    return "Конец оператора";
+                case TokenType.Equal:
+                    return "Оператор присваивания";
+                case TokenType.Minus:
+                    return "Арифметический оператор (-)";
+                case TokenType.Plus:
+                    return "Арифметический оператор (+)";
+                case TokenType.Error:
+                    return "Лексическая ошибка";
+                default: 
+                    return "Неизвестная лексема";
+            }
+        }
+    }
 }
+

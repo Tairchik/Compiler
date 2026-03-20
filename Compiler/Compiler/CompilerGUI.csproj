@@ -18,4 +18,16 @@
 		<EmbeddedResource Remove="Scaner\Flex&amp;Bison\**" />
 		<None Remove="Scaner\Flex&amp;Bison\**" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="NativeParser.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="NativeParser.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\MyLangParser\MyLangParser.csproj" />
+	</ItemGroup>
 </Project>

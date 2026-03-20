@@ -3,28 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyLangParser;
+
 
 namespace CompilerGUI.Scaner
 {
-    public class SyntaxError 
-    {
-        public int Line;
-        public int StartPos;
-        public int EndPos;
-        public int AbsoluteIndex;
-        public string Message = "";
-        public string Value = "";
-        public SyntaxError(int line, int start_pos, int end_pos, int abs_index, string message, string value) 
-        {
-            Line = line;
-            StartPos = start_pos;
-            EndPos = end_pos;
-            AbsoluteIndex = abs_index; 
-            Message = message;
-            Value = value;
-        }
-    }
-
     public class Parser
     {
         private List<Token> _tokens = new();
@@ -68,7 +51,7 @@ namespace CompilerGUI.Scaner
                 return true;
             }
 
-            AddError($"Ожидался {type}, найдено {Current?.TypeName}");
+            AddError($"Ожидался \'{TokenToString.GetString(type)}\', найдено \'{Current?.TypeName}\'");
             return false;
         }
 
