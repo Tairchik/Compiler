@@ -212,7 +212,7 @@ namespace CompilerGUI.Scaner
                     AddError("Ожидалась константа");
 
                     // ВОССТАНОВЛЕНИЕ
-                    SkipTo(TokenType.Comma, TokenType.CloseListDelimiter);
+                    SkipTo(TokenType.Comma, TokenType.CloseListDelimiter, TokenType.End_operator);
                     return 1;
             }
         }
