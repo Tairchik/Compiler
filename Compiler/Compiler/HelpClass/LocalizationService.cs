@@ -112,7 +112,12 @@ namespace CompilerGUI.HelpClass
             "Help_Run_Content": "Запускает языковой процессор для анализа введенного текста. На текущем этапе функционал находится в разработке.",
             "Help_Default_Content": "Выберите раздел для просмотра справки.",
             "Guide": "Справочник",
-            "Success": "Синтаксический анализ пройден успешно!"
+            "Success": "Синтаксический анализ пройден успешно!",
+            "InvalidText": "Неверный текст",
+            "Location": "Местоположение",
+            "Code": "Код",
+            "Lexeme": "Лексема",    
+            "Type": "Тип"        
           },
 
           "en": {
@@ -210,7 +215,12 @@ namespace CompilerGUI.HelpClass
             "Help_Run_Content": "Launches the language processor to analyze the entered text. Currently, this functionality is under development.",
             "Help_Default_Content": "Select a section to view help.",
             "Guide": "Guide",
-            "Success": "The parsing was completed successfully!"
+            "Success": "The parsing was completed successfully!",
+            "InvalidText": "Invalid text",
+            "Location": "Location",
+            "Code": "Code",
+            "Lexeme": "Lexeme",    
+            "Type": "Type"
           }
         }
         """;

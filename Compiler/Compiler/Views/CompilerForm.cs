@@ -24,7 +24,7 @@ namespace CompilerGUI
             mainPanel.AllowDrop = true;
             keyController = new KeyController();
             controllerTCP = new TabPagesController(mainPanel.Panel1);
-            controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView);
+            controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView, this.dataGridViewLexer, this.dataGridViewFlexBison, this.dataGridViewAntlr);
             controllerRichTB = new SyncRedactorTextController();
             controllerConsole = new ConsoleController(controllerExceptionsCode);
             //controllerTextHighlighting = new TextHighlightingController("txt");
@@ -53,12 +53,18 @@ namespace CompilerGUI
 
             controllerExceptionsCode.GetFileClass += controllerTCP.GetFileClassPage;
             dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
+            dataGridViewLexer.CellDoubleClick += DataGridViewLexer_CellDoubleClick;
+        }
+
+        private void DataGridViewLexer_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            GridException_RowSelected(controllerExceptionsCode.gridLinesLexer[e.RowIndex]);
         }
 
         private void DataGridView_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
-            if (controllerTCP.GetFileClassPage().FileName == controllerExceptionsCode.gridLines[e.RowIndex].FileName)
             GridException_RowSelected(controllerExceptionsCode.gridLines[e.RowIndex]);
         }
 
@@ -337,10 +343,28 @@ namespace CompilerGUI
             keyController?.Initialize();
 
             this.Text = LocalizationService.Get("Compiler");
-            dataGridView.Columns["FilePathColumn"].HeaderText = LocalizationService.Get("FilePath");
-            dataGridView.Columns["LineColumn"].HeaderText = LocalizationService.Get("Line");
+            dataGridView.Columns["InvalidText"].HeaderText = LocalizationService.Get("InvalidText");
+            dataGridView.Columns["LineColumn"].HeaderText = LocalizationService.Get("Location");
             dataGridView.Columns["MessageColumn"].HeaderText = LocalizationService.Get("Message");
             dataGridView.Refresh();
+
+            dataGridViewFlexBison.Columns["invalidTextFlexBison"].HeaderText = LocalizationService.Get("InvalidText");
+            dataGridViewFlexBison.Columns["lineColumnFlexBison"].HeaderText = LocalizationService.Get("Location");
+            dataGridViewFlexBison.Columns["messageColumnFlexBison"].HeaderText = LocalizationService.Get("Message");
+            dataGridViewFlexBison.Refresh();
+
+            dataGridViewAntlr.Columns["invalidTextAntlr"].HeaderText = LocalizationService.Get("InvalidText");
+            dataGridViewAntlr.Columns["lineColumnAntlr"].HeaderText = LocalizationService.Get("Location");
+            dataGridViewAntlr.Columns["messageColumnAntlr"].HeaderText = LocalizationService.Get("Message");
+            dataGridViewAntlr.Refresh();
+
+            dataGridViewLexer.Columns["codeColumn"].HeaderText = LocalizationService.Get("Code");
+            dataGridViewLexer.Columns["typeColumn"].HeaderText = LocalizationService.Get("Type");
+            dataGridViewLexer.Columns["lexemeColumn"].HeaderText = LocalizationService.Get("Lexeme");
+            dataGridViewLexer.Columns["locationColumn"].HeaderText = LocalizationService.Get("Location");
+
+            dataGridViewLexer.Refresh();
+
         }
 
         private void AboutProgramMI_Click(object sender, EventArgs e)
@@ -393,6 +417,11 @@ namespace CompilerGUI
         private void GridException_RowSelected(ExceptionInfo syntaxError)
         {
             controllerTCP.FocusToEditor(syntaxError.Column, syntaxError.EndPos, syntaxError.StartPos);
+            this.Focus();
+        }
+        private void GridException_RowSelected(Token token)
+        {
+            controllerTCP.FocusToEditor(token.AbsoluteIndex, token.EndPos, token.StartPos);
             this.Focus();
         }
     }

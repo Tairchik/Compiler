@@ -9,7 +9,6 @@ namespace CompilerGUI.HelpClass
 {
     public class ParserService
     {
-        /*
         // Изменяем делегат: принимаем int и строку
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate void ErrorCallbackDelegate(int line, [MarshalAs(UnmanagedType.LPUTF8Str)] string message);
@@ -43,6 +42,5 @@ namespace CompilerGUI.HelpClass
                 return (false, errors, lines);
             }
         }
-        */
     }
 }

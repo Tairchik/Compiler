@@ -1,4 +1,6 @@
 ﻿using CompilerGUI.HelpClass;
+using CompilerGUI.Scaner;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,14 +13,22 @@ namespace CompilerGUI.Controllers
 {
     public class ExceptionsCodeController
     {
-        public DataGridView exceptionGrid;
+        public DataGridView exceptionSyntaxGrid;
         public BindingList<ExceptionInfo> gridLines = new BindingList<ExceptionInfo>();
+        public BindingList<Token> gridLinesLexer = new BindingList<Token>();
+        public BindingList<ExceptionInfo> gridLinesFlexBison = new BindingList<ExceptionInfo>();
+        public BindingList<ExceptionInfo> gridLinesAntlr = new BindingList<ExceptionInfo>();
+
+
         public event Func<FileClass> GetFileClass;
 
-        public ExceptionsCodeController(DataGridView dataGridView) 
+        public ExceptionsCodeController(DataGridView dataGridViewSyntax, DataGridView dataGridViewLexer, DataGridView dataGridViewFlexBison, DataGridView dataGridViewAntlr) 
         {
-            exceptionGrid = dataGridView;
-            exceptionGrid.DataSource = gridLines;
+            exceptionSyntaxGrid = dataGridViewSyntax;
+            exceptionSyntaxGrid.DataSource = gridLines;
+            dataGridViewLexer.DataSource = gridLinesLexer;
+            dataGridViewAntlr.DataSource = gridLinesAntlr;
+            dataGridViewFlexBison.DataSource = gridLinesFlexBison;
             gridLines.ListChanged += UpdateNumbers;
         }
 
@@ -32,31 +42,48 @@ namespace CompilerGUI.Controllers
 
         public void ClearBeforeAdd() 
         {
-            FileClass fc = GetFileClass.Invoke();
-            Clear(fc.FileName, fc.FilePath);
+            ClearAll();
         }
 
-
-        public void AddExceptionToGrid(string errorMessage, int line, int position, int startPos, int endPos)
+        public void AddExceptionSyntaxToGrid(string errorMessage, string value, int line, int position, int startPos, int endPos)
         {
-            FileClass fc = GetFileClass.Invoke();
-
             ExceptionInfo exception = new ExceptionInfo();
             exception.Location = $"Строка: {line}, позиция: {startPos}-{endPos}";
             exception.StartPos = startPos;
             exception.EndPos = endPos;
             exception.ExceptionMessage = errorMessage;
-            exception.FileName = fc.FileName;
             exception.Column = position;
-
-            if (string.IsNullOrEmpty(fc.FilePath)) exception.FilePath = $"..{exception.FileName}";
-            else exception.FilePath = fc.FilePath;
-            AddLineGrid(exception);
-        }
-
-        public void AddLineGrid(ExceptionInfo exception) 
-        {
+            exception.InvalidText = value;
             gridLines.Add(exception);
+        }
+        public void AddExceptionAntlrToGrid(string errorMessage, string value, int line, int position, int startPos, int endPos)
+        {
+            ExceptionInfo exception = new ExceptionInfo();
+            exception.Location = $"Строка: {line}, позиция: {startPos}-{endPos}";
+            exception.StartPos = startPos;
+            exception.EndPos = endPos;
+            exception.ExceptionMessage = errorMessage;
+            exception.Column = position;
+            exception.InvalidText = value;
+            gridLinesAntlr.Add(exception);
+        }
+        public void AddExceptionFlexBisonToGrid(string errorMessage, int line)
+        {
+            ExceptionInfo exception = new ExceptionInfo();
+            exception.Location = $"Строка: {line}";
+            exception.ExceptionMessage = errorMessage;
+            string val = errorMessage.Split("unexpected")[1].Split(' ')[1];
+            if (val[val.Length - 1] == ',') 
+            {
+                val = val.Substring(0, val.Length - 1);
+            }
+
+            exception.InvalidText = val;
+            gridLinesFlexBison.Add(exception);
+        }
+        public void AddLexerToGrid(Token token)
+        {
+            gridLinesLexer.Add(token);
         }
 
         public void RemoveExseption(int index)
@@ -65,9 +92,12 @@ namespace CompilerGUI.Controllers
             gridLines.RemoveAt(index);
         }
 
-        public void Clear()
+        private void ClearAll()
         {
             gridLines.Clear();
+            gridLinesLexer.Clear();
+            gridLinesFlexBison.Clear();
+            gridLinesAntlr.Clear();
         }
 
         public void Clear(string FileName, string FilePath = "")

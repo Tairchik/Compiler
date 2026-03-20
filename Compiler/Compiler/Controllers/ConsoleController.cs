@@ -26,51 +26,54 @@ namespace CompilerGUI.Controllers
             if (code == null) return;
             Lexer lexer = new Lexer();
             List<Token> tokens = lexer.Analyze(code);
+            exc_controller.ClearBeforeAdd();
+
+            if (tokens.Count != 0) 
+            {
+                foreach (var tk in tokens)
+                {
+                    exc_controller.AddLexerToGrid(tk);
+                }
+            }
+
             //ScanCompleted?.Invoke(tokens);
             Parser parser = new Parser();
 
             var pars = parser.Parse(tokens);
             if (pars == null || pars.Count == 0) 
             {
-                exc_controller.ClearBeforeAdd();
                 UpdateTextConsole("Успешно");
             }
             else 
             {
                 ChangeStatusRun?.Invoke(LocalizationService.Get("Error"));
                 UpdateTextConsole($"Ошибка. Число ошибок: {pars.Count}");
-                exc_controller.ClearBeforeAdd();
                 int i = 0;
                 foreach (var err in pars)
                 {
-                    exc_controller.AddExceptionToGrid(err.Message, err.Line, err.AbsoluteIndex, err.StartPos, err.EndPos);
+                    exc_controller.AddExceptionSyntaxToGrid(err.Message, err.Value, err.Line, err.AbsoluteIndex, err.StartPos, err.EndPos);
                     i++;
                 }
             }
-            /*
+            
             var res = parser_bison.Parse(code);
             if (res.IsSuccess) 
             {
-                ChangeStatusRun?.Invoke(LocalizationService.Get("Ready"));
-
-                exc_controller.ClearBeforeAdd();
                 UpdateTextConsole(res.Message);
             }
             else 
             {
-                ChangeStatusRun?.Invoke(LocalizationService.Get("Error"));
                 UpdateTextConsole("Ошибка");
-                exc_controller.ClearBeforeAdd();
                 int i = 0;
                 var str_res = res.Message.Split('\r');
 
                 foreach (var err in str_res) 
                 {
-                    exc_controller.AddExceptionToGrid(err, res.line[i]);
+                    exc_controller.AddExceptionFlexBisonToGrid(err, res.line[i]);
                     i++;
                 }
             }
-            */
+            
             /*
             ChangeStatusRun?.Invoke(LocalizationService.Get("Assembling"));
             string info = "ExceptionMessage";

@@ -13,14 +13,15 @@ namespace CompilerGUI.Scaner
         public int EndPos;
         public int AbsoluteIndex;
         public string Message = "";
-
-        public SyntaxError(int line, int start_pos, int end_pos, int abs_index, string message) 
+        public string Value = "";
+        public SyntaxError(int line, int start_pos, int end_pos, int abs_index, string message, string value) 
         {
             Line = line;
             StartPos = start_pos;
             EndPos = end_pos;
             AbsoluteIndex = abs_index; 
             Message = message;
+            Value = value;
         }
     }
 
@@ -51,10 +52,6 @@ namespace CompilerGUI.Scaner
 
             return _errors.Count > 0 ? _errors : null;
         }
-
-        // ======================
-        // ВСПОМОГАТЕЛЬНЫЕ
-        // ======================
 
         private Token? Current => _pos < _tokens.Count ? _tokens[_pos] : null;
 
@@ -89,7 +86,8 @@ namespace CompilerGUI.Scaner
                     t.EndPos + 1,   // позиция ПОСЛЕ токена
                     t.EndPos + 1,
                     t.AbsoluteIndex + 1,
-                    message
+                    message,
+                    t.Value
                  ));
                 return;
             }
@@ -99,7 +97,8 @@ namespace CompilerGUI.Scaner
                 t.StartPos,
                 t.EndPos,
                 t.AbsoluteIndex,
-                message
+                message,
+                t.Value
             ));
         }
 

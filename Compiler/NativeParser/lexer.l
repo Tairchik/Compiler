@@ -1,4 +1,4 @@
-ввыф%{
+%{
 #include "parser.tab.h" 
 #include <io.h>
 #define isatty _isatty
