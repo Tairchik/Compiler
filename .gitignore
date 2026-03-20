@@ -231,3 +231,4 @@ parser.dll
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
+/Compiler/Compiler/NativeParser.dll
