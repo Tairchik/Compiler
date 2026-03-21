@@ -30,6 +30,9 @@ namespace CompilerGUI.Controllers
             dataGridViewAntlr.DataSource = gridLinesAntlr;
             dataGridViewFlexBison.DataSource = gridLinesFlexBison;
             gridLines.ListChanged += UpdateNumbers;
+            gridLinesAntlr.ListChanged += UpdateNumbersAntlr;
+            gridLinesFlexBison.ListChanged += UpdateNumbersFlexBison;
+
         }
 
         private void UpdateNumbers(object? sender, ListChangedEventArgs e) 
@@ -37,6 +40,23 @@ namespace CompilerGUI.Controllers
             for (int i = 1; i <= gridLines.Count; i++) 
             {
                 gridLines[i - 1].Number = i;
+            }
+        }
+
+        private void UpdateNumbersFlexBison(object? sender, ListChangedEventArgs e)
+        {
+        
+            for (int i = 1; i <= gridLinesFlexBison.Count; i++)
+            {
+                gridLinesFlexBison[i - 1].Number = i;
+            }
+        }
+
+        private void UpdateNumbersAntlr(object? sender, ListChangedEventArgs e)
+        {
+            for (int i = 1; i <= gridLinesAntlr.Count; i++)
+            {
+                gridLinesAntlr[i - 1].Number = i;
             }
         }
 

@@ -98,32 +98,26 @@ namespace CompilerGUI.Scaner
         private void ParseZ()
         {
             bool skip_list_elements = false;
-            if (Current?.Type != TokenType.Id)
+            if (!Match(TokenType.Id))
             {
-                AddError("Ожидался идентификатор");
-                SkipTo(TokenType.Equal, TokenType.OpenListDelimiter, TokenType.End_operator);
-            }
-            else
-            {
-                Next();
+                SkipTo(TokenType.Equal, TokenType.End_operator, TokenType.OpenListDelimiter);
             }
 
             if (!Match(TokenType.Equal))
             {
-                SkipTo(TokenType.OpenListDelimiter, TokenType.End_operator);
+                SkipTo(TokenType.OpenListDelimiter, TokenType.End_operator, TokenType.CloseListDelimiter);
             }
 
             if (!Match(TokenType.OpenListDelimiter))
             {
-                SkipTo(TokenType.CloseListDelimiter, TokenType.End_operator);
-                skip_list_elements = true;
+                SkipTo(TokenType.CloseListDelimiter, TokenType.ConstFloat, TokenType.ConstInt, TokenType.ConstString, 
+                    TokenType.ConstTrue, TokenType.ConstFalse, TokenType.Plus, TokenType.Minus, TokenType.End_operator);
             }
-
             if (Current?.Type == TokenType.CloseListDelimiter)
             {
                 Next();
             }
-            else if (!skip_list_elements)
+            else
             {
                 ParseElements();
 
@@ -140,11 +134,11 @@ namespace CompilerGUI.Scaner
             else
             {
                 AddError("Ожидалась ';' в конце оператора");
-
+                return;
                 // если не конец файла — делаем восстановление
                 if (Current != null)
                 {
-                    SkipTo(TokenType.End_operator);
+                    SkipTo(TokenType.End_operator, TokenType.Id);
 
                     if (Current?.Type == TokenType.End_operator)
                         Next();
@@ -154,7 +148,24 @@ namespace CompilerGUI.Scaner
 
         private void ParseElements()
         {
-            ParseConst();
+            int res = FirstParseConst();
+            if (res == 1 && Current?.Type == TokenType.End_operator) 
+            {
+                return;
+            }
+            else if (res == 1) 
+            {
+                Next();
+                if (Current?.Type == TokenType.CloseListDelimiter) 
+                {
+                    _pos--;
+                    AddError("Ожидалась константа");
+                    Next();
+                    return;
+                }
+                _pos--;
+                AddError("Ожидалась константа");
+            }
 
             while (true)
             {
@@ -192,9 +203,34 @@ namespace CompilerGUI.Scaner
 
                 default:
                     AddError("Ожидалась константа");
+                    // ВОССТАНОВЛЕНИЕ
+                    SkipTo(TokenType.Comma, TokenType.CloseListDelimiter, TokenType.End_operator, TokenType.ConstFloat, TokenType.ConstInt, TokenType.ConstString,
+                    TokenType.ConstTrue, TokenType.ConstFalse, TokenType.Plus, TokenType.Minus);
+                    return 1;
+            }
+        }
+
+        private int FirstParseConst()
+        {
+            ParseSign();
+
+            if (Current == null) return 0;
+
+            switch (Current.Type)
+            {
+                case TokenType.ConstInt:
+                case TokenType.ConstFloat:
+                case TokenType.ConstString:
+                case TokenType.ConstTrue:
+                case TokenType.ConstFalse:
+                    Next();
+                    return 0;
+
+                default:
 
                     // ВОССТАНОВЛЕНИЕ
-                    SkipTo(TokenType.Comma, TokenType.CloseListDelimiter, TokenType.End_operator);
+                    SkipTo(TokenType.Comma, TokenType.CloseListDelimiter, TokenType.End_operator, TokenType.ConstFloat, TokenType.ConstInt, TokenType.ConstString,
+                    TokenType.ConstTrue, TokenType.ConstFalse, TokenType.Plus, TokenType.Minus);
                     return 1;
             }
         }
