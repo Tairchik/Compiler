@@ -155,6 +155,15 @@ namespace CompilerGUI.Scaner
             }
             else if (res == 1) 
             {
+                // [error]
+                if (Current?.Type == TokenType.CloseListDelimiter)
+                {
+                    _pos--;
+                    AddError("Ожидалась константа");
+                    Next();
+                    return;
+                }
+                // Для запятой [,]   
                 Next();
                 if (Current?.Type == TokenType.CloseListDelimiter) 
                 {
@@ -163,6 +172,7 @@ namespace CompilerGUI.Scaner
                     Next();
                     return;
                 }
+                // [error ... ]
                 _pos--;
                 AddError("Ожидалась константа");
             }

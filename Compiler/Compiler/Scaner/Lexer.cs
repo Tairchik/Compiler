@@ -120,18 +120,33 @@ namespace CompilerGUI.Scaner
                 }
                 if (c == '\'')
                 {
-                    string lexeme = "";
-                    bool lastIsQuote = false;
-                    do
-                    {
-                        lexeme += text[pos];
-                        col++; pos++;
-                    }
-                    while (pos < text.Length && text[pos] != '\'');
+                    // Ищем закрывающую кавычку до конца строки (\n) или конца текста
+                    bool hasClosingQuote = false;
+                    int lookahead = pos + 1;
 
-                    if (pos < text.Length && text[pos] == '\'')
+                    while (lookahead < text.Length)
                     {
-                        lexeme += text[pos];
+                        if (text[lookahead] == '\'')
+                        {
+                            hasClosingQuote = true;
+                            break;
+                        }
+                        lookahead++;
+                    }
+
+                    if (hasClosingQuote)
+                    {
+                        // Если пара есть, считываем токен как нормальную строку
+                        string lexeme = text[pos].ToString();
+                        col++; pos++; // Пропускаем открывающую '
+
+                        while (text[pos] != '\'')
+                        {
+                            lexeme += text[pos];
+                            col++; pos++;
+                        }
+
+                        lexeme += text[pos]; // Захватываем закрывающую '
                         col++; pos++;
 
                         tokens.Add(new Token
@@ -143,18 +158,21 @@ namespace CompilerGUI.Scaner
                             EndPos = col - 1,
                             AbsoluteIndex = startPos
                         });
-                        continue;
                     }
-
-                    tokens.Add(new Token
+                    else
                     {
-                        Type = TokenType.Error,
-                        Value = lexeme,
-                        Line = line,
-                        StartPos = startCol,
-                        EndPos = col - 1,
-                        AbsoluteIndex = startPos
-                    });
+                        // 3. Если пары нет, фиксируем только саму кавычку как ошибку
+                        tokens.Add(new Token
+                        {
+                            Type = TokenType.Error,
+                            Value = "\'",
+                            Line = line,
+                            StartPos = startCol,
+                            EndPos = col,
+                            AbsoluteIndex = startPos
+                        });
+                        col++; pos++;
+                    }
                     continue;
                 }
                 if (c == ';')
