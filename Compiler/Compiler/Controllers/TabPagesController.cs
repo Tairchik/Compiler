@@ -573,11 +573,12 @@ namespace CompilerGUI.Controllers
             return tabPage;
         }
 
-        public string GetTextEditor() 
+        public (string, bool) GetTextEditor() 
         {
             TabPage? page = tabControl.SelectedTab;
-            if (page == null) return "";
-            return ((RichTextBox)page.Controls.Find("richTextBoxText", true)[0]).Text;
+            if (page == null) return ("", false);
+            if (Editor.ReadOnly == true) return ("", false);
+            return (((RichTextBox)page.Controls.Find("richTextBoxText", true)[0]).Text, true);
         }
 
         public void UpdateTextConsole(string text) 
@@ -591,6 +592,39 @@ namespace CompilerGUI.Controllers
             TabPage? page = tabControl.SelectedTab;
             if (page == null) return null;
             return (FileClass)page.Tag;
+        }
+
+        public void createTabPage(string header, string text) 
+        {
+            tabControl.Visible = true;
+
+            TabPage tabPage = createTabPage(new FileClass(header, "", true));
+            tabPage.Text = header;
+            Editor.Text = text;
+            Editor.ReadOnly = true;
+            TabPageCreate?.Invoke(tabControl.SelectedTab);
+        }
+        public void createTabPage(string header, string text, Image image)
+        {
+            tabControl.Visible = true;
+            Clipboard.SetImage(image);
+            TabPage tabPage = createTabPage(new FileClass(header, "", true));
+            tabPage.Text = header;
+            Editor.Text = text + "\n";
+            Editor.SelectionStart = Editor.TextLength;
+            Editor.Paste();
+            Editor.ReadOnly = true;
+            TabPageCreate?.Invoke(tabControl.SelectedTab);
+        }
+
+        public void createExamplePage(string header, string text)
+        {
+            tabControl.Visible = true;
+
+            TabPage tabPage = createTabPage(new FileClass(header, "", true));
+            tabPage.Text = header;
+            Editor.Text = text;
+            TabPageCreate?.Invoke(tabControl.SelectedTab);
         }
     }
 }
