@@ -1,5 +1,4 @@
 ﻿using CompilerGUI.HelpClass;
-using CompilerGUI.Scaner;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -448,11 +447,6 @@ namespace CompilerGUI.Controllers
             }
         }
 
-        public void FocusToEditor(Token token)
-        {
-            Editor.Focus();
-            Editor.Select(token.AbsoluteIndex, token.EndPos - token.StartPos + 1);
-        }
         public void FocusToEditor(int abs_index, int endPos, int startpos)
         {
             Editor.Focus();

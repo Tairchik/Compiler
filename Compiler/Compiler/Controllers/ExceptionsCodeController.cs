@@ -1,6 +1,4 @@
 ﻿using CompilerGUI.HelpClass;
-using CompilerGUI.Scaner;
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +13,6 @@ namespace CompilerGUI.Controllers
     {
         public DataGridView exceptionSyntaxGrid;
         public BindingList<ExceptionInfo> gridLines = new BindingList<ExceptionInfo>();
-        public BindingList<Token> gridLinesLexer = new BindingList<Token>();
         public BindingList<ExceptionInfo> gridLinesFlexBison = new BindingList<ExceptionInfo>();
         public BindingList<ExceptionInfo> gridLinesAntlr = new BindingList<ExceptionInfo>();
 
@@ -26,7 +23,6 @@ namespace CompilerGUI.Controllers
         {
             exceptionSyntaxGrid = dataGridViewSyntax;
             exceptionSyntaxGrid.DataSource = gridLines;
-            dataGridViewLexer.DataSource = gridLinesLexer;
             dataGridViewAntlr.DataSource = gridLinesAntlr;
             dataGridViewFlexBison.DataSource = gridLinesFlexBison;
             gridLines.ListChanged += UpdateNumbers;
@@ -101,10 +97,6 @@ namespace CompilerGUI.Controllers
             exception.InvalidText = val;
             gridLinesFlexBison.Add(exception);
         }
-        public void AddLexerToGrid(Token token)
-        {
-            gridLinesLexer.Add(token);
-        }
 
         public void RemoveExseption(int index)
         {
@@ -115,7 +107,6 @@ namespace CompilerGUI.Controllers
         private void ClearAll()
         {
             gridLines.Clear();
-            gridLinesLexer.Clear();
             gridLinesFlexBison.Clear();
             gridLinesAntlr.Clear();
         }
