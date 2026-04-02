@@ -5,6 +5,9 @@ using CompilerGUI.Views;
 using System.Diagnostics;
 using System.Media;
 using System.Security.Policy;
+using System.Collections.Generic;
+using System;
+using System.ComponentModel;
 
 namespace CompilerGUI
 {
@@ -12,29 +15,25 @@ namespace CompilerGUI
     {
         private TabPagesController controllerTCP;
         private SyncRedactorTextController controllerRichTB;
-        private ExceptionsCodeController controllerExceptionsCode;
-        private ConsoleController controllerConsole;
-        //private TextHighlightingController controllerTextHighlighting;
         private KeyController keyController;
+        private BindingList<RegexMatchResult> regexMatchResults = new BindingList<RegexMatchResult>();
 
         public CompilerForm()
         {
             InitializeComponent();
             ApplyLocalization();
+            toolStripComboBox.SelectedIndex = 0;
+            dataGridView.DataSource = regexMatchResults;
+            dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
             this.AllowDrop = true;
             mainPanel.AllowDrop = true;
             keyController = new KeyController();
             controllerTCP = new TabPagesController(mainPanel.Panel1);
-            controllerExceptionsCode = new ExceptionsCodeController(dataGridView);
             controllerRichTB = new SyncRedactorTextController();
-            controllerConsole = new ConsoleController(controllerExceptionsCode);
-            //controllerTextHighlighting = new TextHighlightingController("txt");
 
             controllerTCP.TabPageCreate += controllerRichTB.init;
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
             controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
-            //controllerTCP.TabPageChanged += controllerTextHighlighting.InitTextBox;
-            controllerTCP.TabClose += controllerExceptionsCode.Clear;
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
 
             keyController.CapsLockChanged += OnCapsLockChanged;
@@ -47,19 +46,12 @@ namespace CompilerGUI
             keyController.CtrlShiftSPressed += SaveUsFile;
 
             controllerTCP.TapPageKeyDown += keyController.OnKeyDown;
-
-            controllerConsole.ChangeStatusRun += StatusChanged;
-            controllerConsole.UpdateConsoleOutPut += controllerTCP.UpdateTextConsole;
-
-            controllerExceptionsCode.GetFileClass += controllerTCP.GetFileClassPage;
-            dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
         }
-
 
         private void DataGridView_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
-            GridException_RowSelected(controllerExceptionsCode.gridLines[e.RowIndex]);
+            controllerTCP.FocusToEditor(regexMatchResults[e.RowIndex].AbsoluteIndex, regexMatchResults[e.RowIndex].PositionEnd, regexMatchResults[e.RowIndex].PositionStart);
         }
 
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
@@ -234,9 +226,14 @@ namespace CompilerGUI
 
         private void Run_Click(object sender, EventArgs e)
         {
-            (string text, bool res) = controllerTCP.GetTextEditor();
-            if (res != false)
-            controllerConsole.StartCode(text);
+            (string, bool) res = controllerTCP.GetTextEditor();
+            if (res.Item2 != false)
+            {
+                RegexProcessor processor = new RegexProcessor();
+                List<RegexMatchResult> result = processor.Process(res.Item1, toolStripComboBox.SelectedIndex);
+                dataGridView.Rows.Clear();
+                regexMatchResults = new BindingList<RegexMatchResult>(result);
+            }
         }
 
         private void SettingsMI_Click(object sender, EventArgs e)
@@ -256,10 +253,21 @@ namespace CompilerGUI
         }
         private void runBtn_Click(object sender, EventArgs e)
         {
-            (string text, bool res) = controllerTCP.GetTextEditor();
-            if (res != false)
-                controllerConsole.StartCode(text);
+            (string, bool) res = controllerTCP.GetTextEditor();
+            if (res.Item2 != false)
+            {
+                RegexProcessor processor = new RegexProcessor();
+                List<RegexMatchResult> result = processor.Process(res.Item1, toolStripComboBox.SelectedIndex);
+                dataGridView.Rows.Clear();
+                foreach (var i in result) 
+                {
+                    regexMatchResults.Add(i);
+                }
+            }
         }
+
+        
+
         private void zoomPlus_Click(object sender, EventArgs e)
         {
             controllerTCP.ChangeZoomText(0.1f);
@@ -352,13 +360,6 @@ namespace CompilerGUI
         private void openTSB_Click(object sender, EventArgs e)
         {
             controllerTCP.OpenFile();
-        }
-
-
-        private void GridException_RowSelected(ExceptionInfo syntaxError)
-        {
-            controllerTCP.FocusToEditor(syntaxError.Column, syntaxError.EndPos, syntaxError.StartPos);
-            this.Focus();
         }
        
         private void taskAimIM_Click(object sender, EventArgs e)

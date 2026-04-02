@@ -558,18 +558,21 @@
             columnSubstring.HeaderText = "Найденная подстрока";
             columnSubstring.Name = "columnSubstring";
             columnSubstring.ReadOnly = true;
+            columnSubstring.DataPropertyName = "FoundText";
             // 
             // columnPosition
             // 
             columnPosition.HeaderText = "Позиция";
             columnPosition.Name = "columnPosition";
             columnPosition.ReadOnly = true;
+            columnPosition.DataPropertyName = "Positon";
             // 
             // columnLen
             // 
             columnLen.HeaderText = "Длина";
             columnLen.Name = "columnLen";
             columnLen.ReadOnly = true;
+            columnLen.DataPropertyName = "Length";
             // 
             // CompilerForm
             // 
