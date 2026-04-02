@@ -24,10 +24,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="NativeParser.dll" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <ProjectReference Include="..\MyLangParser\MyLangParser.csproj" />
 	</ItemGroup>
 </Project>
