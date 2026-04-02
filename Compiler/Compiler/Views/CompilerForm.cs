@@ -1,7 +1,6 @@
 using CompilerGUI.Controllers;
 using CompilerGUI.HelpClass;
 using CompilerGUI.Properties;
-using CompilerGUI.Scaner;
 using CompilerGUI.Views;
 using System.Diagnostics;
 using System.Media;
@@ -26,7 +25,7 @@ namespace CompilerGUI
             mainPanel.AllowDrop = true;
             keyController = new KeyController();
             controllerTCP = new TabPagesController(mainPanel.Panel1);
-            controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView, this.dataGridViewLexer, this.dataGridViewFlexBison, this.dataGridViewAntlr);
+            controllerExceptionsCode = new ExceptionsCodeController(dataGridView);
             controllerRichTB = new SyncRedactorTextController();
             controllerConsole = new ConsoleController(controllerExceptionsCode);
             //controllerTextHighlighting = new TextHighlightingController("txt");
@@ -50,19 +49,12 @@ namespace CompilerGUI
             controllerTCP.TapPageKeyDown += keyController.OnKeyDown;
 
             controllerConsole.ChangeStatusRun += StatusChanged;
-            controllerConsole.ScanCompleted += OpenTableResultScan;
             controllerConsole.UpdateConsoleOutPut += controllerTCP.UpdateTextConsole;
 
             controllerExceptionsCode.GetFileClass += controllerTCP.GetFileClassPage;
             dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
-            dataGridViewLexer.CellDoubleClick += DataGridViewLexer_CellDoubleClick;
         }
 
-        private void DataGridViewLexer_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-            GridException_RowSelected(controllerExceptionsCode.gridLinesLexer[e.RowIndex]);
-        }
 
         private void DataGridView_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
@@ -349,28 +341,7 @@ namespace CompilerGUI
             keyController?.Initialize();
 
             this.Text = LocalizationService.Get("Compiler");
-            dataGridView.Columns["InvalidText"].HeaderText = LocalizationService.Get("InvalidText");
-            dataGridView.Columns["LineColumn"].HeaderText = LocalizationService.Get("Location");
-            dataGridView.Columns["MessageColumn"].HeaderText = LocalizationService.Get("Message");
-            dataGridView.Refresh();
-
-            dataGridViewFlexBison.Columns["invalidTextFlexBison"].HeaderText = LocalizationService.Get("InvalidText");
-            dataGridViewFlexBison.Columns["lineColumnFlexBison"].HeaderText = LocalizationService.Get("Location");
-            dataGridViewFlexBison.Columns["messageColumnFlexBison"].HeaderText = LocalizationService.Get("Message");
-            dataGridViewFlexBison.Refresh();
-
-            dataGridViewAntlr.Columns["invalidTextAntlr"].HeaderText = LocalizationService.Get("InvalidText");
-            dataGridViewAntlr.Columns["lineColumnAntlr"].HeaderText = LocalizationService.Get("Location");
-            dataGridViewAntlr.Columns["messageColumnAntlr"].HeaderText = LocalizationService.Get("Message");
-            dataGridViewAntlr.Refresh();
-
-            dataGridViewLexer.Columns["codeColumn"].HeaderText = LocalizationService.Get("Code");
-            dataGridViewLexer.Columns["typeColumn"].HeaderText = LocalizationService.Get("Type");
-            dataGridViewLexer.Columns["lexemeColumn"].HeaderText = LocalizationService.Get("Lexeme");
-            dataGridViewLexer.Columns["locationColumn"].HeaderText = LocalizationService.Get("Location");
-
-            dataGridViewLexer.Refresh();
-
+          
         }
 
         private void AboutProgramMI_Click(object sender, EventArgs e)
@@ -383,54 +354,13 @@ namespace CompilerGUI
             controllerTCP.OpenFile();
         }
 
-        private bool scanForm = false;
-        private ScannerResultForm resultForm;
-        private void OpenTableResultScan(List<Token> tokens)
-        {
-            if (tokens == null || tokens.Count == 0)
-            {
-                MessageBox.Show("Список токенов пуст.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            if (scanForm == false)
-            {
-                resultForm = new ScannerResultForm(tokens);
-                resultForm.RowSelected -= ResultForm_RowSelected;
-                resultForm.RowSelected += ResultForm_RowSelected;
-                resultForm.CloseForm -= ResultForm_CloseForm;
-                resultForm.CloseForm += ResultForm_CloseForm;
-                scanForm = true;
-                resultForm.Show();
-                resultForm.Focus();
-            }
-            else
-            {
-                resultForm.UpdateGrid(tokens);
-                resultForm.Focus();
-            }
-        }
 
-        private void ResultForm_CloseForm()
-        {
-            scanForm = false;
-        }
-
-        private void ResultForm_RowSelected(Token obj)
-        {
-            controllerTCP.FocusToEditor(obj);
-            this.Focus();
-        }
         private void GridException_RowSelected(ExceptionInfo syntaxError)
         {
             controllerTCP.FocusToEditor(syntaxError.Column, syntaxError.EndPos, syntaxError.StartPos);
             this.Focus();
         }
-        private void GridException_RowSelected(Token token)
-        {
-            controllerTCP.FocusToEditor(token.AbsoluteIndex, token.EndPos, token.StartPos);
-            this.Focus();
-        }
-
+       
         private void taskAimIM_Click(object sender, EventArgs e)
         {
             string text = "Список - это упорядоченная последовательность элементов\n" +
