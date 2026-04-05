@@ -226,13 +226,23 @@ namespace CompilerGUI
 
         private void Run_Click(object sender, EventArgs e)
         {
+
             (string, bool) res = controllerTCP.GetTextEditor();
             if (res.Item2 != false)
             {
                 RegexProcessor processor = new RegexProcessor();
                 List<RegexMatchResult> result = processor.Process(res.Item1, toolStripComboBox.SelectedIndex);
                 dataGridView.Rows.Clear();
-                regexMatchResults = new BindingList<RegexMatchResult>(result);
+                controllerTCP.Console.Clear();
+
+                int count = 0;
+                foreach (var i in result) 
+                {
+                    regexMatchResults.Add(i);
+                    count++;
+                }
+
+                controllerTCP.Console.Text = $"Количество совпадений: {count}";
             }
         }
 
@@ -259,10 +269,16 @@ namespace CompilerGUI
                 RegexProcessor processor = new RegexProcessor();
                 List<RegexMatchResult> result = processor.Process(res.Item1, toolStripComboBox.SelectedIndex);
                 dataGridView.Rows.Clear();
-                foreach (var i in result) 
+                controllerTCP.Console.Clear();
+
+                int count = 0;
+                foreach (var i in result)
                 {
                     regexMatchResults.Add(i);
+                    count++;
                 }
+
+                controllerTCP.Console.Text = $"Количество совпадений: {count}";
             }
         }
 

@@ -292,7 +292,7 @@ namespace CompilerGUI.Controllers
                 return (RichTextBox)page.Controls.Find("richTextBoxText", true)[0];   
             }
         }
-        private RichTextBox Console
+        public RichTextBox Console
         {
             get
             {
@@ -452,6 +452,8 @@ namespace CompilerGUI.Controllers
             Editor.Focus();
             Editor.Select(abs_index, endPos - startpos + 1);
         }
+
+
 
         private TabPage createTabPage(FileClass? fileInfo = null) 
         {

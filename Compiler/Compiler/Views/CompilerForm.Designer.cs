@@ -552,6 +552,7 @@
             dataGridView.RowHeadersVisible = false;
             dataGridView.Size = new Size(1073, 126);
             dataGridView.TabIndex = 0;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             // 
             // columnSubstring
             // 

@@ -11,9 +11,9 @@ namespace CompilerGUI.HelpClass
     {
         private readonly Dictionary<int, string> _patterns = new Dictionary<int, string>
         {
-            { 0, @"[А-Яа-яЁё0-9!@#$%^&*()_\-+=\[{\]};:'"",.<>/?\\|`~]+" }, // password
-            { 1, @"@[A-Za-z0-9]{3,19}" }, // username
-            { 2, @" (?!BG|GB|NK|KN|TN|NT|ZZ)[ABCEGHJ-PR-TW-Z][ABCEGHJ-NPR-TW-Z]\d{6}[A-D]?" } // NIN
+            { 0, @"[А-Яа-яЁё0-9!@#№$%^&*()_\-+=\[{\]};:'"",.<>/?\\|`~]+" }, // password
+            { 1, @"@[A-Za-z0-9]{4,20}" }, // username
+            { 2, @"(?!BG|GB|NK|KN|TN|NT|ZZ)[ABCEGHJ-PR-TW-Z][ABCEGHJ-NPR-TW-Z]\d{6}[A-D]?" } // NIN
         };
 
         public List<RegexMatchResult> Process(string text, int patternNumber)
