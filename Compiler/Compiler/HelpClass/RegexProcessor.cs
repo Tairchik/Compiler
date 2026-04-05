@@ -11,9 +11,9 @@ namespace CompilerGUI.HelpClass
     {
         private readonly Dictionary<int, string> _patterns = new Dictionary<int, string>
         {
-            { 0, @"^[А-Яа-яЁё0-9!@#$%^&*()_\-+=\[{\]};:'"",.<>/?\\|`~]+$" }, // password
-            { 1, @"^@[A-Za-z0-9]{3,19}$" }, // username
-            { 2, @"(?!BG|GB|NK|KN|TN|NT|ZZ)[A-CEGHJ-PR-TW-Z]{2}\d{6}[A-D]?" } // NIN
+            { 0, @"[А-Яа-яЁё0-9!@#$%^&*()_\-+=\[{\]};:'"",.<>/?\\|`~]+" }, // password
+            { 1, @"@[A-Za-z0-9]{3,19}" }, // username
+            { 2, @" (?!BG|GB|NK|KN|TN|NT|ZZ)[ABCEGHJ-PR-TW-Z][ABCEGHJ-NPR-TW-Z]\d{6}[A-D]?" } // NIN
         };
 
         public List<RegexMatchResult> Process(string text, int patternNumber)
@@ -45,7 +45,7 @@ namespace CompilerGUI.HelpClass
                     });
                 }
 
-                absoluteIndex += line.Length + 1; // +1 для символа перевода строки
+                absoluteIndex += line.Length + 1;
             }
 
             return results;
