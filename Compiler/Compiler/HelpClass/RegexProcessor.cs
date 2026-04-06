@@ -21,6 +21,10 @@ namespace CompilerGUI.HelpClass
             if (!_patterns.ContainsKey(patternNumber))
                 throw new ArgumentException("Неверный номер регулярного выражения");
 
+            if (patternNumber == 1) 
+            {
+                return Automatic(text);
+            }
             var regex = new Regex(_patterns[patternNumber]);
             var results = new List<RegexMatchResult>();
 
@@ -49,6 +53,61 @@ namespace CompilerGUI.HelpClass
             }
 
             return results;
+        }
+
+        private List<RegexMatchResult> Automatic(string text)
+        {
+            List<RegexMatchResult> res = new List<RegexMatchResult>();
+            var lines = text.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+            int absoluteIndex = 0;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                int j = 0;
+
+                while (j < line.Length)
+                {
+                    if (line[j] == '@')
+                    {
+                        int startPos = j;
+                        int count = 0;
+                        j++; 
+
+                        while (j < line.Length && char.IsLetterOrDigit(line[j]))
+                        {
+                            count++;
+                            j++;
+
+                            if (count > 20) break;
+                        }
+
+                        if (count >= 4 && count <= 20)
+                        {
+                            res.Add(new RegexMatchResult
+                            {
+                                FoundText = line.Substring(startPos, count + 1),
+                                Line = i + 1,
+                                PositionStart = startPos + 1,
+                                PositionEnd = startPos + count + 1,
+                                Length = count + 1,
+                                AbsoluteIndex = absoluteIndex + startPos
+                            });
+                        }
+                        else
+                        {
+                            j = startPos + 1;
+                        }
+                    }
+                    else
+                    {
+                        j++;
+                    }
+                }
+                absoluteIndex += line.Length + 1;
+            }
+
+            return res;
         }
     }
 }
