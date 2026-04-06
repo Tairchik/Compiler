@@ -333,6 +333,8 @@ Z -> '\_'\<id><br>
 <img width="1918" height="1030" alt="image" src="https://github.com/user-attachments/assets/f2d0a5c8-0d44-4723-8f04-37aaeeb4d503"><br>
 ### Дополнительное задание. Автомат:
 <img width="761" height="462" alt="Снимок экрана 2026-04-05 190126" src="https://github.com/user-attachments/assets/c6a45da8-5ebb-4431-afef-d868952dde5b"><br>
+### Тестирование алгоритма
+<img width="1919" height="1018" alt="image" src="https://github.com/user-attachments/assets/0ae4547b-1375-4e2e-9d53-8a10635e6270"><br>
 ### Задание 3
 Построить РВ для поиска номеров социального страхования Великобритании (NIN), учесть корректные значения на месте.
 ### Регулярное выражение:
