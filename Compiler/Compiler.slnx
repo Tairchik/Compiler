@@ -5,6 +5,4 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="Compiler/CompilerGUI.csproj" />
-  <Project Path="MyLangParser/MyLangParser.csproj" Id="0f94ed07-cc57-4277-93cb-8be75873435e" />
-  <Project Path="NativeParser/NativeParser.vcxproj" Id="d1e4d978-371f-440e-ba66-aa8480c4646f" />
 </Solution>

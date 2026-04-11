@@ -22,8 +22,4 @@
 	<ItemGroup>
 	  <None Remove="NativeParser.dll" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\MyLangParser\MyLangParser.csproj" />
-	</ItemGroup>
 </Project>

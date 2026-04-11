@@ -3,11 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MyLangParser;
 
 
 namespace CompilerGUI.Scaner
 {
+    public class SyntaxError
+    {
+        public int Line;
+        public int StartPos;
+        public int EndPos;
+        public int AbsoluteIndex;
+        public string Message = "";
+        public string Value = "";
+        public SyntaxError(int line, int start_pos, int end_pos, int abs_index, string message, string value)
+        {
+            Line = line;
+            StartPos = start_pos;
+            EndPos = end_pos;
+            AbsoluteIndex = abs_index;
+            Message = message;
+            Value = value;
+        }
+    }
+
     public class Parser
     {
         private List<Token> _tokens = new();
@@ -135,14 +153,6 @@ namespace CompilerGUI.Scaner
             {
                 AddError("Ожидалась ';' в конце оператора");
                 return;
-                // если не конец файла — делаем восстановление
-                if (Current != null)
-                {
-                    SkipTo(TokenType.End_operator, TokenType.Id);
-
-                    if (Current?.Type == TokenType.End_operator)
-                        Next();
-                }
             }
         }
 
@@ -213,7 +223,6 @@ namespace CompilerGUI.Scaner
 
                 default:
                     AddError("Ожидалась константа");
-                    // ВОССТАНОВЛЕНИЕ
                     SkipTo(TokenType.Comma, TokenType.CloseListDelimiter, TokenType.End_operator, TokenType.ConstFloat, TokenType.ConstInt, TokenType.ConstString,
                     TokenType.ConstTrue, TokenType.ConstFalse, TokenType.Plus, TokenType.Minus);
                     return 1;
@@ -237,8 +246,6 @@ namespace CompilerGUI.Scaner
                     return 0;
 
                 default:
-
-                    // ВОССТАНОВЛЕНИЕ
                     SkipTo(TokenType.Comma, TokenType.CloseListDelimiter, TokenType.End_operator, TokenType.ConstFloat, TokenType.ConstInt, TokenType.ConstString,
                     TokenType.ConstTrue, TokenType.ConstFalse, TokenType.Plus, TokenType.Minus);
                     return 1;

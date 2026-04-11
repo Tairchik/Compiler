@@ -33,12 +33,6 @@
             DataGridViewCellStyle dataGridViewCellStyle52 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle53 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle54 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle55 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle56 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle57 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle58 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle59 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle60 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -101,18 +95,6 @@
             typeColumn = new DataGridViewTextBoxColumn();
             lexemeColumn = new DataGridViewTextBoxColumn();
             locationColumn = new DataGridViewTextBoxColumn();
-            tabPageFlexBison = new TabPage();
-            dataGridViewFlexBison = new DataGridView();
-            numberColumnFlexBison = new DataGridViewTextBoxColumn();
-            invalidTextFlexBison = new DataGridViewTextBoxColumn();
-            lineColumnFlexBison = new DataGridViewTextBoxColumn();
-            messageColumnFlexBison = new DataGridViewTextBoxColumn();
-            tabPageAntlr = new TabPage();
-            dataGridViewAntlr = new DataGridView();
-            numberColumnAntlr = new DataGridViewTextBoxColumn();
-            invalidTextAntlr = new DataGridViewTextBoxColumn();
-            lineColumnAntlr = new DataGridViewTextBoxColumn();
-            messageColumnAntlr = new DataGridViewTextBoxColumn();
             menuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -124,10 +106,6 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             tabPageLexer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewLexer).BeginInit();
-            tabPageFlexBison.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewFlexBison).BeginInit();
-            tabPageAntlr.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewAntlr).BeginInit();
             SuspendLayout();
             // 
             // menuStrip
@@ -571,8 +549,6 @@
             // 
             gridTabControl.Controls.Add(tabPageSyntax);
             gridTabControl.Controls.Add(tabPageLexer);
-            gridTabControl.Controls.Add(tabPageFlexBison);
-            gridTabControl.Controls.Add(tabPageAntlr);
             gridTabControl.Dock = DockStyle.Fill;
             gridTabControl.Location = new Point(0, 0);
             gridTabControl.Name = "gridTabControl";
@@ -734,178 +710,6 @@
             locationColumn.Name = "locationColumn";
             locationColumn.ReadOnly = true;
             // 
-            // tabPageFlexBison
-            // 
-            tabPageFlexBison.Controls.Add(dataGridViewFlexBison);
-            tabPageFlexBison.Location = new Point(4, 24);
-            tabPageFlexBison.Name = "tabPageFlexBison";
-            tabPageFlexBison.Padding = new Padding(3);
-            tabPageFlexBison.Size = new Size(1065, 98);
-            tabPageFlexBison.TabIndex = 0;
-            tabPageFlexBison.Text = "Flex&Bison";
-            tabPageFlexBison.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewFlexBison
-            // 
-            dataGridViewFlexBison.AllowUserToAddRows = false;
-            dataGridViewFlexBison.AllowUserToDeleteRows = false;
-            dataGridViewFlexBison.AllowUserToResizeRows = false;
-            dataGridViewFlexBison.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewFlexBison.BackgroundColor = Color.White;
-            dataGridViewFlexBison.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle55.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle55.BackColor = SystemColors.Control;
-            dataGridViewCellStyle55.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle55.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle55.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle55.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle55.WrapMode = DataGridViewTriState.True;
-            dataGridViewFlexBison.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle55;
-            dataGridViewFlexBison.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewFlexBison.Columns.AddRange(new DataGridViewColumn[] { numberColumnFlexBison, invalidTextFlexBison, lineColumnFlexBison, messageColumnFlexBison });
-            dataGridViewCellStyle56.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle56.BackColor = SystemColors.Window;
-            dataGridViewCellStyle56.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle56.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle56.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle56.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle56.WrapMode = DataGridViewTriState.False;
-            dataGridViewFlexBison.DefaultCellStyle = dataGridViewCellStyle56;
-            dataGridViewFlexBison.Dock = DockStyle.Fill;
-            dataGridViewFlexBison.GridColor = Color.Gray;
-            dataGridViewFlexBison.Location = new Point(3, 3);
-            dataGridViewFlexBison.Name = "dataGridViewFlexBison";
-            dataGridViewFlexBison.ReadOnly = true;
-            dataGridViewCellStyle57.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle57.BackColor = SystemColors.Control;
-            dataGridViewCellStyle57.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle57.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle57.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle57.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle57.WrapMode = DataGridViewTriState.True;
-            dataGridViewFlexBison.RowHeadersDefaultCellStyle = dataGridViewCellStyle57;
-            dataGridViewFlexBison.RowHeadersVisible = false;
-            dataGridViewFlexBison.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewFlexBison.Size = new Size(1059, 92);
-            dataGridViewFlexBison.TabIndex = 0;
-            // 
-            // numberColumnFlexBison
-            // 
-            numberColumnFlexBison.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            numberColumnFlexBison.DataPropertyName = "Number";
-            numberColumnFlexBison.Frozen = true;
-            numberColumnFlexBison.HeaderText = "";
-            numberColumnFlexBison.Name = "numberColumnFlexBison";
-            numberColumnFlexBison.ReadOnly = true;
-            numberColumnFlexBison.Width = 40;
-            // 
-            // invalidTextFlexBison
-            // 
-            invalidTextFlexBison.DataPropertyName = "InvalidText";
-            invalidTextFlexBison.HeaderText = "Неверный фрагмент";
-            invalidTextFlexBison.Name = "invalidTextFlexBison";
-            invalidTextFlexBison.ReadOnly = true;
-            // 
-            // lineColumnFlexBison
-            // 
-            lineColumnFlexBison.DataPropertyName = "Location";
-            lineColumnFlexBison.HeaderText = "Местоположение";
-            lineColumnFlexBison.Name = "lineColumnFlexBison";
-            lineColumnFlexBison.ReadOnly = true;
-            // 
-            // messageColumnFlexBison
-            // 
-            messageColumnFlexBison.DataPropertyName = "ExceptionMessage";
-            messageColumnFlexBison.HeaderText = "Сообщение";
-            messageColumnFlexBison.Name = "messageColumnFlexBison";
-            messageColumnFlexBison.ReadOnly = true;
-            // 
-            // tabPageAntlr
-            // 
-            tabPageAntlr.Controls.Add(dataGridViewAntlr);
-            tabPageAntlr.Location = new Point(4, 24);
-            tabPageAntlr.Name = "tabPageAntlr";
-            tabPageAntlr.Padding = new Padding(3);
-            tabPageAntlr.Size = new Size(1065, 98);
-            tabPageAntlr.TabIndex = 0;
-            tabPageAntlr.Text = "ANTLR";
-            tabPageAntlr.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewAntlr
-            // 
-            dataGridViewAntlr.AllowUserToAddRows = false;
-            dataGridViewAntlr.AllowUserToDeleteRows = false;
-            dataGridViewAntlr.AllowUserToResizeRows = false;
-            dataGridViewAntlr.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewAntlr.BackgroundColor = Color.White;
-            dataGridViewAntlr.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle58.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle58.BackColor = SystemColors.Control;
-            dataGridViewCellStyle58.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle58.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle58.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle58.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle58.WrapMode = DataGridViewTriState.True;
-            dataGridViewAntlr.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle58;
-            dataGridViewAntlr.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewAntlr.Columns.AddRange(new DataGridViewColumn[] { numberColumnAntlr, invalidTextAntlr, lineColumnAntlr, messageColumnAntlr });
-            dataGridViewCellStyle59.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle59.BackColor = SystemColors.Window;
-            dataGridViewCellStyle59.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle59.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle59.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle59.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle59.WrapMode = DataGridViewTriState.False;
-            dataGridViewAntlr.DefaultCellStyle = dataGridViewCellStyle59;
-            dataGridViewAntlr.Dock = DockStyle.Fill;
-            dataGridViewAntlr.GridColor = Color.Gray;
-            dataGridViewAntlr.Location = new Point(3, 3);
-            dataGridViewAntlr.Name = "dataGridViewAntlr";
-            dataGridViewAntlr.ReadOnly = true;
-            dataGridViewCellStyle60.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle60.BackColor = SystemColors.Control;
-            dataGridViewCellStyle60.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle60.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle60.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle60.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle60.WrapMode = DataGridViewTriState.True;
-            dataGridViewAntlr.RowHeadersDefaultCellStyle = dataGridViewCellStyle60;
-            dataGridViewAntlr.RowHeadersVisible = false;
-            dataGridViewAntlr.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewAntlr.Size = new Size(1059, 92);
-            dataGridViewAntlr.TabIndex = 0;
-            // 
-            // numberColumnAntlr
-            // 
-            numberColumnAntlr.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            numberColumnAntlr.DataPropertyName = "Number";
-            numberColumnAntlr.Frozen = true;
-            numberColumnAntlr.HeaderText = "";
-            numberColumnAntlr.Name = "numberColumnAntlr";
-            numberColumnAntlr.ReadOnly = true;
-            numberColumnAntlr.Width = 40;
-            // 
-            // invalidTextAntlr
-            // 
-            invalidTextAntlr.DataPropertyName = "InvalidText";
-            invalidTextAntlr.HeaderText = "Неверный фрагмент";
-            invalidTextAntlr.Name = "invalidTextAntlr";
-            invalidTextAntlr.ReadOnly = true;
-            // 
-            // lineColumnAntlr
-            // 
-            lineColumnAntlr.DataPropertyName = "Location";
-            lineColumnAntlr.HeaderText = "Местоположение";
-            lineColumnAntlr.Name = "lineColumnAntlr";
-            lineColumnAntlr.ReadOnly = true;
-            // 
-            // messageColumnAntlr
-            // 
-            messageColumnAntlr.DataPropertyName = "ExceptionMessage";
-            messageColumnAntlr.HeaderText = "Сообщение";
-            messageColumnAntlr.Name = "messageColumnAntlr";
-            messageColumnAntlr.ReadOnly = true;
-            // 
             // CompilerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -940,10 +744,6 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             tabPageLexer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewLexer).EndInit();
-            tabPageFlexBison.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridViewFlexBison).EndInit();
-            tabPageAntlr.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridViewAntlr).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -953,9 +753,7 @@
         private MenuStrip menuStrip;
         private TabControl gridTabControl;
         private TabPage tabPageSyntax;
-        private TabPage tabPageFlexBison;
         private TabPage tabPageLexer;
-        private TabPage tabPageAntlr;
         private ToolStripMenuItem FileTS;
         private ToolStripMenuItem createMI;
         private ToolStripMenuItem openMI;
@@ -995,8 +793,6 @@
         private SplitContainer mainPanel;
         private DataGridView dataGridView;
         private DataGridView dataGridViewLexer;
-        private DataGridView dataGridViewFlexBison;
-        private DataGridView dataGridViewAntlr;
         private ToolStripStatusLabel statusRunLabel;
         private ToolStripStatusLabel capsLockLabel;
         private ToolStripStatusLabel languageLabel;
@@ -1016,13 +812,5 @@
         private DataGridViewTextBoxColumn typeColumn;
         private DataGridViewTextBoxColumn lexemeColumn;
         private DataGridViewTextBoxColumn locationColumn;
-        private DataGridViewTextBoxColumn numberColumnFlexBison;
-        private DataGridViewTextBoxColumn invalidTextFlexBison;
-        private DataGridViewTextBoxColumn lineColumnFlexBison;
-        private DataGridViewTextBoxColumn messageColumnFlexBison;
-        private DataGridViewTextBoxColumn numberColumnAntlr;
-        private DataGridViewTextBoxColumn invalidTextAntlr;
-        private DataGridViewTextBoxColumn lineColumnAntlr;
-        private DataGridViewTextBoxColumn messageColumnAntlr;
     }
 }

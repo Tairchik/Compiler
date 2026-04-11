@@ -26,15 +26,13 @@ namespace CompilerGUI
             mainPanel.AllowDrop = true;
             keyController = new KeyController();
             controllerTCP = new TabPagesController(mainPanel.Panel1);
-            controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView, this.dataGridViewLexer, this.dataGridViewFlexBison, this.dataGridViewAntlr);
+            controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView, this.dataGridViewLexer);
             controllerRichTB = new SyncRedactorTextController();
             controllerConsole = new ConsoleController(controllerExceptionsCode);
-            //controllerTextHighlighting = new TextHighlightingController("txt");
 
             controllerTCP.TabPageCreate += controllerRichTB.init;
             controllerTCP.TabPageChanged += controllerRichTB.pageChached;
             controllerTCP.ZoomChanged += controllerRichTB.UpdateColumnWidth;
-            //controllerTCP.TabPageChanged += controllerTextHighlighting.InitTextBox;
             controllerTCP.TabClose += controllerExceptionsCode.Clear;
             controllerRichTB.TextIsChange += controllerTCP.UpdatePageInfo;
 
@@ -353,16 +351,6 @@ namespace CompilerGUI
             dataGridView.Columns["LineColumn"].HeaderText = LocalizationService.Get("Location");
             dataGridView.Columns["MessageColumn"].HeaderText = LocalizationService.Get("Message");
             dataGridView.Refresh();
-
-            dataGridViewFlexBison.Columns["invalidTextFlexBison"].HeaderText = LocalizationService.Get("InvalidText");
-            dataGridViewFlexBison.Columns["lineColumnFlexBison"].HeaderText = LocalizationService.Get("Location");
-            dataGridViewFlexBison.Columns["messageColumnFlexBison"].HeaderText = LocalizationService.Get("Message");
-            dataGridViewFlexBison.Refresh();
-
-            dataGridViewAntlr.Columns["invalidTextAntlr"].HeaderText = LocalizationService.Get("InvalidText");
-            dataGridViewAntlr.Columns["lineColumnAntlr"].HeaderText = LocalizationService.Get("Location");
-            dataGridViewAntlr.Columns["messageColumnAntlr"].HeaderText = LocalizationService.Get("Message");
-            dataGridViewAntlr.Refresh();
 
             dataGridViewLexer.Columns["codeColumn"].HeaderText = LocalizationService.Get("Code");
             dataGridViewLexer.Columns["typeColumn"].HeaderText = LocalizationService.Get("Type");

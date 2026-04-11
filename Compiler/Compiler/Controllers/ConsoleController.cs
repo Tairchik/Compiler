@@ -1,7 +1,5 @@
 ﻿using CompilerGUI.HelpClass;
 using CompilerGUI.Scaner;
-
-using MyLangParser;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -17,7 +15,6 @@ namespace CompilerGUI.Controllers
         public event Action<string>? ChangeStatusRun;
         public event Action<List<Token>>? ScanCompleted;
         public event Action<string>? UpdateConsoleOutPut;
-        private ParserService parser_bison = new ParserService();
         private ExceptionsCodeController exc_controller;
 
         public ConsoleController(ExceptionsCodeController exc_controll) 
@@ -58,37 +55,6 @@ namespace CompilerGUI.Controllers
                     i++;
                 }
             }
-            
-            var res = parser_bison.Parse(code);
-            if (res.IsSuccess) 
-            {
-
-            }
-            else 
-            {
-                int i = 0;
-                var str_res = res.Message.Split('\r');
-
-                foreach (var err in str_res) 
-                {
-                    exc_controller.AddExceptionFlexBisonToGrid(err, res.line[i]);
-                    i++;
-                }
-            }
-            MyLangParser.CodeParser parsAtnlr = new MyLangParser.CodeParser();
-            var result = parsAtnlr.Parse(code);
-            if (result == null || result.Count == 0)
-            {
-
-            }
-            else
-            {
-                foreach (var err in result)
-                {
-                    exc_controller.AddExceptionAntlrToGrid(err.Message, err.Value, err.Line, err.AbsoluteIndex, err.StartPos, err.EndPos);
-                }
-            }
-
         }
 
         public List<ExceptionInfo> AnalysisSyntax()
