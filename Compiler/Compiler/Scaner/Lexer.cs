@@ -192,12 +192,19 @@ namespace CompilerGUI.Scaner
                 if (char.IsDigit(c)) 
                 {
                     string lexeme = "";
-                    while (pos < text.Length && char.IsDigit(text[pos]))
+                    if (c != '0')
+                    {
+                        while (pos < text.Length && char.IsDigit(text[pos]))
+                        {
+                            lexeme += text[pos];
+                            col++; pos++;
+                        }
+                    }
+                    else 
                     {
                         lexeme += text[pos];
                         col++; pos++;
                     }
-
                     TokenType tokenType = TokenType.Error;
 
                     if (pos < text.Length && text[pos] == '.') 

@@ -22,10 +22,17 @@
 	<ItemGroup>
 	  <None Remove="HTML\Classification.html" />
 	  <None Remove="HTML\Grammar.html" />
+	  <None Remove="HTML\Graph.png" />
 	  <None Remove="HTML\Method.html" />
 	  <None Remove="HTML\References.html" />
 	  <None Remove="HTML\styles.css" />
 	  <None Remove="HTML\Task.html" />
+	  <None Remove="HTML\Test.png" />
+	  <None Remove="HTML\Test1.png" />
+	  <None Remove="HTML\Test2.png" />
+	  <None Remove="HTML\Test3.png" />
+	  <None Remove="HTML\Test4.png" />
+	  <None Remove="HTML\Test5.png" />
 	  <None Remove="HTML\Tests.html" />
 	  <None Remove="NativeParser.dll" />
 	</ItemGroup>
@@ -33,10 +40,17 @@
 	<ItemGroup>
 	  <EmbeddedResource Include="HTML\Classification.html" />
 	  <EmbeddedResource Include="HTML\Grammar.html" />
+	  <EmbeddedResource Include="HTML\Graph.png" />
 	  <EmbeddedResource Include="HTML\Method.html" />
 	  <EmbeddedResource Include="HTML\References.html" />
 	  <EmbeddedResource Include="HTML\styles.css" />
 	  <EmbeddedResource Include="HTML\Task.html" />
+	  <EmbeddedResource Include="HTML\Test.png" />
+	  <EmbeddedResource Include="HTML\Test1.png" />
+	  <EmbeddedResource Include="HTML\Test2.png" />
+	  <EmbeddedResource Include="HTML\Test3.png" />
+	  <EmbeddedResource Include="HTML\Test4.png" />
+	  <EmbeddedResource Include="HTML\Test5.png" />
 	  <EmbeddedResource Include="HTML\Tests.html" />
 	</ItemGroup>
 </Project>

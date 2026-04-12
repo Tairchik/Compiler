@@ -1,6 +1,5 @@
 ﻿using CompilerGUI.HelpClass;
 using CompilerGUI.Scaner;
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

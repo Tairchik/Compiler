@@ -22,6 +22,14 @@ namespace CompilerGUI.HelpClass
             ExtractFile("CompilerGUI.HTML.Method.html", "Method.html");
             ExtractFile("CompilerGUI.HTML.References.html", "References.html");
             ExtractFile("CompilerGUI.HTML.Tests.html", "Tests.html");
+            
+            ExtractFile("CompilerGUI.HTML.Test.png", "Test.png");
+            ExtractFile("CompilerGUI.HTML.Test1.png", "Test1.png");
+            ExtractFile("CompilerGUI.HTML.Test2.png", "Test2.png");
+            ExtractFile("CompilerGUI.HTML.Test3.png", "Test3.png");
+            ExtractFile("CompilerGUI.HTML.Test4.png", "Test4.png");
+            ExtractFile("CompilerGUI.HTML.Test5.png", "Test5.png");
+            ExtractFile("CompilerGUI.HTML.Graph.png", "Graph.png");
 
             ExtractFile("CompilerGUI.HTML.styles.css", "styles.css");
         }

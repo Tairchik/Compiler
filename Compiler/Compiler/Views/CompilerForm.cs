@@ -450,7 +450,7 @@ namespace CompilerGUI
 
         private void gitURLMI_Click(object sender, EventArgs e)
         {
-            string url = "https://github.com/Tairchik/Compiler";
+            string url = "https://github.com/Tairchik/Compiler/tree/course";
             try
             {
                 Process.Start(new ProcessStartInfo
