@@ -36,7 +36,6 @@ namespace CompilerGUI.Controllers
                 }
             }
 
-            //ScanCompleted?.Invoke(tokens);
             Parser parser = new Parser();
 
             var pars = parser.Parse(tokens);

@@ -20,6 +20,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="HTML\Classification.html" />
+	  <None Remove="HTML\Grammar.html" />
+	  <None Remove="HTML\Method.html" />
+	  <None Remove="HTML\References.html" />
+	  <None Remove="HTML\styles.css" />
+	  <None Remove="HTML\Task.html" />
+	  <None Remove="HTML\Tests.html" />
 	  <None Remove="NativeParser.dll" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="HTML\Classification.html" />
+	  <EmbeddedResource Include="HTML\Grammar.html" />
+	  <EmbeddedResource Include="HTML\Method.html" />
+	  <EmbeddedResource Include="HTML\References.html" />
+	  <EmbeddedResource Include="HTML\styles.css" />
+	  <EmbeddedResource Include="HTML\Task.html" />
+	  <EmbeddedResource Include="HTML\Tests.html" />
 	</ItemGroup>
 </Project>

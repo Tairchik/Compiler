@@ -14,6 +14,7 @@ namespace CompilerGUI.Controllers
     public class ExceptionsCodeController
     {
         public DataGridView exceptionSyntaxGrid;
+        public DataGridView lexerGrid;
         public BindingList<ExceptionInfo> gridLines = new BindingList<ExceptionInfo>();
         public BindingList<Token> gridLinesLexer = new BindingList<Token>();
 
@@ -23,10 +24,27 @@ namespace CompilerGUI.Controllers
         {
             exceptionSyntaxGrid = dataGridViewSyntax;
             exceptionSyntaxGrid.DataSource = gridLines;
-            dataGridViewLexer.DataSource = gridLinesLexer;
             gridLines.ListChanged += UpdateNumbers;
-        }
+            lexerGrid = dataGridViewLexer;
+            lexerGrid.DataSource = gridLinesLexer;
 
+            lexerGrid.CellFormatting += LexerGrid_CellFormatting;
+        }
+        private void LexerGrid_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < gridLinesLexer.Count)
+            {
+                var token = gridLinesLexer[e.RowIndex];
+                if (token.Type == TokenType.Error)
+                {
+                    lexerGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    lexerGrid.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
+                }
+            }
+        }
         private void UpdateNumbers(object? sender, ListChangedEventArgs e) 
         {
             for (int i = 1; i <= gridLines.Count; i++) 
@@ -55,12 +73,6 @@ namespace CompilerGUI.Controllers
         public void AddLexerToGrid(Token token)
         {
             gridLinesLexer.Add(token);
-        }
-
-        public void RemoveExseption(int index)
-        {
-            if (index < gridLines.Count - 1)
-            gridLines.RemoveAt(index);
         }
 
         private void ClearAll()

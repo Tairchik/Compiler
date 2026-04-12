@@ -20,7 +20,7 @@ namespace CompilerGUI.Scaner
                 int startCol = col;
                 int startPos = pos;
 
-                if (c == '\n')
+                if (c == '\n' || c == '\v')
                 {
                     line++;
                     col = 1;

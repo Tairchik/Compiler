@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Грамматика</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>Грамматика</h1>
+
+    <div class="grammar">
+        G[Z] = {Vt, Vn, Z, P}
+
+        Vt = {[, ], +, -, ', A...Z, a...z, 0...9, =, _, ",", ASCII}
+
+        Vn = {Z, &lt;id&gt;, &lt;start_list&gt;, &lt;end_list&gt;, &lt;const_int&gt;, &lt;const_float&gt;, &lt;float&gt;, &lt;end&gt;, &lt;sign&gt;, &lt;string&gt;, &lt;body_list&gt;, &lt;elements&gt;, &lt;const&gt;, &lt;letter&gt;, &lt;digit&gt;, &lt;digit0&gt;, &lt;zero&gt;}
+
+        P = {
+        Z -> &lt;letter&gt;&lt;id&gt;
+        Z -> '_'&lt;id&gt;
+        &lt;id&gt; -> '=' &lt;start_list&gt;
+        &lt;id&gt; -> &lt;letter&gt;&lt;id&gt;
+        &lt;id&gt; -> '_' &lt;id&gt;
+        &lt;id&gt; -> &lt;digit&gt;&lt;id&gt;
+        &lt;start_list&gt; -> '[' &lt;elements&gt;
+        &lt;elements&gt; -> &lt;digit0&gt;&lt;const_int&gt;
+        &lt;elements&gt; -> '''&lt;string&gt;
+        &lt;elements&gt; -> '0'&lt;zero&gt;
+        &lt;elements&gt; -> '+' &lt;sign&gt;
+        &lt;elements&gt; -> '-' &lt;sign&gt;
+        &lt;elements&gt; -> 'True' &lt;const&gt;
+        &lt;elements&gt; -> 'False' &lt;const&gt;
+        &lt;elements&gt; -> ']' &lt;end_list&gt;
+        &lt;string&gt; -> '''&lt;const&gt;
+        &lt;string&gt; -> ASCII&lt;string&gt;
+        &lt;zero&gt; -> '.'&lt;float&gt;
+        &lt;zero&gt; -> ']' &lt;end_list&gt;
+        &lt;sign&gt; -> '0' &lt;zero&gt;
+        &lt;sign&gt; -> &lt;digit0&gt;&lt;const_int&gt;
+        &lt;const_int&gt; -> '.'&lt;float&gt;
+        &lt;const_int&gt; -> ']'&lt;end_list&gt;
+        &lt;const_int&gt; -> ','&lt;body_list&gt;
+        &lt;const_int&gt; -> &lt;digit&gt;&lt;const_int&gt;
+        &lt;float&gt; -> &lt;digit&gt; &lt;const_float&gt;
+        &lt;const_float&gt; -> ','&lt;body_list&gt;
+        &lt;const_float&gt; -> ']'&lt;end_list&gt;
+        &lt;const_float&gt; -> &lt;digit&gt;&lt;end_list&gt;
+        &lt;const&gt; -> ','&lt;body_list&gt;
+        &lt;const&gt; -> ']'&lt;end_list&gt;
+        &lt;body_list&gt; -> &lt;digit0&gt;&lt;const_int&gt;
+        &lt;body_list&gt; -> '''&lt;string&gt;
+        &lt;body_list&gt; -> '0'&lt;zero&gt;
+        &lt;body_list&gt; -> '+'&lt;sign&gt;
+        &lt;body_list&gt; -> '-'&lt;sign&gt;
+        &lt;body_list&gt; -> 'True'&lt;const&gt;
+        &lt;body_list&gt; -> 'False'&lt;const&gt;
+        &lt;end_list&gt; -> ';' &lt;end&gt;
+        &lt;digit&gt; -> '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+        &lt;digit0&gt; -> '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+        &lt;letter&gt; -> 'A' | 'B' ... | 'Z' | 'a' | 'b' ... | 'z'
+        }
+    </div>
+
+</body>
+</html>
