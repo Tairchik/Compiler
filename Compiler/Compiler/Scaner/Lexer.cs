@@ -120,7 +120,6 @@ namespace CompilerGUI.Scaner
                 }
                 if (c == '\'')
                 {
-                    // Ищем закрывающую кавычку до конца строки (\n) или конца текста
                     bool hasClosingQuote = false;
                     int lookahead = pos + 1;
 
@@ -136,9 +135,8 @@ namespace CompilerGUI.Scaner
 
                     if (hasClosingQuote)
                     {
-                        // Если пара есть, считываем токен как нормальную строку
                         string lexeme = text[pos].ToString();
-                        col++; pos++; // Пропускаем открывающую '
+                        col++; pos++;
 
                         while (text[pos] != '\'')
                         {
@@ -146,7 +144,7 @@ namespace CompilerGUI.Scaner
                             col++; pos++;
                         }
 
-                        lexeme += text[pos]; // Захватываем закрывающую '
+                        lexeme += text[pos];
                         col++; pos++;
 
                         tokens.Add(new Token
@@ -161,7 +159,6 @@ namespace CompilerGUI.Scaner
                     }
                     else
                     {
-                        // 3. Если пары нет, фиксируем только саму кавычку как ошибку
                         tokens.Add(new Token
                         {
                             Type = TokenType.Error,
@@ -238,7 +235,7 @@ namespace CompilerGUI.Scaner
                 {
                     Type = TokenType.Error, 
                     Value = c.ToString(), 
-                    Line = line, 
+                    Line = line,
                     StartPos = startCol, 
                     EndPos = col, 
                     AbsoluteIndex = startPos 
