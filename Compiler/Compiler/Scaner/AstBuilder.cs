@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 
 namespace CompilerGUI.Scaner
 {
@@ -25,102 +24,95 @@ namespace CompilerGUI.Scaner
 
             while (_pos < _tokens.Count)
             {
-                if (IsCurrentPositionCorrupted(syntaxErrors))
+                if (Current == null) break;
+
+                if (Current.Type != TokenType.Id)
                 {
-                    SkipToRecoveryPoint(syntaxErrors);
+                    _pos++;
                     continue;
                 }
 
-                if (Current?.Type == TokenType.Id)
+                if (IsLineCorrupted(Current.Line, syntaxErrors))
                 {
-                    var node = ParseAssignment();
-                    if (node != null) root.Nodes.Add(node);
+                    SkipStatement();
+                    continue;
                 }
-                else
+
+                int errorsCountBefore = _errors.Count;
+
+                var node = ParseAssignment();
+
+                if (node != null && _errors.Count == errorsCountBefore)
                 {
-                    _pos++;
+                    _symbolTable.Add(node.Id);
+                    root.Nodes.Add(node);
                 }
             }
 
             return (root, _errors);
         }
 
-        private bool IsCurrentPositionCorrupted(List<SyntaxError>? syntaxErrors)
+        private bool IsLineCorrupted(int line, List<SyntaxError>? syntaxErrors)
         {
-            if (syntaxErrors == null || syntaxErrors.Count == 0 || Current == null) return false;
-
-            return syntaxErrors.Any(e => e.Line == Current.Line && Current.AbsoluteIndex <= e.AbsoluteIndex);
+            if (syntaxErrors == null) return false;
+            return syntaxErrors.Any(e => e.Line == line && !e.Message.Contains(";"));
         }
 
-        private void SkipToRecoveryPoint(List<SyntaxError>? syntaxErrors)
+        private void SkipStatement()
         {
-            if (Current == null) return;
-
-            var error = syntaxErrors?.FirstOrDefault(e => e.Line == Current.Line);
-            bool isMissingSemicolon = error != null && (error.Message.Contains(";") || error.Message.Contains("конец оператора"));
-
-            while (_pos < _tokens.Count)
-            {
-                if (Current.Type == TokenType.End_operator)
-                {
-                    _pos++; 
-                    break;
-                }
-
-                if (isMissingSemicolon && Current.Type == TokenType.Id && _pos > 0)
-                {
-                    break;
-                }
-
+            while (Current != null && Current.Type != TokenType.End_operator)
                 _pos++;
-            }
+            if (Current?.Type == TokenType.End_operator)
+                _pos++;
         }
 
         private ListInitNode? ParseAssignment()
         {
+            if (Current == null) return null;
+
             var node = new ListInitNode();
             Token idToken = Current;
 
             if (_symbolTable.Contains(idToken.Value))
             {
-                _errors.Add(new SyntaxError(idToken.Line, idToken.StartPos, 
-                    idToken.EndPos, idToken.AbsoluteIndex, 
-                    $"Идентификатор '{idToken.Value}' уже объявлен ранее (линия {idToken.Line})", idToken.Value));
-                while (Current != null && Current.Type != TokenType.End_operator) _pos++;
+                _errors.Add(new SyntaxError(idToken.Line, idToken.StartPos, idToken.EndPos,
+                    idToken.AbsoluteIndex, $"Идентификатор '{idToken.Value}' уже объявлен ранее", idToken.Value));
+                SkipStatement();
                 return null;
             }
-            else
-            {
-                _symbolTable.Add(idToken.Value);
-            }
+
             node.Id = idToken.Value;
             _pos++;
 
-            while (Current != null && Current.Type != TokenType.OpenListDelimiter && Current.Type != TokenType.End_operator)
-                _pos++;
+            if (Current?.Type != TokenType.Equal) { SkipStatement(); return null; }
+            _pos++;
+            if (Current?.Type != TokenType.OpenListDelimiter) { SkipStatement(); return null; }
+            _pos++;
 
-            if (Current?.Type == TokenType.OpenListDelimiter)
+            while (Current != null && Current.Type != TokenType.CloseListDelimiter && Current.Type != TokenType.End_operator)
             {
-                _pos++; 
-                while (Current != null && Current.Type != TokenType.CloseListDelimiter && Current.Type != TokenType.End_operator)
+                if (IsLiteral(Current.Type) || Current.Type == TokenType.Plus || Current.Type == TokenType.Minus)
                 {
-                    if (IsLiteral(Current.Type) || Current.Type == TokenType.Plus || Current.Type == TokenType.Minus)
-                    {
-                        var literal = ParseLiteral();
-                        if (literal != null) node.Elements.Add(literal);
-                        else
-                        {
-                            _symbolTable.Remove(idToken.Value);
-                            while (Current != null && Current.Type != TokenType.End_operator) _pos++;
-                            return null;
-                        }
-                    }
-                    else _pos++;
+                    var literal = ParseLiteral();
+                    if (literal == null) return null; 
+                    node.Elements.Add(literal);
+                }
+                else if (Current.Type == TokenType.Comma)
+                {
+                    _pos++;
+                }
+                else
+                {
+                    SkipStatement();
+                    return null;
                 }
             }
 
-            while (Current != null && Current.Type != TokenType.End_operator) _pos++;
-            if (Current?.Type == TokenType.End_operator) _pos++;
+            if (Current?.Type != TokenType.CloseListDelimiter) { SkipStatement(); return null; }
+            _pos++;
+
+            if (Current?.Type != TokenType.End_operator) return null;
+            _pos++;
 
             return node;
         }
@@ -135,27 +127,27 @@ namespace CompilerGUI.Scaner
             }
 
             if (Current == null) return null;
-
             Token valToken = Current;
-            var node = new LiteralNode { Value = sign + valToken.Value };
 
             if (valToken.Type == TokenType.ConstFloat)
             {
-                node.Type = "float";
-                if (double.TryParse(valToken.Value, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out double res))
+                if (double.TryParse(sign + valToken.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out double res))
                 {
                     if (double.IsInfinity(res))
-                        _errors.Add(new SyntaxError(valToken.Line, valToken.StartPos,
-                        valToken.EndPos, valToken.AbsoluteIndex,
-                        "Значение float выходит за границы допустимого диапазона", valToken.Value));
-                    return null;
+                    {
+                        _errors.Add(new SyntaxError(valToken.Line, valToken.StartPos, valToken.EndPos,
+                            valToken.AbsoluteIndex, "Значение float выходит за границы диапазона", valToken.Value));
+                        _pos++;
+                        return null;
+                    }
                 }
             }
-            else node.Type = valToken.TypeName;
 
+            var node = new LiteralNode { Value = sign + valToken.Value, Type = valToken.TypeName };
             _pos++;
             return node;
         }
+
         private bool IsLiteral(TokenType type) =>
             type == TokenType.ConstInt || type == TokenType.ConstFloat ||
             type == TokenType.ConstString || type == TokenType.ConstTrue || type == TokenType.ConstFalse;
