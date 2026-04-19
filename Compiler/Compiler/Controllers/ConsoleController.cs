@@ -15,6 +15,8 @@ namespace CompilerGUI.Controllers
         public event Action<string>? ChangeStatusRun;
         public event Action<List<Token>>? ScanCompleted;
         public event Action<string>? UpdateConsoleOutPut;
+        public event Action<ProgramNode>? UpdateAst;
+
         private ExceptionsCodeController exc_controller;
 
         public ConsoleController(ExceptionsCodeController exc_controll) 
@@ -37,11 +39,24 @@ namespace CompilerGUI.Controllers
             }
 
             Parser parser = new Parser();
-
             var pars = parser.Parse(tokens);
-            if (pars == null || pars.Count == 0) 
+
+            AstBuilder builder = new AstBuilder();
+            var (root, semErrors) = builder.Build(tokens, pars);
+
+            if (pars == null) 
+            {
+                pars = new List<SyntaxError>();
+            }
+
+            foreach (var err in semErrors)
+                pars.Add(err);
+
+            if (pars.Count == 0) 
             {
                 UpdateTextConsole("Успешно");
+
+                UpdateAst?.Invoke(root);
             }
             else 
             {
@@ -53,6 +68,8 @@ namespace CompilerGUI.Controllers
                     exc_controller.AddExceptionSyntaxToGrid(err.Message, err.Value, err.Line, err.AbsoluteIndex, err.StartPos, err.EndPos);
                     i++;
                 }
+
+                UpdateAst?.Invoke(root);
             }
         }
 

@@ -24,6 +24,15 @@ namespace CompilerGUI.Scaner
             Message = message;
             Value = value;
         }
+        public SyntaxError(Token token, string message)
+        {
+            Line = token.Line;
+            StartPos = token.StartPos;
+            EndPos = token.EndPos;
+            AbsoluteIndex = token.AbsoluteIndex;
+            Message = message;
+            Value = token.Value;
+        }
     }
 
     public class Parser
@@ -118,7 +127,7 @@ namespace CompilerGUI.Scaner
             bool skip_list_elements = false;
             if (!Match(TokenType.Id))
             {
-                SkipTo(TokenType.Equal, TokenType.End_operator, TokenType.OpenListDelimiter);
+                SkipTo(TokenType.Equal, TokenType.End_operator, TokenType.OpenListDelimiter, TokenType.CloseListDelimiter);
             }
 
             if (!Match(TokenType.Equal))

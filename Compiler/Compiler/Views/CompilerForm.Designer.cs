@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerForm));
-            DataGridViewCellStyle dataGridViewCellStyle51 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle52 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle53 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle54 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -82,7 +82,7 @@
             aboutProgramBtn = new ToolStripButton();
             helpBtn = new ToolStripButton();
             mainPanel = new SplitContainer();
-            gridTabControl = new TabControl();
+            pageTabControl = new TabControl();
             tabPageSyntax = new TabPage();
             dataGridView = new DataGridView();
             NumberColumn = new DataGridViewTextBoxColumn();
@@ -95,17 +95,20 @@
             typeColumn = new DataGridViewTextBoxColumn();
             lexemeColumn = new DataGridViewTextBoxColumn();
             locationColumn = new DataGridViewTextBoxColumn();
+            astTabPage = new TabPage();
+            astTreeView = new TreeView();
             menuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)mainPanel).BeginInit();
             mainPanel.Panel2.SuspendLayout();
             mainPanel.SuspendLayout();
-            gridTabControl.SuspendLayout();
+            pageTabControl.SuspendLayout();
             tabPageSyntax.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             tabPageLexer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewLexer).BeginInit();
+            astTabPage.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
@@ -537,7 +540,7 @@
             // mainPanel.Panel2
             // 
             mainPanel.Panel2.BackColor = SystemColors.Control;
-            mainPanel.Panel2.Controls.Add(gridTabControl);
+            mainPanel.Panel2.Controls.Add(pageTabControl);
             mainPanel.Size = new Size(1073, 440);
             mainPanel.SplitterDistance = 310;
             mainPanel.TabIndex = 3;
@@ -545,16 +548,18 @@
             mainPanel.DragEnter += CompilerForm_DragEnter;
             mainPanel.KeyDown += keyPressedMainForm;
             // 
-            // gridTabControl
+            // pageTabControl
             // 
-            gridTabControl.Controls.Add(tabPageSyntax);
-            gridTabControl.Controls.Add(tabPageLexer);
-            gridTabControl.Dock = DockStyle.Fill;
-            gridTabControl.Location = new Point(0, 0);
-            gridTabControl.Name = "gridTabControl";
-            gridTabControl.SelectedIndex = 0;
-            gridTabControl.Size = new Size(1073, 126);
-            gridTabControl.TabIndex = 0;
+            pageTabControl.Controls.Add(tabPageSyntax);
+            pageTabControl.Controls.Add(tabPageLexer);
+            pageTabControl.Controls.Add(astTabPage);
+            pageTabControl.Dock = DockStyle.Fill;
+            pageTabControl.Location = new Point(0, 0);
+            pageTabControl.Name = "pageTabControl";
+            pageTabControl.SelectedIndex = 0;
+            pageTabControl.Size = new Size(1073, 126);
+            pageTabControl.TabIndex = 0;
+            pageTabControl.Text = "AST дерево";
             // 
             // tabPageSyntax
             // 
@@ -575,37 +580,37 @@
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle51.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle51.BackColor = SystemColors.Control;
-            dataGridViewCellStyle51.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle51.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle51.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle51.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle51.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle51;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = SystemColors.Control;
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, InvalidText, LineColumn, MessageColumn });
-            dataGridViewCellStyle52.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle52.BackColor = SystemColors.Window;
-            dataGridViewCellStyle52.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle52.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle52.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle52.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle52.WrapMode = DataGridViewTriState.False;
-            dataGridView.DefaultCellStyle = dataGridViewCellStyle52;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = SystemColors.Window;
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
             dataGridView.Dock = DockStyle.Fill;
             dataGridView.GridColor = Color.Gray;
             dataGridView.Location = new Point(3, 3);
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
-            dataGridViewCellStyle53.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle53.BackColor = SystemColors.Control;
-            dataGridViewCellStyle53.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle53.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle53.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle53.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle53.WrapMode = DataGridViewTriState.True;
-            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle53;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = SystemColors.Control;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView.RowHeadersVisible = false;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.Size = new Size(1059, 92);
@@ -663,14 +668,14 @@
             dataGridViewLexer.BorderStyle = BorderStyle.None;
             dataGridViewLexer.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewLexer.Columns.AddRange(new DataGridViewColumn[] { codeColumn, typeColumn, lexemeColumn, locationColumn });
-            dataGridViewCellStyle54.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle54.BackColor = Color.White;
-            dataGridViewCellStyle54.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle54.ForeColor = Color.Black;
-            dataGridViewCellStyle54.SelectionBackColor = Color.LightGray;
-            dataGridViewCellStyle54.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle54.WrapMode = DataGridViewTriState.False;
-            dataGridViewLexer.DefaultCellStyle = dataGridViewCellStyle54;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle4.ForeColor = Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = Color.LightGray;
+            dataGridViewCellStyle4.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
+            dataGridViewLexer.DefaultCellStyle = dataGridViewCellStyle4;
             dataGridViewLexer.Dock = DockStyle.Fill;
             dataGridViewLexer.GridColor = Color.Black;
             dataGridViewLexer.Location = new Point(3, 3);
@@ -710,6 +715,25 @@
             locationColumn.Name = "locationColumn";
             locationColumn.ReadOnly = true;
             // 
+            // astTabPage
+            // 
+            astTabPage.Controls.Add(astTreeView);
+            astTabPage.Location = new Point(4, 24);
+            astTabPage.Name = "astTabPage";
+            astTabPage.Padding = new Padding(3);
+            astTabPage.Size = new Size(1065, 98);
+            astTabPage.TabIndex = 1;
+            astTabPage.Text = "AST дерево";
+            astTabPage.UseVisualStyleBackColor = true;
+            // 
+            // astTreeView
+            // 
+            astTreeView.Dock = DockStyle.Fill;
+            astTreeView.Location = new Point(3, 3);
+            astTreeView.Name = "astTreeView";
+            astTreeView.Size = new Size(1059, 92);
+            astTreeView.TabIndex = 0;
+            // 
             // CompilerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -739,11 +763,12 @@
             mainPanel.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)mainPanel).EndInit();
             mainPanel.ResumeLayout(false);
-            gridTabControl.ResumeLayout(false);
+            pageTabControl.ResumeLayout(false);
             tabPageSyntax.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             tabPageLexer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewLexer).EndInit();
+            astTabPage.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -751,7 +776,7 @@
         #endregion
 
         private MenuStrip menuStrip;
-        private TabControl gridTabControl;
+        private TabControl pageTabControl;
         private TabPage tabPageSyntax;
         private TabPage tabPageLexer;
         private ToolStripMenuItem FileTS;
@@ -812,5 +837,7 @@
         private DataGridViewTextBoxColumn typeColumn;
         private DataGridViewTextBoxColumn lexemeColumn;
         private DataGridViewTextBoxColumn locationColumn;
+        private TabPage astTabPage;
+        private TreeView astTreeView;
     }
 }

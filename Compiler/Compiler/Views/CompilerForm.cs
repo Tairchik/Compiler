@@ -49,10 +49,12 @@ namespace CompilerGUI
             controllerConsole.ChangeStatusRun += StatusChanged;
             controllerConsole.ScanCompleted += OpenTableResultScan;
             controllerConsole.UpdateConsoleOutPut += controllerTCP.UpdateTextConsole;
+            controllerConsole.UpdateAst += FillTreeView;
 
             controllerExceptionsCode.GetFileClass += controllerTCP.GetFileClassPage;
             dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
             dataGridViewLexer.CellDoubleClick += DataGridViewLexer_CellDoubleClick;
+            
         }
 
         private void DataGridViewLexer_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
@@ -67,6 +69,40 @@ namespace CompilerGUI
             GridException_RowSelected(controllerExceptionsCode.gridLines[e.RowIndex]);
         }
 
+        private void FillTreeView(ProgramNode root)
+        {
+            astTreeView.Nodes.Clear(); 
+
+            TreeNode rootNode = new TreeNode("Program");
+            astTreeView.Nodes.Add(rootNode);
+
+            // Заполняем рекурсивно
+            foreach (var node in root.Nodes)
+            {
+                AddAstToTreeView(node, rootNode);
+            }
+
+            astTreeView.ExpandAll(); 
+        }
+
+        private void AddAstToTreeView(AstNode astNode, TreeNode parentTreeNode)
+        {
+            if (astNode is ListInitNode listNode)
+            {
+                TreeNode listTreeNode = new TreeNode($"Assignment (id: {listNode.Id})");
+                parentTreeNode.Nodes.Add(listTreeNode);
+
+                foreach (var element in listNode.Elements)
+                {
+                    AddAstToTreeView(element, listTreeNode);
+                }
+            }
+            else if (astNode is LiteralNode literalNode)
+            {
+                TreeNode literalTreeNode = new TreeNode($"Literal ({literalNode.Type}: {literalNode.Value})");
+                parentTreeNode.Nodes.Add(literalTreeNode);
+            }
+        }
         private void CompilerForm_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
