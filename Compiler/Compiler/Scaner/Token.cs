@@ -9,14 +9,8 @@ namespace CompilerGUI.Scaner
 {
     public class Token
     {
-        public int Code
-        {
-            get 
-            {
-                return (int) Type;
-            }
-        }
-        public string Value { get; set; }
+        public int Code => (int)Type;
+        public string Value { get; set; } = string.Empty;
         [Browsable(false)]
         public int Line { get; set; }
         [Browsable(false)]

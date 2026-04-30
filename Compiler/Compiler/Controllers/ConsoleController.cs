@@ -41,7 +41,43 @@ namespace CompilerGUI.Controllers
             var pars = parser.Parse(tokens);
             if (pars == null || pars.Count == 0) 
             {
-                UpdateTextConsole("Успешно");
+                Tetrads tetrads = new Tetrads(tokens);
+                List<(string, List<Tetrad>)>? res = tetrads.Generate();
+                if (res != null) 
+                {
+                    Poliz poliz = new Poliz();
+                    List<List<string>> res_poliz = poliz.Generate(tokens);
+                    
+
+                    string output_console = "";
+                    int count = 1;
+                    foreach (var t in res)
+                    {
+                        output_console += $"{count}) " + t.Item1 + "\n";
+                        foreach (var tetr in t.Item2)
+                        {
+                            output_console += tetr.FullExpression + "\n";
+                        }
+                        output_console += $"ПОЛИЗ: {poliz.GetStringByExp(res_poliz[count - 1])}\n";
+                        try
+                        {
+                            double res_exp = poliz.Evaluate(res_poliz[count - 1]);
+                            output_console += $"Результат вычисления: {res_exp}\n";
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                        output_console += "\n";
+
+                        count++;
+                    }
+
+                    ;
+
+                    UpdateTextConsole(output_console);
+                }
+
             }
             else 
             {
@@ -55,7 +91,6 @@ namespace CompilerGUI.Controllers
                 }
             }
         }
-
         public List<ExceptionInfo> AnalysisSyntax()
         {
             return new List<ExceptionInfo>();

@@ -16,10 +16,10 @@ namespace CompilerGUI.Scaner
             while (pos < text.Length)
             {
                 char c = text[pos];
-
                 int startCol = col;
                 int startPos = pos;
 
+                // 1. Обработка переводов строк
                 if (c == '\n' || c == '\v')
                 {
                     line++;
@@ -27,13 +27,14 @@ namespace CompilerGUI.Scaner
                     pos++;
                     continue;
                 }
-                if (c == ' ' || c == '\b' || c == '\r')
+
+                // 2. Обработка пробелов и табуляций
+                if (c == ' ' || c == '\t' || c == '\r' || c == '\b')
                 {
-                    string spaces = "";
                     while (pos < text.Length && (text[pos] == ' ' || text[pos] == '\t' || text[pos] == '\r'))
                     {
-                        spaces += text[pos];
-                        pos++; col++;
+                        pos++;
+                        col++;
                     }
 
                     tokens.Add(new Token
@@ -47,181 +48,21 @@ namespace CompilerGUI.Scaner
                     });
                     continue;
                 }
+
+                // 3. Идентификаторы (id -> letter {letter | digit | _})
                 if (char.IsLetter(c) || c == '_')
                 {
                     string lexeme = "";
                     while (pos < text.Length && (char.IsLetterOrDigit(text[pos]) || text[pos] == '_'))
                     {
                         lexeme += text[pos];
-                        col++; pos++;
-                    }
-                    TokenType type;
-                    switch (lexeme) 
-                    {
-                        case "True":
-                            type = TokenType.ConstTrue; 
-                            break;
-                        case "False":
-                            type = TokenType.ConstFalse; 
-                            break;
-                        default:
-                            type = TokenType.Id;
-                            break;
-                    }
-                    tokens.Add(new Token 
-                    { 
-                        Type = type, 
-                        Value = lexeme, 
-                        Line = line, 
-                        StartPos = startCol, 
-                        EndPos = col - 1, 
-                        AbsoluteIndex = startPos
-                    });
-                    continue;
-                }
-                if (c == '=' || c == '+' || c == '-' || c == '[' || c == ']' || c == ',')
-                {
-                    col++; pos++;
-                    TokenType type = TokenType.Error;
-                    switch (c)
-                    {
-                        case '=':
-                            type = TokenType.Equal;
-                            break;
-                        case '+':
-                            type = TokenType.Plus;
-                            break;
-                        case '-':
-                            type = TokenType.Minus;
-                            break;
-                        case '[':
-                            type = TokenType.OpenListDelimiter;
-                            break;
-                        case ']':
-                            type = TokenType.CloseListDelimiter;
-                            break;
-                        case ',':
-                            type = TokenType.Comma;
-                            break;
-                        case ';':
-                            type = TokenType.End_operator; 
-                            break;
-                    }
-                    tokens.Add(new Token
-                    {
-                        Type = type,
-                        Value = char.ToString(c),
-                        Line = line,
-                        StartPos = startCol,
-                        EndPos = col - 1,
-                        AbsoluteIndex = startPos
-                    });
-                    continue;
-                }
-                if (c == '\'')
-                {
-                    bool hasClosingQuote = false;
-                    int lookahead = pos + 1;
-
-                    while (lookahead < text.Length)
-                    {
-                        if (text[lookahead] == '\'')
-                        {
-                            hasClosingQuote = true;
-                            break;
-                        }
-                        lookahead++;
-                    }
-
-                    if (hasClosingQuote)
-                    {
-                        string lexeme = text[pos].ToString();
-                        col++; pos++;
-
-                        while (text[pos] != '\'')
-                        {
-                            lexeme += text[pos];
-                            col++; pos++;
-                        }
-
-                        lexeme += text[pos];
-                        col++; pos++;
-
-                        tokens.Add(new Token
-                        {
-                            Type = TokenType.ConstString,
-                            Value = lexeme,
-                            Line = line,
-                            StartPos = startCol,
-                            EndPos = col - 1,
-                            AbsoluteIndex = startPos
-                        });
-                    }
-                    else
-                    {
-                        tokens.Add(new Token
-                        {
-                            Type = TokenType.Error,
-                            Value = "\'",
-                            Line = line,
-                            StartPos = startCol,
-                            EndPos = col,
-                            AbsoluteIndex = startPos
-                        });
-                        col++; pos++;
-                    }
-                    continue;
-                }
-                if (c == ';')
-                {
-                    tokens.Add(new Token
-                    {
-                        Type = TokenType.End_operator,
-                        Value = ";",
-                        Line = line,
-                        StartPos = startCol,
-                        EndPos = col,
-                        AbsoluteIndex = startPos
-                    });
-                    col++; pos++;
-                    continue;
-                }
-                if (char.IsDigit(c)) 
-                {
-                    string lexeme = "";
-                    if (c != '0')
-                    {
-                        while (pos < text.Length && char.IsDigit(text[pos]))
-                        {
-                            lexeme += text[pos];
-                            col++; pos++;
-                        }
-                    }
-                    else 
-                    {
-                        lexeme += text[pos];
-                        col++; pos++;
-                    }
-                    TokenType tokenType = TokenType.Error;
-
-                    if (pos < text.Length && text[pos] == '.') 
-                    {
-                        tokenType = TokenType.ConstFloat;
-                        do
-                        {
-                            lexeme += text[pos];
-                            col++; pos++;
-                        }
-                        while (pos < text.Length && char.IsDigit(text[pos]));
-                    }
-                    else 
-                    {
-                        tokenType = TokenType.ConstInt;
+                        col++;
+                        pos++;
                     }
 
                     tokens.Add(new Token
                     {
-                        Type = tokenType,
+                        Type = TokenType.Id,
                         Value = lexeme,
                         Line = line,
                         StartPos = startCol,
@@ -229,20 +70,140 @@ namespace CompilerGUI.Scaner
                         AbsoluteIndex = startPos
                     });
                     continue;
-
                 }
-                tokens.Add(new Token 
+
+                // 4. Числа (num -> digit {digit})
+                if (char.IsDigit(c))
                 {
-                    Type = TokenType.Error, 
-                    Value = c.ToString(), 
+                    string lexeme = "";
+                    while (pos < text.Length && char.IsDigit(text[pos]))
+                    {
+                        lexeme += text[pos];
+                        col++;
+                        pos++;
+                    }
+
+                    tokens.Add(new Token
+                    {
+                        Type = TokenType.ConstInt,
+                        Value = lexeme,
+                        Line = line,
+                        StartPos = startCol,
+                        EndPos = col - 1,
+                        AbsoluteIndex = startPos
+                    });
+                    continue;
+                }
+
+                if (c == '/')
+                {
+                    if (pos + 1 < text.Length && text[pos + 1] == '/')
+                    {
+                        tokens.Add(new Token
+                        {
+                            Type = TokenType.IntDivide,
+                            Value = "//",
+                            Line = line,
+                            StartPos = startCol,
+                            EndPos = col + 1,
+                            AbsoluteIndex = startPos
+                        });
+                        pos += 2;
+                        col += 2;
+                    }
+                    else
+                    {
+                        tokens.Add(new Token
+                        {
+                            Type = TokenType.Divide,
+                            Value = "/",
+                            Line = line,
+                            StartPos = startCol,
+                            EndPos = col,
+                            AbsoluteIndex = startPos
+                        });
+                        pos++;
+                        col++;
+                    }
+                    continue;
+                }
+
+                if (c == '*') 
+                {
+                    if (pos + 1 < text.Length && text[pos + 1] == '*')
+                    {
+                        tokens.Add(new Token
+                        {
+                            Type = TokenType.Power,
+                            Value = "**",
+                            Line = line,
+                            StartPos = startCol,
+                            EndPos = col + 1,
+                            AbsoluteIndex = startPos
+                        });
+                        pos += 2;
+                        col += 2;
+                    }
+                    else
+                    {
+                        tokens.Add(new Token
+                        {
+                            Type = TokenType.Multiply,
+                            Value = "*",
+                            Line = line,
+                            StartPos = startCol,
+                            EndPos = col,
+                            AbsoluteIndex = startPos
+                        });
+                        pos++;
+                        col++;
+                    }
+                    continue;
+                }
+
+                // 5. Операторы и разделители
+                TokenType? type = c switch
+                {
+                    '+' => TokenType.Plus,
+                    '-' => TokenType.Minus,
+                    '%' => TokenType.Mod,
+                    '(' => TokenType.OpenParen,
+                    ')' => TokenType.CloseParen,
+                    ';' => TokenType.Semicolon,
+                    _ => null
+                };
+
+                if (type != null)
+                {
+                    tokens.Add(new Token
+                    {
+                        Type = type.Value,
+                        Value = c.ToString(),
+                        Line = line,
+                        StartPos = startCol,
+                        EndPos = col,
+                        AbsoluteIndex = startPos
+                    });
+                    col++;
+                    pos++;
+                    continue;
+                }
+
+                // 6. Если символ не подошёл ни под одно правило — это лексическая ошибка
+                tokens.Add(new Token
+                {
+                    Type = TokenType.Error,
+                    Value = c.ToString(),
                     Line = line,
-                    StartPos = startCol, 
-                    EndPos = col, 
-                    AbsoluteIndex = startPos 
+                    StartPos = startCol,
+                    EndPos = col,
+                    AbsoluteIndex = startPos
                 });
-                pos++; col++;
+                pos++;
+                col++;
             }
             return tokens;
         }
     }
 }
+

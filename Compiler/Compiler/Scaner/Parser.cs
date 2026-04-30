@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace CompilerGUI.Scaner
 {
@@ -15,6 +12,7 @@ namespace CompilerGUI.Scaner
         public int AbsoluteIndex;
         public string Message = "";
         public string Value = "";
+
         public SyntaxError(int line, int start_pos, int end_pos, int abs_index, string message, string value)
         {
             Line = line;
@@ -31,24 +29,17 @@ namespace CompilerGUI.Scaner
         private List<Token> _tokens = new();
         private int _pos = 0;
         private List<SyntaxError> _errors = new();
-
         public List<SyntaxError>? Parse(List<Token> tokens)
         {
-            _tokens = tokens
-                .Where(t => t.Type != TokenType.WhiteSpace)
-                .ToList();
-
+            // Убираем пробелы
+            _tokens = tokens.Where(t => t.Type != TokenType.WhiteSpace).ToList();
             _pos = 0;
             _errors.Clear();
 
+            // Основной цикл: парсим выражения, разделенные ';'
             while (_pos < _tokens.Count)
             {
-                int start = _pos;
-
-                ParseZ();
-
-                if (_pos == start)
-                    Next();
+                ParseExpressionStatement();
             }
 
             return _errors.Count > 0 ? _errors : null;
@@ -69,29 +60,15 @@ namespace CompilerGUI.Scaner
                 return true;
             }
 
-            AddError($"Ожидался \'{TokenToString.GetString(type)}\', найдено \'{Current?.TypeName}\'");
+            AddError($"Ожидался '{TokenToString.GetString(type)}', найдено '{(Current != null ? TokenToString.GetString(Current.Type) : "EOF")}'");
             return false;
         }
 
         private void AddError(string message)
         {
-            Token? t = Current;
+            Token? t = Current ?? (_tokens.Count > 0 ? _tokens[^1] : null);
 
-            if (t == null)
-            {
-                if (_tokens.Count == 0) return;
-
-                t = _tokens[^1];
-                _errors.Add(new SyntaxError(
-                    t.Line,
-                    t.EndPos + 1,   // позиция ПОСЛЕ токена
-                    t.EndPos + 1,
-                    t.AbsoluteIndex + 1,
-                    message,
-                    t.Value
-                 ));
-                return;
-            }
+            if (t == null) return;
 
             _errors.Add(new SyntaxError(
                 t.Line,
@@ -103,7 +80,6 @@ namespace CompilerGUI.Scaner
             ));
         }
 
-        // МЕТОД АЙРОНСА
         private void SkipTo(params TokenType[] syncTokens)
         {
             while (Current != null && !syncTokens.Contains(Current.Type))
@@ -112,153 +88,258 @@ namespace CompilerGUI.Scaner
             }
         }
 
-        // ГРАММАТИКА
-        private void ParseZ()
+        // Обработка одной строки (выражение + ;)
+        private void ParseExpressionStatement()
         {
-            bool skip_list_elements = false;
-            if (!Match(TokenType.Id))
-            {
-                SkipTo(TokenType.Equal, TokenType.End_operator, TokenType.OpenListDelimiter);
-            }
+            ParseE(); // Запуск E -> TA
+        }
 
-            if (!Match(TokenType.Equal))
-            {
-                SkipTo(TokenType.OpenListDelimiter, TokenType.End_operator, TokenType.CloseListDelimiter);
-            }
+        // E -> TA
+        private void ParseE()
+        {
+            ParseT();
+            ParseA();
+        }
 
-            if (!Match(TokenType.OpenListDelimiter))
+        // A -> ; | + TA | - TA
+        private void ParseA()
+        {
+            if (Current == null)
             {
-                SkipTo(TokenType.CloseListDelimiter, TokenType.ConstFloat, TokenType.ConstInt, TokenType.ConstString, 
-                    TokenType.ConstTrue, TokenType.ConstFalse, TokenType.Plus, TokenType.Minus, TokenType.End_operator);
-            }
-            if (Current?.Type == TokenType.CloseListDelimiter)
-            {
-                Next();
-            }
-            else
-            {
-                ParseElements();
-
-                if (!Match(TokenType.CloseListDelimiter))
-                {
-                    SkipTo(TokenType.End_operator);
-                }
-            }
-
-            if (Current?.Type == TokenType.End_operator)
-            {
-                Next();
-            }
-            else
-            {
-                AddError("Ожидалась ';' в конце оператора");
+                AddError("Неожиданный конец выражения");
                 return;
+            }
+            if (Current?.Type == TokenType.Plus || Current?.Type == TokenType.Minus)
+            {
+                Next();
+                ParseT();
+                ParseA();
+            }
+            else if (Current?.Type == TokenType.Semicolon)
+            {
+                Next();
+            }
+            else
+            {
+                int pos_l = _pos;
+                string? val_l = Current?.Value;
+                SkipTo(TokenType.ConstInt, TokenType.Id, TokenType.OpenParen, TokenType.Semicolon);
+                if (pos_l == _pos)
+                    AddError($"Пропущен арифметический знак");
+                else 
+                {
+                    int tmp = _pos;
+                    _pos = pos_l;
+                    AddError($"Недопустимый символ в выражении: '{val_l}'");
+                    _pos = tmp;
+                }
+                if (Current?.Type == TokenType.Semicolon)
+                {
+                    Next();
+                    return;
+                }
+                ParseT();
+                ParseA();
             }
         }
 
-        private void ParseElements()
+        // T -> FB
+        private void ParseT()
         {
-            int res = FirstParseConst();
-            if (res == 1 && Current?.Type == TokenType.End_operator) 
+            ParseF();
+            ParseB();
+        }
+
+        // B -> e | * FB | / FB | // FB | % FB | ** FB
+        private void ParseB()
+        {
+            if (Current?.Type == TokenType.Multiply ||
+                Current?.Type == TokenType.Divide ||
+                Current?.Type == TokenType.IntDivide ||
+                Current?.Type == TokenType.Mod ||
+                Current?.Type == TokenType.Power)
+            {
+                Next();
+                ParseF();
+                ParseB();
+            }
+        }
+
+        // F -> num | id | (E)
+        private void ParseF()
+        {
+            if (Current == null)
             {
                 return;
             }
-            else if (res == 1) 
-            {
-                // [error]
-                if (Current?.Type == TokenType.CloseListDelimiter)
-                {
-                    _pos--;
-                    AddError("Ожидалась константа");
-                    Next();
-                    return;
-                }
-                // Для запятой [,]   
-                Next();
-                if (Current?.Type == TokenType.CloseListDelimiter) 
-                {
-                    _pos--;
-                    AddError("Ожидалась константа");
-                    Next();
-                    return;
-                }
-                // [error ... ]
-                _pos--;
-                AddError("Ожидалась константа");
-            }
 
-            while (true)
+            switch (Current?.Type)
             {
-                if (Current?.Type == TokenType.Comma)
-                {
+                case TokenType.ConstInt:
                     Next();
+                    break;
 
-                    if (Current?.Type == TokenType.CloseListDelimiter)
+                case TokenType.Id:
+                    Next();
+                    break;
+
+                case TokenType.OpenParen:
+                    Next();
+                    if (Current?.Type == TokenType.CloseParen)
                     {
-                        AddError("После запятой ожидается элемент");
+                        AddError($"Пропущена переменная, константа или открывающая скобка");
+                        Next();
                         return;
                     }
+                    ParseParenE();
 
-                    ParseConst();
-                }
-                else break;
-            }
-        }
-
-        private int ParseConst()
-        {
-            ParseSign();
-
-            if (Current == null) return 0;
-
-            switch (Current.Type)
-            {
-                case TokenType.ConstInt:
-                case TokenType.ConstFloat:
-                case TokenType.ConstString:
-                case TokenType.ConstTrue:
-                case TokenType.ConstFalse:
-                    Next();
-                    return 0;
+                    if (Match(TokenType.CloseParen) == false) 
+                    {
+                        SkipTo(TokenType.Semicolon, TokenType.Multiply, TokenType.Divide, 
+                            TokenType.IntDivide, TokenType.Power, TokenType.Plus, TokenType.Minus, TokenType.Mod);
+                    }
+                    break;
 
                 default:
-                    AddError("Ожидалась константа");
-                    SkipTo(TokenType.Comma, TokenType.CloseListDelimiter, TokenType.End_operator, TokenType.ConstFloat, TokenType.ConstInt, TokenType.ConstString,
-                    TokenType.ConstTrue, TokenType.ConstFalse, TokenType.Plus, TokenType.Minus);
-                    return 1;
+                    int pos_l = _pos;
+                    string? val_l = Current?.Value;
+                    SkipTo(TokenType.Semicolon, TokenType.Multiply, TokenType.Divide,
+                        TokenType.IntDivide, TokenType.Power, TokenType.Plus, TokenType.Minus, TokenType.Mod);
+
+                    if (pos_l == _pos)
+                        AddError($"Пропущена переменная, константа или открывающая скобка");
+                    else
+                    {
+                        int tmp = _pos;
+                        _pos = pos_l;
+                        AddError($"Недопустимый символ в выражении: '{val_l}'");
+                        _pos = tmp;
+                    }
+                    break;
             }
         }
 
-        private int FirstParseConst()
+        private void ParseParenE()
         {
-            ParseSign();
+            ParseParenT();
+            ParseParenA();
+        }
 
-            if (Current == null) return 0;
-
-            switch (Current.Type)
+        private void ParseParenT()
+        {
+            ParseParenF();
+            ParseParenB();
+        }
+        private void ParseParenA()
+        {
+            if (Current == null)
             {
-                case TokenType.ConstInt:
-                case TokenType.ConstFloat:
-                case TokenType.ConstString:
-                case TokenType.ConstTrue:
-                case TokenType.ConstFalse:
-                    Next();
-                    return 0;
-
-                default:
-                    SkipTo(TokenType.Comma, TokenType.CloseListDelimiter, TokenType.End_operator, TokenType.ConstFloat, TokenType.ConstInt, TokenType.ConstString,
-                    TokenType.ConstTrue, TokenType.ConstFalse, TokenType.Plus, TokenType.Minus);
-                    return 1;
+                AddError("Неожиданный конец выражения");
+                return;
             }
-        }
-
-        private void ParseSign()
-        {
-            if (Current?.Type == TokenType.Plus ||
-                Current?.Type == TokenType.Minus)
+            if (Current?.Type == TokenType.Plus || Current?.Type == TokenType.Minus)
             {
                 Next();
+                ParseParenE();
+            }
+            else if (Current?.Type == TokenType.CloseParen)
+            {
+                return;
+            }
+            else
+            {
+                if (Current?.Type == TokenType.Semicolon) return;
+                int pos_l = _pos;
+                string? val_l = Current?.Value;
+
+                SkipTo(TokenType.ConstInt, TokenType.Id, TokenType.CloseParen, TokenType.Semicolon);
+                if (pos_l == _pos)
+                    AddError($"Пропущен арифметический знак");
+                else
+                {
+                    int tmp = _pos;
+                    _pos = pos_l;
+                    AddError($"Недопустимый символ в выражении: '{val_l}'");
+                    _pos = tmp;
+                }
+                if (Current == null || Current.Type == TokenType.Semicolon) return;
+                if (Current?.Type == TokenType.CloseParen) return;
+                ParseParenT();
+                ParseParenA();
             }
         }
+        private void ParseParenB()
+        {
+            if (Current?.Type == TokenType.Multiply ||
+                Current?.Type == TokenType.Divide ||
+                Current?.Type == TokenType.IntDivide ||
+                Current?.Type == TokenType.Mod ||
+                Current?.Type == TokenType.Power)
+            {
+                Next();
+                if (Current?.Type == TokenType.CloseParen) 
+                {
+                    AddError($"Пропущена переменная, константа или открывающая скобка");
+                    return;
+                }
+                ParseParenF();
+                ParseParenB();
+            }
+        }
+        private void ParseParenF()
+        {
+            if (Current == null)
+            {
+                return;
+            }
+
+            switch (Current?.Type)
+            {
+                case TokenType.ConstInt:
+                    Next();
+                    break;
+
+                case TokenType.Id:
+                    Next();
+                    break;
+
+                case TokenType.OpenParen:
+                    Next();
+                    if (Current?.Type == TokenType.CloseParen) 
+                    {
+                        AddError($"Пропущена переменная, константа или открывающая скобка");
+                        Next();
+                        return;
+                    }
+                    ParseParenE();
+
+                    if (Match(TokenType.CloseParen) == false)
+                    {
+                        SkipTo(TokenType.Semicolon, TokenType.Multiply, TokenType.Divide,
+                            TokenType.IntDivide, TokenType.Power, TokenType.Plus, TokenType.Minus, TokenType.Mod);
+                    }
+                    break;
+                case TokenType.CloseParen:
+                    break;
+                default:
+                    int pos_l = _pos;
+                    string? val_l = Current?.Value;
+                    SkipTo(TokenType.Semicolon, TokenType.Multiply, TokenType.Divide,
+                        TokenType.IntDivide, TokenType.Power, TokenType.Plus, TokenType.Minus, TokenType.Mod);
+
+                    if (pos_l == _pos)
+                        AddError($"Пропущена переменная, константа или открывающая скобка");
+                    else
+                    {
+                        int tmp = _pos;
+                        _pos = pos_l;
+                        AddError($"Недопустимый символ в выражении: '{val_l}'");
+                        _pos = tmp;
+                    }
+                    break;
+            }
+        }
+
+
     }
 }

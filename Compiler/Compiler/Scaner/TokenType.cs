@@ -8,65 +8,62 @@ namespace CompilerGUI.Scaner
 {
     public enum TokenType
     {
-        // ИНДЕТИФИКАТОРЫ
-        Id = 10, 
-        // КОНСТАНТЫ
-        ConstInt = 20, 
-        ConstFloat = 21,
-        ConstString = 22,
-        ConstTrue = 23,
-        ConstFalse = 24,
-        // РАЗДЕЛИТЕЛИ
-        WhiteSpace = 30, 
-        Comma = 31,
-        OpenListDelimiter = 32,
-        CloseListDelimiter = 33,
-        End_operator = 34,
-        // МАТЕМАТИЧЕСКИЕ ЗНАКИ
-        Equal = 40, 
-        Plus = 41,
-        Minus = 42,
-        // ОШИБКИ
+        // Идентификатор и константы
+        Id = 10,
+        ConstInt = 20,
+
+        // Разделители
+        WhiteSpace = 30,
+        OpenParen = 31,  // (
+        CloseParen = 32, // )
+        Semicolon = 33,  // ;
+
+        // Математические знаки
+        Plus = 40,       // +
+        Minus = 41,      // -
+        Multiply = 42,   // *
+        Divide = 43,     // /
+        Mod = 44,        // %
+        IntDivide = 45,  // //
+        Power = 46,      // ** 
+
+        // Ошибки
         Error = 99
     }
 
-    public static class TokenToString 
+    public static class TokenToString
     {
-        public static string GetString(TokenType token) 
-        { 
+        public static string GetString(TokenType token)
+        {
             switch (token)
             {
                 case TokenType.Id:
                     return "Идентификатор";
                 case TokenType.ConstInt:
-                    return "Целочисленная константа без знака";
-                case TokenType.ConstString:
-                    return "Строковая константа";
-                case TokenType.ConstFloat:
-                    return "Вещественная константа без знака";
-                case TokenType.ConstTrue:
-                    return "Логическая константа (True)";
-                case TokenType.ConstFalse:
-                    return "Логическая константа (False)";
+                    return "Целочисленная константа";
                 case TokenType.WhiteSpace:
                     return "Разделитель (пробел)";
-                case TokenType.Comma:
-                    return "Разделитель (запятая)";
-                case TokenType.OpenListDelimiter:
-                    return "Разделитель (открывающая скобка)";
-                case TokenType.CloseListDelimiter:
-                    return "Разделитель (закрывающая скобка)";
-                case TokenType.End_operator:
-                    return "Конец оператора";
-                case TokenType.Equal:
-                    return "Оператор присваивания";
-                case TokenType.Minus:
-                    return "Арифметический оператор (-)";
+                case TokenType.OpenParen:
+                    return "Открывающая скобка";
+                case TokenType.CloseParen:
+                    return "Закрывающая скобка";
+                case TokenType.Semicolon:
+                    return "Точка с запятой";
                 case TokenType.Plus:
-                    return "Арифметический оператор (+)";
+                    return "Оператор сложения (+)";
+                case TokenType.Minus:
+                    return "Оператор вычитания (-)";
+                case TokenType.Multiply:
+                    return "Оператор умножения (*)";
+                case TokenType.Divide:
+                    return "Оператор деления (/)";
+                case TokenType.IntDivide:
+                    return "Оператор деления нацело (//)";
+                case TokenType.Mod:
+                    return "Оператор остатка от деления (%)";
                 case TokenType.Error:
                     return "Лексическая ошибка";
-                default: 
+                default:
                     return "Неизвестная лексема";
             }
         }
