@@ -25,7 +25,7 @@ namespace CompilerGUI
             mainPanel.AllowDrop = true;
             keyController = new KeyController();
             controllerTCP = new TabPagesController(mainPanel.Panel1);
-            controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView, this.dataGridViewLexer);
+            controllerExceptionsCode = new ExceptionsCodeController(this.dataGridView, this.dataGridViewLexer, this.dataGridViewTetrad);
             controllerRichTB = new SyncRedactorTextController();
             controllerConsole = new ConsoleController(controllerExceptionsCode);
 

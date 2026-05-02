@@ -13,21 +13,24 @@ namespace CompilerGUI.Controllers
     public class ExceptionsCodeController
     {
         public DataGridView exceptionSyntaxGrid;
+        public DataGridView tetradGrid;
         public DataGridView lexerGrid;
         public BindingList<ExceptionInfo> gridLines = new BindingList<ExceptionInfo>();
         public BindingList<Token> gridLinesLexer = new BindingList<Token>();
+        public BindingList<TetradModel> gridLinesTetrad = new BindingList<TetradModel>();
 
         public event Func<FileClass> GetFileClass;
 
-        public ExceptionsCodeController(DataGridView dataGridViewSyntax, DataGridView dataGridViewLexer) 
+        public ExceptionsCodeController(DataGridView dataGridViewSyntax, DataGridView dataGridViewLexer, DataGridView dataGridViewTetrad) 
         {
             exceptionSyntaxGrid = dataGridViewSyntax;
             exceptionSyntaxGrid.DataSource = gridLines;
             gridLines.ListChanged += UpdateNumbers;
             lexerGrid = dataGridViewLexer;
             lexerGrid.DataSource = gridLinesLexer;
-
             lexerGrid.CellFormatting += LexerGrid_CellFormatting;
+            tetradGrid = dataGridViewTetrad;
+            tetradGrid.DataSource = gridLinesTetrad;
         }
         private void LexerGrid_CellFormatting(object? sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -73,11 +76,30 @@ namespace CompilerGUI.Controllers
         {
             gridLinesLexer.Add(token);
         }
+        public void AddTetradToGrid(TetradModel tetrad)
+        {
+            gridLinesTetrad.Add(tetrad);
+        }
 
+        public void AddTetradToGrid(Tetrad? tetrad, string exp)
+        {
+            TetradModel tetradModel = new TetradModel();
+            if (tetrad != null) 
+            {
+                tetradModel.Arg1 = tetrad.Arg1;
+                tetradModel.Arg2 = tetrad.Arg2;
+                tetradModel.Operation = tetrad.Oper;
+                tetradModel.Result = tetrad.Res;
+            }
+            tetradModel.Expression = exp;
+
+            gridLinesTetrad.Add(tetradModel);
+        }
         private void ClearAll()
         {
             gridLines.Clear();
             gridLinesLexer.Clear();
+            gridLinesTetrad.Clear();
         }
 
         public void Clear(string FileName, string FilePath = "")

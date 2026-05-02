@@ -3,6 +3,7 @@ using CompilerGUI.Scaner;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,8 @@ namespace CompilerGUI.Controllers
             var pars = parser.Parse(tokens);
             if (pars == null || pars.Count == 0) 
             {
+                ChangeStatusRun?.Invoke(LocalizationService.Get("Ready"));
+
                 Tetrads tetrads = new Tetrads(tokens);
                 List<(string, List<Tetrad>)>? res = tetrads.Generate();
                 if (res != null) 
@@ -54,9 +57,15 @@ namespace CompilerGUI.Controllers
                     foreach (var t in res)
                     {
                         output_console += $"{count}) " + t.Item1 + "\n";
+                        bool fl = true;
                         foreach (var tetr in t.Item2)
                         {
-                            output_console += tetr.FullExpression + "\n";
+                            if (fl) 
+                            {
+                                exc_controller.AddTetradToGrid(null, t.Item1);
+                                fl = false;
+                            }
+                            exc_controller.AddTetradToGrid(tetr, "");
                         }
                         output_console += $"ПОЛИЗ: {poliz.GetStringByExp(res_poliz[count - 1])}\n";
                         try
@@ -72,9 +81,6 @@ namespace CompilerGUI.Controllers
 
                         count++;
                     }
-
-                    ;
-
                     UpdateTextConsole(output_console);
                 }
 

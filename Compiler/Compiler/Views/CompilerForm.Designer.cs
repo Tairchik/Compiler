@@ -33,6 +33,7 @@
             DataGridViewCellStyle dataGridViewCellStyle52 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle53 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle54 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle55 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -95,6 +96,13 @@
             typeColumn = new DataGridViewTextBoxColumn();
             lexemeColumn = new DataGridViewTextBoxColumn();
             locationColumn = new DataGridViewTextBoxColumn();
+            tabPageTetrad = new TabPage();
+            dataGridViewTetrad = new DataGridView();
+            arg1Column = new DataGridViewTextBoxColumn();
+            arg2Column = new DataGridViewTextBoxColumn();
+            operColumn = new DataGridViewTextBoxColumn();
+            resultColumn = new DataGridViewTextBoxColumn();
+            expColumn = new DataGridViewTextBoxColumn();
             menuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -549,6 +557,7 @@
             // 
             gridTabControl.Controls.Add(tabPageSyntax);
             gridTabControl.Controls.Add(tabPageLexer);
+            gridTabControl.Controls.Add(tabPageTetrad);
             gridTabControl.Dock = DockStyle.Fill;
             gridTabControl.Location = new Point(0, 0);
             gridTabControl.Name = "gridTabControl";
@@ -710,6 +719,81 @@
             locationColumn.Name = "locationColumn";
             locationColumn.ReadOnly = true;
             // 
+            // tabPageTetrad
+            // 
+            tabPageTetrad.Controls.Add(dataGridViewTetrad);
+            tabPageTetrad.Location = new Point(4, 24);
+            tabPageTetrad.Name = "tabPageTetrad";
+            tabPageTetrad.Padding = new Padding(3);
+            tabPageTetrad.Size = new Size(1065, 98);
+            tabPageTetrad.TabIndex = 0;
+            tabPageTetrad.Text = "Тетрады";
+            tabPageTetrad.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewLexer
+            // 
+            dataGridViewTetrad.AllowUserToAddRows = false;
+            dataGridViewTetrad.AllowUserToDeleteRows = false;
+            dataGridViewTetrad.AllowUserToResizeRows = false;
+            dataGridViewTetrad.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewTetrad.BackgroundColor = Color.White;
+            dataGridViewTetrad.BorderStyle = BorderStyle.None;
+            dataGridViewTetrad.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewTetrad.Columns.AddRange(new DataGridViewColumn[] { expColumn, operColumn, arg1Column, arg2Column, resultColumn});
+            dataGridViewCellStyle55.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle55.BackColor = Color.White;
+            dataGridViewCellStyle55.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle55.ForeColor = Color.Black;
+            dataGridViewCellStyle55.SelectionBackColor = Color.LightGray;
+            dataGridViewCellStyle55.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle55.WrapMode = DataGridViewTriState.False;
+            dataGridViewTetrad.DefaultCellStyle = dataGridViewCellStyle55;
+            dataGridViewTetrad.Dock = DockStyle.Fill;
+            dataGridViewTetrad.GridColor = Color.Black;
+            dataGridViewTetrad.Location = new Point(3, 3);
+            dataGridViewTetrad.MultiSelect = false;
+            dataGridViewTetrad.Name = "dataGridViewTetrad";
+            dataGridViewTetrad.ReadOnly = true;
+            dataGridViewTetrad.RowHeadersVisible = false;
+            dataGridViewTetrad.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewTetrad.Size = new Size(1059, 92);
+            dataGridViewTetrad.TabIndex = 0;
+            // 
+            // expColumn
+            // 
+            expColumn.DataPropertyName = "Expression";
+            expColumn.HeaderText = "Выражение";
+            expColumn.Name = "expColumn";
+            expColumn.ReadOnly = true;
+            // 
+            // operColumn
+            // 
+            operColumn.DataPropertyName = "Operation";
+            operColumn.HeaderText = "Операция";
+            operColumn.Name = "operColumn";
+            operColumn.ReadOnly = true;
+            // 
+            // arg1Column
+            // 
+            arg1Column.DataPropertyName = "Arg1";
+            arg1Column.HeaderText = "Аргумент 1";
+            arg1Column.Name = "arg1Column";
+            arg1Column.ReadOnly = true;
+            // 
+            // arg2Column
+            // 
+            arg2Column.DataPropertyName = "Arg2";
+            arg2Column.HeaderText = "Аргумент 2";
+            arg2Column.Name = "arg2Column";
+            arg2Column.ReadOnly = true;
+            // 
+            // resultColumn
+            // 
+            resultColumn.DataPropertyName = "Result";
+            resultColumn.HeaderText = "Результат";
+            resultColumn.Name = "resultColumn";
+            resultColumn.ReadOnly = true;
+            // 
             // CompilerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -754,6 +838,7 @@
         private TabControl gridTabControl;
         private TabPage tabPageSyntax;
         private TabPage tabPageLexer;
+        private TabPage tabPageTetrad;
         private ToolStripMenuItem FileTS;
         private ToolStripMenuItem createMI;
         private ToolStripMenuItem openMI;
@@ -812,5 +897,11 @@
         private DataGridViewTextBoxColumn typeColumn;
         private DataGridViewTextBoxColumn lexemeColumn;
         private DataGridViewTextBoxColumn locationColumn;
+        private DataGridView dataGridViewTetrad;
+        private DataGridViewTextBoxColumn arg1Column;
+        private DataGridViewTextBoxColumn arg2Column;
+        private DataGridViewTextBoxColumn operColumn;
+        private DataGridViewTextBoxColumn resultColumn;
+        private DataGridViewTextBoxColumn expColumn;
     }
 }
