@@ -428,3 +428,22 @@ num → digit {digit}
    - x ** 2 % 10;
    - ((a + b) % (10 - 3);
 ### Лексические и синтаксические ошибки
+1. Диаграмма лексера
+<img width="434" height="832" alt="image" src="https://github.com/user-attachments/assets/92039b42-6876-43f6-a923-11499de569ba"><br>
+2. Схема рекурсивного спуска для парсера<br>
+<img width="628" height="843" alt="image" src="https://github.com/user-attachments/assets/9a074f0e-2147-4254-81ab-e5ae85f48293"><br>
+3. Тестовые примеры<br>
+  3.1 Лексер<br><br>
+  <img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/13e48519-9894-4c2b-a6a3-93dd8fb7c836"><br>
+  3.2 Парсер<br><br>
+  <img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/4d900047-3ffe-4c9a-99d9-efa6a046e2f7"><br>
+  <img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/1bb53299-9e3d-4dc3-b617-a60716daf030"><br>
+  <img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/d8d53407-1f2a-46dc-b932-32fcce84c90f"><br>
+
+### Внутренняя форма представления программы (тетрады)
+<img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/d1e5417d-97ca-4be4-a1de-9a295127608b"><br>
+<img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/fdcbc8df-b958-4a66-b6f0-0877aef5215a"><br>
+<img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/eb58b910-e764-4d26-8df5-3e9077a2197c"><br>
+
+### ПОЛИЗ 
+<img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/6cc99169-c5ae-4453-86ae-85e94b500430"><br>
