@@ -429,7 +429,7 @@ num → digit {digit}
    - ((a + b) % (10 - 3);
 ### Лексические и синтаксические ошибки
 1. Диаграмма лексера
-<img width="434" height="832" alt="image" src="https://github.com/user-attachments/assets/92039b42-6876-43f6-a923-11499de569ba"><br>
+<img width="546" height="1011" alt="lab6-Страница-1" src="https://github.com/user-attachments/assets/3074e395-d21e-4efe-9829-6dccb3c74ac5"><br>
 2. Схема рекурсивного спуска для парсера<br>
 <img width="628" height="843" alt="image" src="https://github.com/user-attachments/assets/9a074f0e-2147-4254-81ab-e5ae85f48293"><br>
 3. Тестовые примеры<br>
