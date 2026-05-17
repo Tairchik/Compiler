@@ -1,4 +1,5 @@
 ﻿using CompilerGUI.HelpClass;
+using CompilerGUI.Optim;
 using CompilerGUI.Scaner;
 using System;
 using System.CodeDom.Compiler;
@@ -16,6 +17,12 @@ namespace CompilerGUI.Controllers
         public event Action<List<Token>>? ScanCompleted;
         public event Action<string>? UpdateConsoleOutPut;
         public event Action<ProgramNode>? UpdateAst;
+        public event Action<string>? UpdateInput;
+        public event Action<string>? UpdateIR1;
+        public event Action<string>? UpdateIR2;
+        public event Action<string>? UpdateOpt;
+
+
 
         private ExceptionsCodeController exc_controller;
 
@@ -54,9 +61,22 @@ namespace CompilerGUI.Controllers
 
             if (pars.Count == 0) 
             {
+                var generator = new IrGenerator();
+                var originalIr = generator.Generate(root);
+
+                var optimizer = new Optimizer();
+                var optConstantsIr = optimizer.OptimizeConstants(originalIr);
+                var optDuplicatesIr = optimizer.RemoveDuplicates(originalIr);
+                var combinedIr = optimizer.RemoveDuplicates(optConstantsIr);               
+                
                 UpdateTextConsole("Успешно");
 
                 UpdateAst?.Invoke(root);
+                UpdateInput?.Invoke(string.Join(Environment.NewLine, originalIr.Select(i => i.ToString())));
+                UpdateIR1?.Invoke(string.Join(Environment.NewLine, optConstantsIr.Select(i => i.ToString())));
+                UpdateIR2?.Invoke(string.Join(Environment.NewLine, optDuplicatesIr.Select(i => i.ToString())));
+                UpdateOpt?.Invoke(string.Join(Environment.NewLine, combinedIr.Select(i => i.ToString())));
+
             }
             else 
             {

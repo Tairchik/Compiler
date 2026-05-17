@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CompilerForm));
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle7 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle8 = new DataGridViewCellStyle();
             menuStrip = new MenuStrip();
             FileTS = new ToolStripMenuItem();
             createMI = new ToolStripMenuItem();
@@ -97,6 +97,7 @@
             locationColumn = new DataGridViewTextBoxColumn();
             astTabPage = new TabPage();
             astTreeView = new TreeView();
+            tabPageOpt = new TabPage();
             menuStrip.SuspendLayout();
             statusStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
@@ -553,6 +554,7 @@
             pageTabControl.Controls.Add(tabPageSyntax);
             pageTabControl.Controls.Add(tabPageLexer);
             pageTabControl.Controls.Add(astTabPage);
+            pageTabControl.Controls.Add(tabPageOpt);
             pageTabControl.Dock = DockStyle.Fill;
             pageTabControl.Location = new Point(0, 0);
             pageTabControl.Name = "pageTabControl";
@@ -580,37 +582,37 @@
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.White;
             dataGridView.BorderStyle = BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = SystemColors.Control;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = SystemColors.Control;
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle5.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView.Columns.AddRange(new DataGridViewColumn[] { NumberColumn, InvalidText, LineColumn, MessageColumn });
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Window;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            dataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = SystemColors.Window;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle6.ForeColor = SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dataGridView.DefaultCellStyle = dataGridViewCellStyle6;
             dataGridView.Dock = DockStyle.Fill;
             dataGridView.GridColor = Color.Gray;
             dataGridView.Location = new Point(3, 3);
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = SystemColors.Control;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle3.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = SystemColors.Control;
+            dataGridViewCellStyle7.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle7.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = DataGridViewTriState.True;
+            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle7;
             dataGridView.RowHeadersVisible = false;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.Size = new Size(1059, 92);
@@ -668,14 +670,14 @@
             dataGridViewLexer.BorderStyle = BorderStyle.None;
             dataGridViewLexer.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewLexer.Columns.AddRange(new DataGridViewColumn[] { codeColumn, typeColumn, lexemeColumn, locationColumn });
-            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = Color.White;
-            dataGridViewCellStyle4.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle4.ForeColor = Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = Color.LightGray;
-            dataGridViewCellStyle4.SelectionForeColor = Color.Black;
-            dataGridViewCellStyle4.WrapMode = DataGridViewTriState.False;
-            dataGridViewLexer.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = Color.White;
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle8.ForeColor = Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = Color.LightGray;
+            dataGridViewCellStyle8.SelectionForeColor = Color.Black;
+            dataGridViewCellStyle8.WrapMode = DataGridViewTriState.False;
+            dataGridViewLexer.DefaultCellStyle = dataGridViewCellStyle8;
             dataGridViewLexer.Dock = DockStyle.Fill;
             dataGridViewLexer.GridColor = Color.Black;
             dataGridViewLexer.Location = new Point(3, 3);
@@ -686,6 +688,7 @@
             dataGridViewLexer.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridViewLexer.Size = new Size(1059, 92);
             dataGridViewLexer.TabIndex = 0;
+            dataGridViewLexer.CellContentClick += dataGridViewLexer_CellContentClick;
             // 
             // codeColumn
             // 
@@ -734,6 +737,64 @@
             astTreeView.Size = new Size(1059, 92);
             astTreeView.TabIndex = 0;
             // 
+            // tabPageOpt
+            // 
+            TableLayoutPanel tlpOpt = new TableLayoutPanel();
+            tlpOpt.Dock = DockStyle.Fill;
+            tlpOpt.ColumnCount = 2;
+            tlpOpt.RowCount = 2;
+            // Делим сетку ровно 50% на 50%
+            tlpOpt.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlpOpt.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tlpOpt.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tlpOpt.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+
+            // Панели-контейнеры для каждого блока (чтобы красиво разместить Label + TextBox)
+            Panel pnlOriginal = new Panel { Dock = DockStyle.Fill, Padding = new Padding(5) };
+            Panel pnlConst = new Panel { Dock = DockStyle.Fill, Padding = new Padding(5) };
+            Panel pnlDup = new Panel { Dock = DockStyle.Fill, Padding = new Padding(5) };
+            Panel pnlCombined = new Panel { Dock = DockStyle.Fill, Padding = new Padding(5) };
+
+            // Инициализация подписей
+            Label lblOriginal = new Label { Text = "Входной IR (Без оптимизаций):", Dock = DockStyle.Top, Height = 18, Font = new Font("Segoe UI", 9F, FontStyle.Bold) };
+            Label lblConst = new Label { Text = "Оптимизация 1 (Свертка констант):", Dock = DockStyle.Top, Height = 18, Font = new Font("Segoe UI", 9F, FontStyle.Bold) };
+            Label lblDup = new Label { Text = "Оптимизация 2 (Удаление дубликатов):", Dock = DockStyle.Top, Height = 18, Font = new Font("Segoe UI", 9F, FontStyle.Bold) };
+            Label lblCombined = new Label { Text = "Комбинированная оптимизация (Все проходы):", Dock = DockStyle.Top, Height = 18, Font = new Font("Segoe UI", 9F, FontStyle.Bold), ForeColor = Color.DarkGreen };
+
+            // Инициализация TextBox (делаем глобальными переменными, см. шаг 2)
+            tbOriginalIR = new TextBox { Dock = DockStyle.Fill, Multiline = true, ScrollBars = ScrollBars.Vertical, ReadOnly = true, BackColor = Color.White, Font = new Font("Consolas", 9.5F) };
+            tbConstOptIR = new TextBox { Dock = DockStyle.Fill, Multiline = true, ScrollBars = ScrollBars.Vertical, ReadOnly = true, BackColor = Color.White, Font = new Font("Consolas", 9.5F) };
+            tbDupOptIR = new TextBox { Dock = DockStyle.Fill, Multiline = true, ScrollBars = ScrollBars.Vertical, ReadOnly = true, BackColor = Color.White, Font = new Font("Consolas", 9.5F) };
+            tbCombinedOptIR = new TextBox { Dock = DockStyle.Fill, Multiline = true, ScrollBars = ScrollBars.Vertical, ReadOnly = true, BackColor = Color.White, Font = new Font("Consolas", 9.5F), BorderStyle = BorderStyle.FixedSingle };
+
+            // Собираем панели (сначала контрол, который Fill, потом Top)
+            pnlOriginal.Controls.Add(tbOriginalIR);
+            pnlOriginal.Controls.Add(lblOriginal);
+
+            pnlConst.Controls.Add(tbConstOptIR);
+            pnlConst.Controls.Add(lblConst);
+
+            pnlDup.Controls.Add(tbDupOptIR);
+            pnlDup.Controls.Add(lblDup);
+
+            pnlCombined.Controls.Add(tbCombinedOptIR);
+            pnlCombined.Controls.Add(lblCombined);
+
+            // Распихиваем панели по ячейкам таблицы
+            tlpOpt.Controls.Add(pnlOriginal, 0, 0); // Строка 0, Колонка 0
+            tlpOpt.Controls.Add(pnlConst, 1, 0);    // Строка 0, Колонка 1
+            tlpOpt.Controls.Add(pnlDup, 0, 1);      // Строка 1, Колонка 0
+            tlpOpt.Controls.Add(pnlCombined, 1, 1); // Строка 1, Колонка 1
+
+            tabPageOpt.Controls.Add(tlpOpt);
+            tabPageOpt.Location = new Point(4, 24);
+            tabPageOpt.Name = "tabPageOpt";
+            tabPageOpt.Padding = new Padding(3);
+            tabPageOpt.Size = new Size(1065, 98);
+            tabPageOpt.TabIndex = 2;
+            tabPageOpt.Text = "Оптимизация IR";
+            tabPageOpt.UseVisualStyleBackColor = true;
+            // 
             // CompilerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -777,6 +838,10 @@
 
         private MenuStrip menuStrip;
         private TabControl pageTabControl;
+        private TextBox tbOriginalIR;
+        private TextBox tbConstOptIR;
+        private TextBox tbDupOptIR;
+        private TextBox tbCombinedOptIR;
         private TabPage tabPageSyntax;
         private TabPage tabPageLexer;
         private ToolStripMenuItem FileTS;
@@ -839,5 +904,6 @@
         private DataGridViewTextBoxColumn locationColumn;
         private TabPage astTabPage;
         private TreeView astTreeView;
+        private TabPage tabPageOpt;
     }
 }

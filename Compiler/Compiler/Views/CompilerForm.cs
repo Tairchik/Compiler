@@ -50,11 +50,35 @@ namespace CompilerGUI
             controllerConsole.ScanCompleted += OpenTableResultScan;
             controllerConsole.UpdateConsoleOutPut += controllerTCP.UpdateTextConsole;
             controllerConsole.UpdateAst += FillTreeView;
+            controllerConsole.UpdateInput += ControllerConsole_UpdateInput;
+            controllerConsole.UpdateIR1 += ControllerConsole_UpdateIR1;
+            controllerConsole.UpdateIR2 += ControllerConsole_UpdateIR2;
+            controllerConsole.UpdateOpt += ControllerConsole_UpdateOpt;
 
             controllerExceptionsCode.GetFileClass += controllerTCP.GetFileClassPage;
             dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
             dataGridViewLexer.CellDoubleClick += DataGridViewLexer_CellDoubleClick;
-            
+
+        }
+
+        private void ControllerConsole_UpdateOpt(string obj)
+        {
+            tbCombinedOptIR.Text = obj;
+        }
+
+        private void ControllerConsole_UpdateIR1(string obj)
+        {
+            tbConstOptIR.Text = obj;
+        }
+
+        private void ControllerConsole_UpdateIR2(string obj)
+        {
+            tbDupOptIR.Text = obj;
+        }
+
+        private void ControllerConsole_UpdateInput(string obj)
+        {
+            tbOriginalIR.Text = obj;
         }
 
         private void DataGridViewLexer_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
@@ -71,7 +95,7 @@ namespace CompilerGUI
 
         private void FillTreeView(ProgramNode root)
         {
-            astTreeView.Nodes.Clear(); 
+            astTreeView.Nodes.Clear();
 
             TreeNode rootNode = new TreeNode("Program");
             astTreeView.Nodes.Add(rootNode);
@@ -82,7 +106,7 @@ namespace CompilerGUI
                 AddAstToTreeView(node, rootNode);
             }
 
-            astTreeView.ExpandAll(); 
+            astTreeView.ExpandAll();
         }
 
         private void AddAstToTreeView(AstNode astNode, TreeNode parentTreeNode)
@@ -277,7 +301,7 @@ namespace CompilerGUI
         {
             (string text, bool res) = controllerTCP.GetTextEditor();
             if (res != false)
-            controllerConsole.StartCode(text);
+                controllerConsole.StartCode(text);
         }
 
         private void SettingsMI_Click(object sender, EventArgs e)
@@ -499,6 +523,11 @@ namespace CompilerGUI
             {
                 MessageBox.Show("Не удалось открыть ссылку: " + ex.Message);
             }
+        }
+
+        private void dataGridViewLexer_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
