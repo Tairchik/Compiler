@@ -1,0 +1,17 @@
+digraph "CFG for 'main' function" {
+	label="CFG for 'main' function";
+
+	Node0x5761e6ae94e0 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d0473d70" fontname="Courier",label="{0:\l|  %1 = alloca ptr, align 8\l  %2 = alloca i32, align 4\l  %3 = alloca %\"struct.std::array\", align 4\l  %4 = alloca i32, align 4\l  %5 = alloca i32, align 4\l  store i32 0, ptr %2, align 4\l  call void @llvm.memcpy.p0.p0.i64(ptr align 4 %3, ptr align 4\l... @__const.main.data, i64 20, i1 false)\l  store i32 0, ptr %4, align 4\l  store i32 0, ptr %5, align 4\l  %6 = load i32, ptr %5, align 4\l  %7 = sext i32 %6 to i64\l  store ptr %3, ptr %1, align 8\l  %8 = load ptr, ptr %1, align 8\l  %9 = icmp ult i64 %7, 5\l  br i1 %9, label %.lr.ph, label %21\l|{<s0>T|<s1>F}}"];
+	Node0x5761e6ae94e0:s0 -> Node0x5761e6aed550[tooltip="0 -> .lr.ph\nProbability 50.00%" ];
+	Node0x5761e6ae94e0:s1 -> Node0x5761e6aed680[tooltip="0 -> 21\nProbability 50.00%" ];
+	Node0x5761e6aed550 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{.lr.ph:\l|  %.promoted = load i32, ptr %5, align 4\l  %.promoted1 = load i32, ptr %4, align 4\l  br label %10\l}"];
+	Node0x5761e6aed550 -> Node0x5761e6aed8f0[tooltip=".lr.ph -> 10\nProbability 100.00%" ];
+	Node0x5761e6aed8f0 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{10:\l|  %11 = phi i32 [ %.promoted1, %.lr.ph ], [ %16, %17 ]\l  %12 = phi i32 [ %.promoted, %.lr.ph ], [ %18, %17 ]\l  %13 = sext i32 %12 to i64\l  %14 = call noundef nonnull align 4 dereferenceable(4) ptr\l... @_ZNSt5arrayIiLm5EEixEm(ptr noundef nonnull align 4 dereferenceable(20) %3,\l... i64 noundef %13) #4\l  %15 = load i32, ptr %14, align 4\l  %16 = add nsw i32 %11, %15\l  br label %17\l}"];
+	Node0x5761e6aed8f0 -> Node0x5761e6aeda20[tooltip="10 -> 17\nProbability 100.00%" ];
+	Node0x5761e6aeda20 [shape=record,color="#b70d28ff", style=filled, fillcolor="#b70d2870" fontname="Courier",label="{17:\l|  %18 = add nsw i32 %12, 1\l  %19 = sext i32 %18 to i64\l  %20 = icmp ult i64 %19, 5\l  br i1 %20, label %10, label %._crit_edge, !llvm.loop !6\l|{<s0>T|<s1>F}}"];
+	Node0x5761e6aeda20:s0 -> Node0x5761e6aed8f0[tooltip="17 -> 10\nProbability 96.88%" ];
+	Node0x5761e6aeda20:s1 -> Node0x5761e6aee150[tooltip="17 -> ._crit_edge\nProbability 3.12%" ];
+	Node0x5761e6aee150 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d6524470" fontname="Courier",label="{._crit_edge:\l|  %.lcssa2 = phi i32 [ %16, %17 ]\l  %.lcssa = phi i32 [ %18, %17 ]\l  store i32 %.lcssa, ptr %5, align 4\l  store i32 %.lcssa2, ptr %4, align 4\l  store ptr %3, ptr %1, align 1\l  br label %21\l}"];
+	Node0x5761e6aee150 -> Node0x5761e6aed680[tooltip="._crit_edge -> 21\nProbability 100.00%" ];
+	Node0x5761e6aed680 [shape=record,color="#3d50c3ff", style=filled, fillcolor="#d0473d70" fontname="Courier",label="{21:\l|  %22 = load i32, ptr %4, align 4\l  %23 = call noundef nonnull align 8 dereferenceable(8) ptr @_ZNSolsEi(ptr\l... noundef nonnull align 8 dereferenceable(8) @_ZSt4cout, i32 noundef %22)\l  %24 = call noundef nonnull align 8 dereferenceable(8) ptr\l... @_ZNSolsEPFRSoS_E(ptr noundef nonnull align 8 dereferenceable(8) %23, ptr\l... noundef @_ZSt4endlIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_)\l  ret i32 0\l}"];
+}
